@@ -17,7 +17,6 @@ class Channel {
 		const std::string getName() const;
 		const std::map<std::string, User> getUsers() const;
 		const User getOwner() const;
-		void setName(std::string name);
 		void addUser(User user);
 		void removeUser(User user);
 };
