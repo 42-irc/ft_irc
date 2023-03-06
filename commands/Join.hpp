@@ -3,18 +3,24 @@
 
 # include <string>
 # include <iostream>
+# include <map>
+# include "Message.hpp"
+# include "Server.hpp"
+# include "Channel.hpp"
 # include "Command.hpp"
 # include "User.hpp"
 
 class Join : public Command {
 	private:
 		std::string _channelName;
-		User _user;
 
 	public:
 		Join(std::string channelName, User user);
 		~Join();
-		Message excute();
+
+		Message checkChannelName();
+		Message checkChannelNum();
+		Message execute();
 };
 
 #endif
