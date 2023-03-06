@@ -14,7 +14,6 @@ class Server{
 		std::map<std::string, Channel> _channels;
 		std::map<std::string, User> _users;
 		std::string _password;
-		std::string _adminName;
 		std::string _adminPassword;
 
 	public:

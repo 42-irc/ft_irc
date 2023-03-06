@@ -14,7 +14,7 @@ class Part : public Command
 	public:
 		Part(std::vector<std::string> channelNames, User user);
 		~Part();
-		void	execute();
+		Message	execute();
 };
 
 #endif
