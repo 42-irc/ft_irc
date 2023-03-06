@@ -17,6 +17,7 @@ class User
 		~User();
 		const std::string	getName() const;
 		const std::string	getNickName() const;
+		const int			getFd() const;
 		bool		getIsAdmin() const;
 		void		setName(std::string name);
 		void		setNickName(std::string nickName);
