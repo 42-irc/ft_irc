@@ -4,8 +4,12 @@
 # include <string>
 # include <iostream>
 # include "Message.hpp"
+# include "User.hpp"
 
 class Command{
+	protected:
+		User _client;
+
 	public:
 		Command();
 		virtual ~Command();
