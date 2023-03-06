@@ -10,6 +10,7 @@ class User
 		std::string	_name;
 		std::string	_nickName;
 		bool		_isAdmin;
+		int			_fd;
 
 	public:
 		User(std::string name, std::string nickName);
