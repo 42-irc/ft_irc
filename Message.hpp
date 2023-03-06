@@ -5,10 +5,10 @@
 
 class Message {
 	private:
-		int code;
-		std::string prefix;
-		std::string command;
-		std::string params;
+		int _code;
+		std::string _prefix;
+		std::string _command;
+		std::string _params;
 
 	public:
 		Message(std::string str);
