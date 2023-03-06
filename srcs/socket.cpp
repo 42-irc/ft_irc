@@ -27,6 +27,12 @@ int main()
 		return 1;
 	}
 
+	if (listen(server_socket, 10) == -1)
+	{
+		std::cerr << "Error socket listening: " << strerror(errno) << std::endl;
+		return 1;
+	}
+
 	std::cout << "Connected to server" << std::endl;
 	return 0;
 }
