@@ -11,8 +11,8 @@
 class Server{
 	private:
 		int _port;
-		std::map<std::string, Channel> _channels;
-		std::map<std::string, User> _users;
+		static std::map<std::string, Channel> _channels;
+		static std::map<std::string, User> _users;
 		std::string _password;
 		std::string _adminPassword;
 
@@ -20,8 +20,8 @@ class Server{
 		Server(int port, std::string password, std::string adminName, std::string adminPassword);
 		~Server();
 		const int getPort() const;
-		const std::map<std::string, Channel> getChannels() const;
-		const std::map<std::string, User> getUsers() const;
+		static const std::map<std::string, Channel> getChannels();
+		static const std::map<std::string, User> getUsers();
 		const std::string getPassword() const;
 		const std::string getAdminName() const;
 		const std::string getAdminPassword() const;
