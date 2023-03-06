@@ -5,7 +5,7 @@
 
 class Message {
 	private:
-		int code;
+		int _code;
 		std::string _prefix;
 		std::string _command;
 		std::string _params;
