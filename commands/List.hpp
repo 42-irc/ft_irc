@@ -1,13 +1,13 @@
 #ifndef LIST_HPP
 # define LIST_HPP
 
-# include <string>
 # include "Command.hpp"
+# include "Server.hpp"
 
 class List : public Command
 {
 	public:
-		List();
+		List(User client);
 		~List();
 		Message	execute();
 };

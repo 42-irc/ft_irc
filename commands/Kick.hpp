@@ -1,20 +1,20 @@
 #ifndef KICK_HPP
 # define KICK_HPP
 
-# include <string>
 # include "Command.hpp"
-# include "User.hpp"
+# include "Server.hpp"
 
 class Kick : public Command
 {
 	private:
-		std::string const	_targetNick;
-		std::string const	_targetChannel;
-		std::string const	_reason;
-		User				_user;
+		std::string _channel;
+		std::string _target;
+		std::string _reason;
+		void checkIsAdmin(Channel &channel);
+		const std::string getMsg() const;
 
 	public:
-		Kick(std::string const targetNick, std::string const targetChannel, std::string const reason, User user);
+		Kick(User client, std::string channel, std::string target, std::string reason);
 		~Kick();
 		Message	execute();
 };

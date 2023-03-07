@@ -1,9 +1,8 @@
 #ifndef OPER_HPP
 # define OPER_HPP
 
-# include <string>
 # include "Command.hpp"
-# include "User.hpp"
+# include "Server.hpp"
 
 class Oper : public Command
 {
@@ -12,7 +11,7 @@ class Oper : public Command
 		std::string _password;
 
 	public:
-		Oper(std::string name, std::string password, User user);
+		Oper(User client, std::string name, std::string password);
 		~Oper();
 		Message	execute();
 };
