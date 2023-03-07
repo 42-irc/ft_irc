@@ -1,20 +1,21 @@
 #ifndef MSG_HPP
 # define MSG_HPP
 
-# include <string>
 # include "Command.hpp"
-# include "User.hpp"
-# include "Channel.hpp"
+# include "Server.hpp"
 
 class Msg : public Command
 {
 	private:
+		std::string _target;
 		std::string _msg;
-		User _user;
-		Channel _channel;
+		std::vector<int> findTargetUser(std::string target);
+		std::vector<int> findTargetChannel(std::string target);
+		const std::string getPrefix() const;
+		const std::string getMsg() const;
 
 	public:
-		Msg(std::string msg, User user, Channel channel);
+		Msg(User client, std::string target, std::string msg);
 		~Msg();
 		Message	execute();
 };
