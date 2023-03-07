@@ -1,10 +1,10 @@
-#include "Msg.hpp"
+#include "Privmsg.hpp"
 
-Msg::Msg(User client, std::string target, std::string msg) : Command(), _target(target), _msg(msg) { _client = client; }
+PrivMsg::PrivMsg(User client, std::string target, std::string msg) : Command("PRIVMSG"), _target(target), _msg(msg) { _client = client; }
 
-Msg::~Msg() {}
+PrivMsg::~PrivMsg() {}
 
-std::vector<int> Msg::findTargetChannel(std::string target)
+std::vector<int> PrivMsg::findTargetChannel(std::string target)
 {
 	std::vector<int> targetFd;
 
@@ -19,7 +19,7 @@ std::vector<int> Msg::findTargetChannel(std::string target)
 	return targetFd;
 }
 
-std::vector<int> Msg::findTargetUser(std::string target)
+std::vector<int> PrivMsg::findTargetUser(std::string target)
 {
 	std::vector<int> targetFd;
 
@@ -31,14 +31,14 @@ std::vector<int> Msg::findTargetUser(std::string target)
 	return targetFd;
 }
 
-const std::string Msg::getPrefix() const
+const std::string PrivMsg::getPrefix() const
 {
 	return (_client.getNickName() + "!" + _client.getName() + "@" + _client.getHost());
 }
 
-const std::string Msg::getMsg() const { return (_target + " :" + _msg); }
+const std::string PrivMsg::getMsg() const { return (_target + " :" + _msg); }
 
-Message	Msg::execute()
+Message	PrivMsg::execute()
 {
 	std::vector<int> targetFd = _target[0] == '#' ? findTargetChannel(_target) : findTargetUser(_target);
 	Message message(targetFd, 0, getPrefix(), "PRIVMSG", getMsg());

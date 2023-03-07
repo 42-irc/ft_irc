@@ -1,10 +1,10 @@
-#ifndef MSG_HPP
-# define MSG_HPP
+#ifndef PRIVMSG_HPP
+# define PRIVMSG_HPP
 
 # include "Command.hpp"
 # include "Server.hpp"
 
-class Msg : public Command
+class PrivMsg : public Command
 {
 	private:
 		std::string _target;
@@ -15,8 +15,8 @@ class Msg : public Command
 		const std::string getMsg() const;
 
 	public:
-		Msg(User client, std::string target, std::string msg);
-		~Msg();
+		PrivMsg(User client, std::string target, std::string msg);
+		~PrivMsg();
 		Message	execute();
 };
 
