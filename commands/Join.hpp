@@ -1,20 +1,21 @@
 #ifndef JOIN_HPP
 # define JOIN_HPP
 
-# include <string>
-# include <iostream>
+# include "../Server.hpp"
 # include "Command.hpp"
-# include "User.hpp"
 
 class Join : public Command {
 	private:
-		std::string _channelName;
-		User _user;
+		std::string _channel;
+		std::string _target;
+		void checkChannelNum();
+		void checkValidName();
 
 	public:
-		Join(std::string channelName, User user);
+		Join(User client, std::string channel);
 		~Join();
-		Message excute();
+
+		Message execute();
 };
 
 #endif
