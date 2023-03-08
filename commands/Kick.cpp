@@ -9,9 +9,9 @@ message format
 <clientNick>!<clientName>@<clientHost> KICK <channel> <target> :<reason>
 */
 Message Kick::execute() {
-	Channel channel = Server::findChannel(_channel);
+	Channel channel = Server::findChannel(_client, _channel);
 	checkIsAdmin(channel);
-	User target = channel.findUser(_target);
+	User target = channel.findUser(_client, _target);
 	channel.removeUser(target);
 	std::vector<int> targetFd = channel.getFds();
 	return (Message(targetFd, 0, _client.getNickName(), _type, getMsg()));

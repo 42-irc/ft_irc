@@ -20,11 +20,11 @@ Message	PrivMsg::execute()
 	std::vector<int> targetFd;
 	if (_target[0] == '#')
 	{
-		Channel target = Server::findChannel(_target);
+		Channel target = Server::findChannel(_client, _target);
 		targetFd = target.getFds();
 		return (Message(targetFd, 0, getPrefix(), "PRIVMSG", getMsg()));
 	}
-	User target = Server::findUser(_target);
+	User target = Server::findUser(_client, _target);
 	targetFd.push_back(target.getFd());
 	return (Message(targetFd, 0, getPrefix(), "PRIVMSG", getMsg()));
 }

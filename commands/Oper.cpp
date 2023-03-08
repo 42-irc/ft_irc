@@ -10,7 +10,7 @@ message format
 */
 Message Oper::execute()
 {
-	User target = Server::findUser(_name);
+	User target = Server::findUser(_client, _name);
 	checkValidPassword();
 	target.setIsAdmin(true);
 	std::vector<int> targetFd;
