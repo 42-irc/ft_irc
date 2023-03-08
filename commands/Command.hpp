@@ -5,15 +5,15 @@
 # include <string>
 
 # include "../Message.hpp"
-# include "../User.hpp"
+# include "../Client.hpp"
 
 class Command {
 	protected:
-		User _client;
+		Client _client;
 		std::string _type;
 
 	public:
-		Command(User client, std::string type);
+		Command(Client client, std::string type);
 		virtual ~Command();
 		virtual Message excute() = 0;
 };

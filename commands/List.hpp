@@ -7,7 +7,7 @@
 class List : public Command
 {
 	public:
-		List(User client);
+		List(Client client);
 		~List();
 		Message	execute();
 };

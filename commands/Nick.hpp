@@ -3,7 +3,6 @@
 
 # include <string>
 # include "Command.hpp"
-# include "User.hpp"
 
 class Nick : public Command
 {
@@ -11,7 +10,7 @@ class Nick : public Command
 		std::string _nick;
 
 	public:
-		Nick(std::string nick, User user);
+		Nick(std::string nick, Client client);
 		~Nick();
 		Message	execute();
 };

@@ -1,28 +1,28 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
-#include <string>
 #include <map>
-#include "User.hpp"
+#include <vector>
+#include "Client.hpp"
 #include "Message.hpp"
 
 class Channel {
 	private:
+		std::map<std::string, Client> _clients;
 		std::string _name;
-		std::map<std::string, User> _users;
-		User _owner;
+		Client _operator;
 
 	public:
 		Channel();
-		Channel(std::string name, User owner);
+		Channel(std::string name, Client oper);
 		~Channel();
 		const std::string getName() const;
-		const std::map<std::string, User> getUsers() const;
+		const std::map<std::string, Client> getClients() const;
 		const std::vector<int> getFds() const;
-		const User findUser(User client, std::string name) const;
-		const User getOwner() const;
-		void addUser(User user);
-		void removeUser(User user);
+		const Client findClient(Client client, std::string name) const;
+		const Client getOperator() const;
+		void addClient(Client client);
+		void removeClient(Client client);
 };
 
 #endif

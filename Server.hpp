@@ -4,7 +4,6 @@
 # include <iostream>
 # include <map>
 # include <vector>
-# include "User.hpp"
 # include "Channel.hpp"
 # include "Message.hpp"
 
@@ -12,7 +11,7 @@ class Server{
 	private:
 		int _port;
 		static std::map<std::string, Channel> _channels;
-		static std::map<std::string, User> _users;
+		static std::map<std::string, Client> _clients;
 		std::string _password;
 		std::string _adminName;
 		std::string _adminPassword;
@@ -22,16 +21,16 @@ class Server{
 		~Server();
 		const int getPort() const;
 		static const std::map<std::string, Channel> getChannels();
-		static const Channel findChannel(User client, std::string name);
-		static const std::map<std::string, User> getUsers();
-		static const User findUser(User client, std::string name);
+		static const Channel findChannel(Client client, std::string name);
+		static const std::map<std::string, Client> getClients();
+		static const Client findClient(Client client, std::string name);
 		const std::string getPassword() const;
 		const std::string getAdminName() const;
 		const std::string getAdminPassword() const;
 		static void addChannel(Channel channel);
 		static void removeChannel(Channel channel);
-		static void addUser(User user);
-		static void removeUser(User user);
+		static void addClient(Client client);
+		static void removeClient(Client client);
 };
 
 #endif
