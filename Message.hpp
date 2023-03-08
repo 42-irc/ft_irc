@@ -13,12 +13,10 @@ class Message {
 		std::string _params;
 
 	public:
+		Message();
 		Message(std::vector<int> targets, int code, std::string prefix, std::string command, std::string params = "");
 		~Message();
-		const int getCode() const;
-		const std::string getPrefix() const;
-		const std::string getCommand() const;
-		const std::string getParams() const;
+		const std::string getMessage();
 };
 
 #endif
