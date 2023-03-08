@@ -44,19 +44,19 @@ class Server{
 		const std::string getPassword() const { return (_password); };
 		const std::string getAdminName() const { return (_adminName); };
 		const std::string getAdminPassword() const { return (_adminPassword); };
-		void addChannel(Channel channel)
+		static void addChannel(Channel channel)
 		{
 			_channels.insert(std::pair<std::string, Channel>(channel.getName(), channel));
 		}
-		void removeChannel(Channel channel)
+		static void removeChannel(Channel channel)
 		{
 			_channels.erase(channel.getName());
 		};
-		void addUser(User user)
+		static void addUser(User user)
 		{
 			_users.insert(std::pair<std::string, User>(user.getNickName(), user));
 		}
-		void removeUser(User user)
+		static void removeUser(User user)
 		{
 			std::map<std::string, Channel>::iterator first = _channels.begin();
 			std::map<std::string, Channel>::iterator last = _channels.end();
