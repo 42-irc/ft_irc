@@ -14,7 +14,9 @@ const std::map<std::string, Channel> Server::getChannels() { return (_channels);
 const Channel Server::findChannel(Client client, std::string name) {
 	std::map<std::string, Channel>::iterator it = _channels.find(name);
 
-	if (it != _channels.end()) return (it->second);
+	if (it != _channels.end()){
+				return (it->second);
+}
 
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
