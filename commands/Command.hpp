@@ -15,7 +15,7 @@ class Command {
 	public:
 		Command(Client client, std::string type);
 		virtual ~Command();
-		virtual Message excute() = 0;
+		virtual Message execute() = 0;
 };
 
 #endif
