@@ -9,9 +9,10 @@
 class Command{
 	protected:
 		User _client;
+		std::string _type;
 
 	public:
-		Command();
+		Command(User client, std::string type);
 		virtual ~Command();
 		virtual Message excute() = 0;
 };

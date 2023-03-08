@@ -22,6 +22,8 @@ class User
 		void		setName(std::string name);
 		void		setNickName(std::string nickName);
 		void		setIsAdmin(bool isAdmin);
+		bool		operator==(const User &user) const { return (_nickName == user._nickName); };
+		bool		operator!=(const User &user) const { return (_nickName != user._nickName); };
 };
 
 #endif
