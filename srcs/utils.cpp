@@ -11,19 +11,31 @@ namespace ft {
         return ret;
     }
 
-	const std::string& get_code_messages(int &code) {
-		static std::map<int, std::string> error_messages = {
-			{RPL_WELCOME, CODE_001},
-			{ERR_NOSUCHNICK, CODE_401},
-			{ERR_NOSUCHCHANNEL, CODE_403},
-			{ERR_UNKNOWNCOMMAND, CODE_421},
-			{ERR_NICKNAMEINUSE, CODE_433},
-			{ERR_NOTONCHANNEL, CODE_442},
-			{ERR_CHANOPRIVSNEEDED, CODE_482},
-			{RPL_YOUREOPER, CODE_381},
-			{RPL_LIST, CODE_322},
-			{RPL_LISTEND, CODE_323}
-		};
-		return error_messages[code];
+	const std::string get_code_messages(int &code) {
+		switch (code)
+		{
+			case RPL_WELCOME:
+				return CODE_001;
+			case ERR_NOSUCHNICK:
+				return CODE_401;
+			case ERR_NOSUCHCHANNEL:
+				return CODE_403;
+			case ERR_UNKNOWNCOMMAND:
+				return CODE_421;
+			case ERR_NICKNAMEINUSE:
+				return CODE_433;
+			case ERR_NOTONCHANNEL:
+				return CODE_442;
+			case ERR_CHANOPRIVSNEEDED:
+				return CODE_482;
+			case RPL_LIST:
+				return CODE_322;
+			case RPL_LISTEND:
+				return CODE_323;
+			case RPL_YOUREOPER:
+				return CODE_381;
+			default:
+				return "";
+		}
 	}
 }

@@ -14,7 +14,6 @@ enum e_code {
 	ERR_NICKNAMEINUSE = 433,
 	ERR_NOTONCHANNEL = 442,
 	ERR_CHANOPRIVSNEEDED = 482,
-	ERR_NICKNAMEINUSE = 433,
 	RPL_LIST = 322,
 	RPL_LISTEND = 323,
 	RPL_YOUREOPER = 381
@@ -33,10 +32,9 @@ enum e_code {
 
 namespace ft
 {
-
 	std::vector<std::string> split(const std::string &str, char charset);
 
-	const std::string& get_code_messages(int &code);
+	const std::string get_code_messages(int &code);
 }
 
 #endif
