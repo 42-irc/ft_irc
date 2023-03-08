@@ -9,6 +9,7 @@ class Oper : public Command
 	private:
 		std::string _name;
 		std::string _password;
+		void checkValidPassword();
 
 	public:
 		Oper(User client, std::string name, std::string password);
