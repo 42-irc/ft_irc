@@ -1,6 +1,6 @@
 #include "Join.hpp"
 
-Join::Join(User client, std::string channel) : Command(client, "JOIN"), _channel(channel) {
+Join::Join(Client client, std::string channel) : Command(client, "JOIN"), _channel(channel) {
 	_client = client;
 }
 
@@ -38,6 +38,6 @@ Message Join::execute(){
 		channel = Channel(_channel, _client);
 		Server::addChannel(channel);
 	}
-	channel.addUser(_client);
+	channel.addClient(_client);
 	return Message(channel.getFds(), 0, _client.getNickName(), _type, ": " +  _channel);
 }

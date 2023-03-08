@@ -1,6 +1,6 @@
 #include "Oper.hpp"
 
-Oper::Oper(User client, std::string name, std::string password) : Command(client, "OPER"), _name(name), _password(password) { }
+Oper::Oper(Client client, std::string name, std::string password) : Command(client, "OPER"), _name(name), _password(password) { }
 
 Oper::~Oper() {}
 
@@ -10,7 +10,7 @@ message format
 */
 Message Oper::execute()
 {
-	User target = Server::findUser(_client, _name);
+	Client target = Server::findClient(_client, _name);
 	checkValidPassword();
 	target.setIsAdmin(true);
 	std::vector<int> targetFd;

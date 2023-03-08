@@ -12,7 +12,7 @@ class Oper : public Command
 		void checkValidPassword();
 
 	public:
-		Oper(User client, std::string name, std::string password);
+		Oper(Client client, std::string name, std::string password);
 		~Oper();
 		Message	execute();
 };

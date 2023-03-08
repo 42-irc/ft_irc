@@ -1,6 +1,6 @@
 #include "PrivMsg.hpp"
 
-PrivMsg::PrivMsg(User client, std::string target, std::string msg) : Command(client, "PRIVMSG"), _target(target), _msg(msg) {}
+PrivMsg::PrivMsg(Client client, std::string target, std::string msg) : Command(client, "PRIVMSG"), _target(target), _msg(msg) {}
 
 PrivMsg::~PrivMsg() {}
 
@@ -24,7 +24,7 @@ Message	PrivMsg::execute()
 		targetFd = target.getFds();
 		return (Message(targetFd, 0, getPrefix(), "PRIVMSG", getMsg()));
 	}
-	User target = Server::findUser(_client, _target);
+	Client target = Server::findClient(_client, _target);
 	targetFd.push_back(target.getFd());
 	return (Message(targetFd, 0, getPrefix(), "PRIVMSG", getMsg()));
 }

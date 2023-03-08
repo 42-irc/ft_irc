@@ -9,13 +9,13 @@ class PrivMsg : public Command
 	private:
 		std::string _target;
 		std::string _msg;
-		std::vector<int> findTargetUser(std::string target);
+		std::vector<int> findTargetClient(std::string target);
 		std::vector<int> findTargetChannel(std::string target);
 		const std::string getPrefix() const;
 		const std::string getMsg() const;
 
 	public:
-		PrivMsg(User client, std::string target, std::string msg);
+		PrivMsg(Client client, std::string target, std::string msg);
 		~PrivMsg();
 		Message	execute();
 };

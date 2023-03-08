@@ -14,7 +14,7 @@ class Kick : public Command
 		const std::string getMsg() const;
 
 	public:
-		Kick(User client, std::string channel, std::string target, std::string reason);
+		Kick(Client client, std::string channel, std::string target, std::string reason);
 		~Kick();
 		Message	execute();
 };
