@@ -14,7 +14,7 @@ Message Kick::execute() {
 	User target = channel.findUser(_target);
 	channel.removeUser(target);
 	std::vector<int> targetFd = channel.getFds();
-	Message message(targetFd, 0, _client.getNickName(), _type, getMsg());
+	return (Message(targetFd, 0, _client.getNickName(), _type, getMsg()));
 }
 
 const std::string Kick::getMsg() const
