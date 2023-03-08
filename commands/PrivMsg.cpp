@@ -1,4 +1,4 @@
-#include "Privmsg.hpp"
+#include "PrivMsg.hpp"
 
 PrivMsg::PrivMsg(User client, std::string target, std::string msg) : Command(client, "PRIVMSG"), _target(target), _msg(msg) {}
 
