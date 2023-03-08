@@ -28,7 +28,7 @@ const Client Server::findClient(Client client, std::string name) {
 	std::map<std::string, Client>::iterator it = _clients.find(name);
 
 	if (it != _clients.end()) return (it->second);
-	if (!client) throw Message();
+	// if (!client) throw Message();
 
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
