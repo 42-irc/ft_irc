@@ -1,12 +1,13 @@
 #ifndef COMMAND_HPP
 # define COMMAND_HPP
 
-# include <string>
 # include <iostream>
-# include "Message.hpp"
-# include "User.hpp"
+# include <string>
 
-class Command{
+# include "../Message.hpp"
+# include "../User.hpp"
+
+class Command {
 	protected:
 		User _client;
 		std::string _type;
