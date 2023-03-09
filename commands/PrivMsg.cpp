@@ -15,8 +15,7 @@ const std::string PrivMsg::getMsg() const { return (_target + " :" + _msg); }
 std::vector<Message> format
 - :<clientNick>!<clientName>@<clientHost> PRIVMSG <target> :<msg>
 */
-std::vector<Message> PrivMsg::execute()
-{
+std::vector<Message> PrivMsg::execute() {
 	std::vector<int> targetFd;
 	std::vector<Message> messages;
 	std::vector<std::string> targetList = ft::split(_target, ',');
