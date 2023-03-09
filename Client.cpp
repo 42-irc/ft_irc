@@ -3,11 +3,14 @@
 
 Client::Client(): _name(""), _nickName(""), _isAdmin(false), _fd(-1) {}
 
-Client::Client(int fd, std::string name, std::string nickName): _fd(fd), _isAdmin(false) {
+Client::Client(int fd): _fd(fd), _isAdmin(false) {}
+
+Client::Client(int fd, std::string name, std::string nickName, std::string hostName): _fd(fd), _isAdmin(false) {
 	if (name.length() == 0 || nickName.length() == 0) throw;
 	if (!checkNickName(nickName)) throw Message();
 	_name = name;
 	_nickName = nickName;
+	_hostName = hostName;
 }
 
 Client::~Client() {}
@@ -30,21 +33,27 @@ bool Client::checkNickName(std::string nickName) {
 	return true;
 }
 
-const std::string Client::getName() const { return this->_name; }
+const std::string Client::getName() const { return _name; }
 
-const std::string Client::getNickName() const { return this->_nickName; }
+const std::string Client::getNickName() const { return _nickName; }
 
-const int Client::getFd() const { return this->_fd; }
+const std::string Client::getHostName() const { return _hostName; }
 
-bool Client::getIsAdmin() const { return this->_isAdmin; }
+const int Client::getFd() const { return _fd; }
+
+bool Client::getIsAdmin() const { return _isAdmin; }
+
+void Client::setName(const std::string name) { _name = name; }
 
 void Client::setNickName(const std::string nickName) { 
 	if (!checkNickName(nickName)) throw;
-	this->_nickName = nickName;
+	_nickName = nickName;
 }
 
+void Client::setHostName(const std::string hostName) { _hostName = hostName; }
+
 void Client::setIsAdmin(const bool isAdmin) {
-	this->_isAdmin = isAdmin;
+	_isAdmin = isAdmin;
 }
 
 bool Client::operator==(const Client &client) const { return (_nickName == client._nickName); }
