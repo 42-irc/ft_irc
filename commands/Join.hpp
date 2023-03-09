@@ -9,7 +9,7 @@ class Join : public Command {
 		std::string _channel;
 		std::string _target;
 		void checkChannelNum();
-		void checkValidName();
+		void checkValidName(std::string& name);
 
 	public:
 		Join(Client client, std::string channel);
