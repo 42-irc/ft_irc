@@ -50,7 +50,7 @@ int main()
 	while (true)
 	{
 		struct kevent occured_event[2];
-		int occured_event_cnt = kevent(kq, &register_event[0], registered_event.size(), occured_event, 2, NULL);
+		int occured_event_cnt = kevent(kq, &register_event[0], register_event.size(), occured_event, 2, NULL);
 		if (occured_event_cnt == -1)
 			err_exit("calling kevent : " + std::string(strerror(errno)));
 
@@ -61,7 +61,7 @@ int main()
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
 			if (occured_event[i].ident == server_socket)
 			{
-				std::cout << "TYPE " << registered_event[i].filter << " event occurs in server_socket!" << std::endl;
+				std::cout << "TYPE " << register_event[i].filter << " event occurs in server_socket!" << std::endl;
 
 				int client_socket = accept(server_socket, NULL, NULL);
 				if (client_socket == -1)
