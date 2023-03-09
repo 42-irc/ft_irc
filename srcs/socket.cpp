@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <sys/event.h>
 #include <vector>
+#include <unistd.h>
 
 void err_exit(std::string error_msg) {
 	std::cerr << "Error " << error_msg << std::endl;
@@ -42,12 +43,11 @@ int main() {
 	EV_SET(&server_socket_event, server_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
 	kevent(kq, &server_socket_event, 1, NULL, 0, NULL);
 
-	std::cout << "Waiting for incoming connections..." << std::endl;
-
 	while (true) {
-		struct kevent client_socket_event[2];
-		struct kevent occured_events[100];
-		int occured_events_cnt = kevent(kq, NULL, 0, occured_events, 100, NULL);
+		std::cout << "Waiting for events..." << std::endl;
+
+		struct kevent occurred_events[100];
+		int occured_events_cnt = kevent(kq, NULL, 0, occurred_events, 100, NULL);
 		if (occured_events_cnt == -1)
 			err_exit("calling kevent : " + std::string(strerror(errno)));
 
@@ -55,24 +55,39 @@ int main() {
 
 		for (int i = 0; i < occured_events_cnt; ++i) {
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
-			if (occured_events[i].ident == server_socket) {
-				std::cout << "READ event occurs in server_socket!" << std::endl;
-
+			if (occurred_events[i].ident == server_socket) {
 				int client_socket = accept(server_socket, NULL, NULL);
 				if (client_socket == -1)
 					err_exit("accepting client : " + std::string(strerror(errno)));
 
-				std::cout << client_socket << ": New client connect\n" << std::endl;
+				std::cout << client_socket << ": New client connected\n" << std::endl;
 
 				if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 					err_exit("setting client socket flag : " + std::string(strerror(errno)));
 
+				struct kevent client_socket_event[2];
 				EV_SET(&client_socket_event[0], client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
 				EV_SET(&client_socket_event[1], client_socket, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
 				kevent(kq, &client_socket_event[0], 2, NULL, 0, NULL);
 			}
 			// 이벤트가 발생한 식별자가 클라이언트 소켓의 fd인 경우
 			else {
+				// READ 이벤트 발생
+				if (occurred_events[i].filter == EVFILT_READ) {
+					char buffer[1024];
+					ssize_t n = recv(occurred_events[i].ident, buffer, sizeof(buffer), 0);
+					if (n < 0) {
+						err_exit("receiving from client socket : " + std::string(strerror(errno)));
+					} else if (n == 0) {
+						std::cout << occurred_events[i].ident << " Client closed connection\n" << std::endl;
+						close(occurred_events[i].ident);
+					} else {
+						// 클라이언트 메시지 수신 성공
+						std::cout << buffer << std::endl;
+					}
+				// WRITE 이벤트 발생
+				} else {
+				}
 			}
 		}
 	}
