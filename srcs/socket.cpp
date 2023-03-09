@@ -7,14 +7,12 @@
 #include <sys/event.h>
 #include <vector>
 
-void err_exit(std::string error_msg)
-{
+void err_exit(std::string error_msg) {
 	std::cerr << "Error " << error_msg << std::endl;
 	exit(1);
 }
 
-int main()
-{
+int main() {
 	int server_socket;
 	struct sockaddr_in server_addr;
 
@@ -46,8 +44,7 @@ int main()
 
 	std::cout << "Waiting for incoming connections..." << std::endl;
 
-	while (true)
-	{
+	while (true) {
 		struct kevent client_socket_event[2];
 		struct kevent occured_events[100];
 		int occured_events_cnt = kevent(kq, NULL, 0, occured_events, 100, NULL);
@@ -56,19 +53,16 @@ int main()
 
 		std::cout << occured_events_cnt << " events occur!" << std::endl;
 
-		for (int i = 0; i < occured_events_cnt; ++i)
-		{
+		for (int i = 0; i < occured_events_cnt; ++i) {
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
-			if (occured_events[i].ident == server_socket)
-			{
+			if (occured_events[i].ident == server_socket) {
 				std::cout << "READ event occurs in server_socket!" << std::endl;
 
 				int client_socket = accept(server_socket, NULL, NULL);
 				if (client_socket == -1)
 					err_exit("accepting client : " + std::string(strerror(errno)));
 
-				std::cout << client_socket << ": New client connect\n"
-						  << std::endl;
+				std::cout << client_socket << ": New client connect\n" << std::endl;
 
 				if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 					err_exit("setting client socket flag : " + std::string(strerror(errno)));
@@ -78,8 +72,7 @@ int main()
 				kevent(kq, &client_socket_event[0], 2, NULL, 0, NULL);
 			}
 			// 이벤트가 발생한 식별자가 클라이언트 소켓의 fd인 경우
-			else
-			{
+			else {
 			}
 		}
 	}
