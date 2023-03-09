@@ -3,9 +3,12 @@
 
 #include <map>
 #include <vector>
+
 #include "Client.hpp"
 #include "Message.hpp"
-# include "srcs/utils.hpp"
+#include "srcs/utils.hpp"
+
+class Client;
 
 class Channel {
 	private:

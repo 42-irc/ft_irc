@@ -7,43 +7,45 @@ Server::Server(int port, std::string password, std::string adminName, std::strin
 
 Server::~Server() {};
 
-int Server::getPort() const { return (_port); }
+int Server::getPort() const { return _port; }
 
-const std::map<std::string, Channel> Server::getChannels() { return (_channels); }
+const std::map<std::string, Channel> Server::getChannels() { return _channels; }
 
 const Channel Server::findChannel(Client client, std::string name) {
 	std::map<std::string, Channel>::iterator it = _channels.find(name);
 
 	if (it != _channels.end())
-		return (it->second);
+		return it->second;
+
 	std::vector<int> fd;
 	std::vector<Message> messages;
 
 	fd.push_back(client.getFd());
 	messages.push_back(Message(fd, ERR_NOSUCHCHANNEL, name));
-	throw (messages);
+	throw messages;
 }
 
-const std::map<std::string, Client> Server::getClients() { return (_clients); }
+const std::map<std::string, Client> Server::getClients() { return _clients; }
 
 const Client Server::findClient(Client client, std::string name) {
 	std::map<std::string, Client>::iterator it = _clients.find(name);
 
 	if (it != _clients.end())
-		return (it->second);
+		return it->second;
+
 	std::vector<int> fd;
 	std::vector<Message> messages;
 
 	fd.push_back(client.getFd());
 	messages.push_back(Message(fd, ERR_NOSUCHNICK, name));
-	throw (messages);
+	throw messages;
 }
 
-const std::string Server::getPassword() const { return (_password); }
+const std::string Server::getPassword() const { return _password; }
 
-const std::string Server::getAdminName() const { return (_adminName); }
+const std::string Server::getAdminName() const { return _adminName; }
 
-const std::string Server::getAdminPassword() const { return (_adminPassword); }
+const std::string Server::getAdminPassword() const { return _adminPassword; }
 
 void Server::addChannel(Channel channel) {
 	_channels.insert(std::pair<std::string, Channel>(channel.getName(), channel));
@@ -70,10 +72,12 @@ void Server::removeClient(Client client) {
 
 void Server::addClientToChannel(Client client, Channel channel) {
 	_channels[channel.getName()].addClient(client);
+	_clients[client.getNickName()].addChannel(channel);
 }
 
 void Server::removeClientFromChannel(Client client, Channel channel) {
 	_channels[channel.getName()].removeClient(client);
-	if(channel.getClients().size() == 1)
+	_client[client.getNickName()].removeChannel(channel);
+	if (channel.getClients().size() == 1)
 		Server::removeChannel(channel);
 }

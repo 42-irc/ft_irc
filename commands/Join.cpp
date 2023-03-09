@@ -5,9 +5,8 @@ Join::Join(Client client, std::string channel) : Command(client, "JOIN"), _chann
 Join::~Join() {}
 
 void Join::checkValidName(std::string& name) {
-	if ((name[0] != '#' && name[0] != '&') || name.size() > 200){
+	if ((name[0] != '#' && name[0] != '&') || name.size() > 200) {
 		std::vector<int> targetFd;
-		targetFd.push_back(_client.getFd());
 		std::vector<Message> messages;
 		messages.push_back(Message(targetFd, ERR_NOSUCHCHANNEL, name));
 		throw (messages);
@@ -15,12 +14,13 @@ void Join::checkValidName(std::string& name) {
 }
 
 void Join::checkChannelNum() {
-	if (Server::getChannels().size() > 20){
+	if (Server::getChannels().size() > 20) {
 		std::vector<int> targetFd;
-		targetFd.push_back(_client.getFd());
 		std::vector<Message> messages;
+		
+		targetFd.push_back(_client.getFd());
 		messages.push_back(Message(targetFd, 405, _client.getNickName() + " " + _channel));
-		throw (messages);
+		throw messages;
 	}
 }
 /*
