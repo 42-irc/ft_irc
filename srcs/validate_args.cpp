@@ -45,7 +45,7 @@ void validate_password(std::string password) {
 		err_exit("invalid password");
 }
 
-void validate_args(int argc, char *argv[]) {
+int validate_args(int argc, char *argv[]) {
 	if (argc != 3)
 		err_exit("invalid args\nTYPE FORM >> ./ircserv <port> <password>");
 
@@ -54,4 +54,6 @@ void validate_args(int argc, char *argv[]) {
 
 	int port = validate_port(string_port);
 	validate_password(password);
+
+	return port;
 }

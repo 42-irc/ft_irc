@@ -6,8 +6,9 @@ void err_exit(std::string error_msg) {
 }
 
 int main(int argc, char *argv[]) {
-	validate_args(argc, argv);
-	int server_socket = create_server_socket();
+	int port = validate_args(argc, argv);
+	Server server(port, argv[2], "admin", "adminpwd");
+	int server_socket = create_server_socket(port);
 	int kq = set_server_on_kqueue(server_socket);
 
 	while (true) {
