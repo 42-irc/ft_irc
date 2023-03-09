@@ -1,7 +1,8 @@
 #include "client_socket.hpp"
 
 void create_client_socket(int server_socket, int kq) {
-	int new_client_socket = accept(server_socket, NULL, NULL);
+	struct sockaddr_in client_addr;
+	int new_client_socket = accept(server_socket, (struct sockaddr *)&client_addr, NULL);
 	if (new_client_socket == -1)
 		err_exit("accepting client : " + std::string(strerror(errno)));
 
@@ -9,6 +10,10 @@ void create_client_socket(int server_socket, int kq) {
 
 	if (fcntl(new_client_socket, F_SETFL, O_NONBLOCK) == -1)
 		err_exit("setting client socket flag : " + std::string(strerror(errno)));
+
+	Client client;
+
+	std::cout << client_addr.sin_addr.s_addr << std::endl;
 
 	struct kevent client_socket_event[2];
 	EV_SET(&client_socket_event[0], new_client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
