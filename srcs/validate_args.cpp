@@ -25,8 +25,24 @@ int validate_port(char *port) {
 	return port_num;
 }
 
+inline std::string& ltrim(std::string& s, const char* t = " \t\n\r\f\v") {
+	s.erase(0, s.find_first_not_of(t));
+	return s;
+}
+
+inline std::string& rtrim(std::string& s, const char* t = " \t\n\r\f\v") {
+	s.erase(s.find_last_not_of(t) + 1);
+	return s;
+}
+
+inline std::string& trim(std::string& s, const char* t = " \t\n\r\f\v") {
+	return ltrim(rtrim(s, t), t);
+}
+
 void validate_password(std::string password) {
 	// 비어 있지 않은지
+	if (trim(password).empty())
+		err_exit("invalid password");
 }
 
 void validate_args(int argc, char *argv[]) {
