@@ -17,7 +17,7 @@ class PrivMsg : public Command
 	public:
 		PrivMsg(Client client, std::string target, std::string msg);
 		~PrivMsg();
-		Message	execute();
+		std::vector<Message> execute();
 };
 
 #endif

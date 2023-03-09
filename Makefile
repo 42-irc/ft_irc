@@ -1,6 +1,6 @@
 NAME = test
 CXX = c++
-# CXXFLAGS = #-Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -g#-Wall -Wextra -Werror -std=c++98
 SRCS = testCommand.cpp \
 		commands/Command.cpp \
 		commands/Join.cpp \
@@ -14,7 +14,8 @@ SRCS = testCommand.cpp \
 		Channel.cpp \
 		Message.cpp \
 		commands/Quit.cpp \
-		commands/Part.cpp 
+		commands/Part.cpp \
+		commands/User.cpp
 
 OBJS=$(SRCS:.cpp=.o)
 

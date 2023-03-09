@@ -5,6 +5,7 @@
 #include <vector>
 #include "Client.hpp"
 #include "Message.hpp"
+# include "srcs/utils.hpp"
 
 class Channel {
 	private:

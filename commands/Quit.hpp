@@ -10,7 +10,7 @@ class Quit : public Command {
 		Quit(Client client);
 		~Quit();
 
-		Message execute();
+		std::vector<Message> execute();
 };
 
 #endif

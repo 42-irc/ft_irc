@@ -12,7 +12,7 @@ class Nick : public Command
 	public:
 		Nick(std::string nick, Client client);
 		~Nick();
-		Message	execute();
+		std::vector<Message> execute();
 };
 
 #endif

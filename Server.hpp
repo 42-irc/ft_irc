@@ -6,6 +6,7 @@
 # include <vector>
 # include "Channel.hpp"
 # include "Message.hpp"
+# include "srcs/utils.hpp"
 
 class Server{
 	private:
