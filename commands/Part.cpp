@@ -21,8 +21,7 @@ std::vector<Message> Part::execute(){
 		catch (std::vector<Message> &e){
 			std::vector<int> targetFd;
 			std::vector<Message> messages;
-			targetFd.push_back(_client.getFd());
-			messages.push_back(Message(targetFd, ERR_NOSUCHCHANNEL, *it));
+			messages.push_back(e[0]);
 		}
 	}
 	return messages;

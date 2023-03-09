@@ -31,7 +31,7 @@ const Client Channel::findClient(Client client, std::string name) const {
 	std::vector<Message> messages;
 
 	fd.push_back(client.getFd());
-	messages.push_back(Message(fd, ERR_NOSUCHNICK, name));
+	messages.push_back(Message(fd, ERR_NOTONCHANNEL, name));
 	throw messages;
 }
 

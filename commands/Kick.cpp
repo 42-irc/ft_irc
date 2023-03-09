@@ -9,13 +9,18 @@ std::vector<Message> format
 <clientNick>!<clientName>@<clientHost> KICK <channel> <target> :<reason>
 */
 std::vector<Message> Kick::execute() {
-	Channel channel = Server::findChannel(_client, _channel);
-	checkIsAdmin(channel);
-	Client target = channel.findClient(_client, _target);
-	Server::removeClientFromChannel(target, channel);
-	std::vector<int> targetFd = channel.getFds();
 	std::vector<Message> messages;
-	messages.push_back(Message(targetFd, _client.getNickName(), getMsg()));
+	try {
+		Channel channel = Server::findChannel(_client, _channel);
+		checkIsAdmin(channel);
+		Client target = channel.findClient(_client, _target);
+		Server::removeClientFromChannel(target, channel);
+		std::vector<int> targetFd = channel.getFds();
+		messages.push_back(Message(targetFd, _client.getNickName(), getMsg()));
+	}
+	catch (std::vector<Message> &e) {
+		messages.push_back(e[0]);
+	}
 	return (messages);
 }
 
