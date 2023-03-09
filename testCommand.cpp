@@ -7,8 +7,10 @@
 #include "commands/Join.hpp"
 #include "commands/PrivMsg.hpp"
 #include "commands/Oper.hpp"
+#include "commands/Kick.hpp"
 #include "commands/User.hpp"
 #include "commands/Part.hpp"
+#include "commands/List.hpp"
 #include <iostream>
 
 int main()
@@ -25,6 +27,11 @@ int main()
     Channel channel("#Quit", client);
     Server::addChannel(channel);
     Server::addClient(client);
+    Server::addClient(client2);
+    Server::addClient(client3);
+    Server::addClient(client4);
+    Server::addClient(client5);
+    Server::addClient(client6);
     Quit quit(client);
     std::cout << "------------------Join test------------------" << std::endl;
     Join join(client, "#new");
@@ -93,9 +100,25 @@ int main()
     std::map<std::string, Client>::iterator it = clients.begin();
     for (; it != clients.end(); it++)
         std::cout << it->second.getNickName() << std::endl;
-    std::cout << "------------------PrivMsg test------------------" << std::endl;
-    PrivMsg privMg(client, "#new11", "hello");
+    std::cout << "------------------PrivMsg test(to channel)------------------" << std::endl;
     try {
+        PrivMsg privMg(client, "#new", "hello");
+        std::vector<Message> mssag = privMg.execute();
+        std::cout << mssag[0].getMessage() << std::endl;
+    } catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
+    std::cout << "------------------PrivMsg test(to client)------------------" << std::endl;
+    try {
+        PrivMsg privMg(client, client2.getNickName(), "hello");
+        std::vector<Message> mssag = privMg.execute();
+        std::cout << mssag[0].getMessage() << std::endl;
+    } catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
+    std::cout << "------------------PrivMsg test(no channel)------------------" << std::endl;
+    try {
+        PrivMsg privMg(client, "#new11", "hello");
         std::vector<Message> mssag = privMg.execute();
         std::cout << mssag[0].getMessage() << std::endl;
     } catch (std::vector<Message> &e) {
@@ -125,7 +148,6 @@ int main()
     } catch (std::vector<Message> &e) {
         std::cout << e[0].getMessage() << std::endl;
     }
-
     std::cout << "------------------Part test------------------" << std::endl;
     try{
         Join join(client, "#Part");
@@ -139,7 +161,6 @@ int main()
         std::cout << e[0].getMessage() << std::endl;
     }
     std::cout << "------------------Part remainder------------------" << std::endl;
-
     try{
         Part part2(client2, "#Part");
         std::vector<Message> mssag = part2.execute();
@@ -152,6 +173,33 @@ int main()
         Server::findChannel(client, "#Part");
     }catch (std::vector<Message> &e){
         std::cout <<e[0].getMessage() << std::endl;
+    }
+    std::cout << "------------------List test------------------" << std::endl;
+    try{
+        Join join(client, "#List");
+        join.execute();
+        join = Join(client2, "#List2");
+        join.execute();
+        List list(client);
+        std::vector<Message> mssag = list.execute();
+        for (unsigned int i = 0; i < mssag.size(); i++)
+            std::cout << mssag[i].getMessage() << std::endl;
+    } catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
+    std::cout << "------------------Kick test------------------" << std::endl;
+    try {
+        Kick kick(client, "#List", client.getNickName(), "kick");
+        std::vector<Message> mssag = kick.execute();
+        std::cout << mssag[0].getMessage() << std::endl;
+    } catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
+    try {
+        Channel newChannel = Server::findChannel(client, "#List");
+        std::cout << newChannel.getName() << std::endl;
+    } catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
     }
     return (0);
 }

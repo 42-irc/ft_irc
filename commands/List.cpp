@@ -17,7 +17,8 @@ std::vector<Message> List::execute() {
 	std::map<std::string, Channel>::iterator ite = channels.end();
 	std::vector<Message> messages;
 	for (; it != ite; it++) {
-		messages.push_back(Message(targetFd, RPL_LIST, it->second.getName()));
+		messages.push_back(Message(targetFd, RPL_LIST, _client.getNickName() + " " + it->second.getName() + " " + std::to_string(it->second.getClients().size())));
 	}
+	messages.push_back(Message(targetFd, RPL_LISTEND, _client.getNickName()));
 	return (messages);
 }

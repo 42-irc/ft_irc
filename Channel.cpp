@@ -6,9 +6,9 @@ Channel::Channel(std::string name, Client oper) : _name(name), _operator(oper) {
 
 Channel::~Channel() {};
 
-const std::string Channel::getName() const { return (_name); }
+const std::string Channel::getName() const { return _name; }
 
-const std::map<std::string, Client> Channel::getClients() const { return (_clients); }
+const std::map<std::string, Client> Channel::getClients() const { return _clients; }
 
 const std::vector<int> Channel::getFds() const {
 	std::vector<int> fds;
@@ -19,21 +19,24 @@ const std::vector<int> Channel::getFds() const {
 		fds.push_back(first->second.getFd());
 		first++;
 	}
-	return (fds);
+	return fds;
 }
 
 const Client Channel::findClient(Client client, std::string name) const {
 	std::map<std::string, Client>::const_iterator it = _clients.find(name);
 
-	if (it != _clients.end()) return (it->second);
+	if (it != _clients.end())
+		return it->second;
 	std::vector<int> fd;
+	std::vector<Message> messages;
+
 	fd.push_back(client.getFd());
-	throw Message(fd, ERR_NOSUCHNICK, name);
-	return (Client());
+	messages.push_back(Message(fd, ERR_NOSUCHNICK, name));
+	throw messages;
 }
 
 const Client Channel::getOperator() const {
-	return (_operator);
+	return _operator;
 }
 
 void Channel::addClient(Client client) {
