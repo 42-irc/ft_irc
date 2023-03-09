@@ -14,6 +14,7 @@ SRCS = testCommand.cpp \
 		Channel.cpp \
 		Message.cpp \
 		commands/Quit.cpp \
+		commands/Part.cpp \
 		commands/User.cpp
 
 OBJS=$(SRCS:.cpp=.o)

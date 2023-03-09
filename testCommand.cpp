@@ -8,6 +8,7 @@
 #include "commands/PrivMsg.hpp"
 #include "commands/Oper.hpp"
 #include "commands/User.hpp"
+#include "commands/Part.hpp"
 #include <iostream>
 
 int main()
@@ -24,7 +25,7 @@ int main()
     Channel channel("#Quit", client);
     Server::addChannel(channel);
     Server::addClient(client);
-    Quit quit(client, channel.getName());
+    Quit quit(client);
     std::cout << "------------------Join test------------------" << std::endl;
     Join join(client, "#new");
     Join join2(client2, "#new");
@@ -123,6 +124,34 @@ int main()
         std::cout << mssag[0].getMessage() << std::endl;
     } catch (std::vector<Message> &e) {
         std::cout << e[0].getMessage() << std::endl;
+    }
+
+    std::cout << "------------------Part test------------------" << std::endl;
+    try{
+        Join join(client, "#Part");
+        Join join2(client2, "#Part");
+        join.execute();
+        join2.execute();
+        Part part(client, "#Part");
+        std::vector<Message> mssag = part.execute();
+        std::cout << mssag[0].getMessage() << std::endl;
+    }catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
+    std::cout << "------------------Part remainder------------------" << std::endl;
+
+    try{
+        Part part2(client2, "#Part");
+        std::vector<Message> mssag = part2.execute();
+        std::cout << mssag[0].getMessage() << std::endl;
+    }catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
+    std::cout << "------------------Check Channel Remainder------------------" << std::endl;
+    try{
+        Server::findChannel(client, "#Part");
+    }catch (std::vector<Message> &e){
+        std::cout <<e[0].getMessage() << std::endl;
     }
     return (0);
 }
