@@ -87,6 +87,14 @@ int main() {
 					}
 				// WRITE 이벤트 발생
 				} else {
+					// 해당 클라이언트에 보낼 메시지가 있는 경우만 전송하게 조건 추가
+					char message[] = "Message";
+					ssize_t n = send(occurred_events[i].ident, message, sizeof(message), 0);
+					if (n < 0) {
+						err_exit("sending to client socket : " + std::string(strerror(errno)));
+					} else {
+						// 메시지 전송 성공 -> 해당 클라이언트에 보낼 메시지 삭제 해주기
+					}
 				}
 			}
 		}
