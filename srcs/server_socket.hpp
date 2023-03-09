@@ -1,5 +1,5 @@
-#ifndef _SERVER_SOCKET_HPP_
-#define _SERVER_SOCKET_HPP_
+#ifndef SERVER_SOCKET_HPP
+#define SERVER_SOCKET_HPP
 
 #include <iostream>
 #include <sys/types.h>
@@ -12,7 +12,7 @@
 #include <unistd.h>
 
 void err_exit(std::string error_msg);
-int create_server_socket();
+int create_server_socket(int port);
 int set_server_on_kqueue(int server_socket);
 
 #endif

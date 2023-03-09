@@ -1,5 +1,5 @@
-#ifndef _CLIENT_SOCKET_HPP_
-#define _CLIENT_SOCKET_HPP_
+#ifndef CLIENT_SOCKET_HPP
+#define CLIENT_SOCKET_HPP
 
 #include "server_socket.hpp"
 

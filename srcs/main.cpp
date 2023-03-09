@@ -5,8 +5,10 @@ void err_exit(std::string error_msg) {
 	exit(1);
 }
 
-int main() {
-	int server_socket = create_server_socket();
+int main(int argc, char *argv[]) {
+	int port = validate_args(argc, argv);
+	Server server(port, argv[2], "admin", "adminpwd");
+	int server_socket = create_server_socket(port);
 	int kq = set_server_on_kqueue(server_socket);
 
 	while (true) {
