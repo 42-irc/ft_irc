@@ -16,6 +16,12 @@ SRCS = testCommand.cpp \
 		commands/Quit.cpp \
 		commands/User.cpp
 
+SERV_SRCS	=	srcs/main.cpp \
+				srcs/client_socket.cpp srcs/server_socket.cpp \
+				srcs/validate_args.cpp
+
+SERV_OBJS=$(SERV_SRCS:.cpp=.o)
+
 OBJS=$(SRCS:.cpp=.o)
 
 all: $(NAME)
@@ -23,11 +29,14 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
 
+serv: $(SERV_OBJS)
+	$(CXX) $(CXXFLAGS) -o ircserv $(SERV_OBJS)
+
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(SERV_OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) ircserv
 
 re:
 	make fclean
