@@ -1,19 +1,26 @@
 #include "utils.hpp"
 
-namespace ft {
+namespace ft
+{
 
-    std::vector<std::string> split(const std::string &str, char charset) {
+    std::vector<std::string> split(const std::string &str, char charset, int n) {
         std::vector<std::string> ret;
         std::stringstream ss(str);
         std::string tmp;
+		int i = 0;
 
-        while (getline(ss, tmp, charset)) ret.push_back(tmp);
+		if (n) {
+			while (++i < n && getline(ss, tmp, charset)) ret.push_back(tmp);
+			if (i == n && getline(ss, tmp, '\0')) ret.push_back(tmp);
+			while (ret.size() < n) ret.push_back("");
+		} else {
+			while (getline(ss, tmp, charset)) ret.push_back(tmp);
+		}
         return ret;
     }
 
-	const std::string get_code_messages(int &code) {
-		switch (code)
-		{
+	const std::string get_code_messages(int code) {
+		switch (code) {
 			case RPL_WELCOME:
 				return CODE_001;
 			case ERR_NOSUCHNICK:
@@ -34,8 +41,11 @@ namespace ft {
 				return CODE_323;
 			case RPL_YOUREOPER:
 				return CODE_381;
+			case ERR_NEEDMOREPARAMS:
+				return CODE_461;
 			default:
 				return "";
 		}
 	}
+
 }
