@@ -2,7 +2,7 @@
 # define OPER_HPP
 
 # include "Command.hpp"
-# include "Server.hpp"
+# include "../Server.hpp"
 
 class Oper : public Command
 {

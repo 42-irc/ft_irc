@@ -2,7 +2,7 @@
 # define KICK_HPP
 
 # include "Command.hpp"
-# include "Server.hpp"
+# include "../Server.hpp"
 
 class Kick : public Command
 {

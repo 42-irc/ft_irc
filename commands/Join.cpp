@@ -38,6 +38,6 @@ Message Join::execute(){
 		channel = Channel(_channel, _client);
 		Server::addChannel(channel);
 	}
-	channel.addClient(_client);
+	Server::addClientToChannel(_client, channel);
 	return Message(channel.getFds(), 0, _client.getNickName(), _type, ": " +  _channel);
 }

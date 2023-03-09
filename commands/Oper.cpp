@@ -10,17 +10,17 @@ message format
 */
 Message Oper::execute()
 {
-	Client target = Server::findClient(_client, _name);
 	checkValidPassword();
-	target.setIsAdmin(true);
+	_client.setIsAdmin(true);
 	std::vector<int> targetFd;
-	targetFd.push_back(target.getFd());
+	targetFd.push_back(_client.getFd());
 	return Message(targetFd, 381, "ft_irc", "", ":You are now an IRC operator");
 }
 
 void Oper::checkValidPassword()
 {
-	if (_name != Server::getAdminName() || _password != Server::getAdminPassword())
+	// if (_name != Server::getAdminName() || _password != Server::getAdminPassword())
+	if (_name != "admin" || _password != "admin")
 	{
 		std::vector<int> targetFd;
 		targetFd.push_back(_client.getFd());

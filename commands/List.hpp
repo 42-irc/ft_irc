@@ -2,7 +2,7 @@
 # define LIST_HPP
 
 # include "Command.hpp"
-# include "Server.hpp"
+# include "../Server.hpp"
 
 class List : public Command
 {

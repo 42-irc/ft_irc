@@ -12,7 +12,8 @@ SRCS = testCommand.cpp \
 		Client.cpp \
 		srcs/utils.cpp \
 		Channel.cpp \
-		Message.cpp
+		Message.cpp \
+		commands/Quit.cpp
 
 OBJS=$(SRCS:.cpp=.o)
 

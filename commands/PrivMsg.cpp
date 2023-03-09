@@ -6,7 +6,8 @@ PrivMsg::~PrivMsg() {}
 
 const std::string PrivMsg::getPrefix() const
 {
-	return (_client.getNickName() + "!" + _client.getName() + "@" + _client.getHost());
+	// return (_client.getNickName() + "!" + _client.getName() + "@" + _client.getHost());
+	return (_client.getNickName() + "!" + _client.getName() + "@");
 }
 
 const std::string PrivMsg::getMsg() const { return (_target + " :" + _msg); }
