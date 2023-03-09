@@ -34,5 +34,5 @@ std::vector<Message> PrivMsg::execute()
 			messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
 		}
 	}
-	return (messages);
+	return messages;
 }
