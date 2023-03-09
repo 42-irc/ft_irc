@@ -1,17 +1,14 @@
 #include "Join.hpp"
 
-Join::Join(Client client, std::string channel) : Command(client, "JOIN"), _channel(channel) {
-	_client = client;
-}
+Join::Join(Client client, std::string channel) : Command(client, "JOIN"), _channel(channel) {}
 
-Join::~Join() {
-}
+Join::~Join() {}
 
 void Join::checkValidName() {
 	if ((_channel[0] != '#' && _channel[0] != '&') || _channel.size() > 200){
 		std::vector<int> targetFd;
 		targetFd.push_back(_client.getFd());
-		throw Message(targetFd, 403, _client.getNickName(), ":Invalid channel name", _channel);
+		throw Message(targetFd, ERR_NOSUCHCHANNEL, _channel);
 	}
 }
 
@@ -19,7 +16,7 @@ void Join::checkChannelNum() {
 	if (Server::getChannels().size() > 2){
 		std::vector<int> targetFd;
 		targetFd.push_back(_client.getFd());
-		throw Message(targetFd, 405, _client.getNickName(), ":You have joined too many channels", _channel);
+		throw Message(targetFd, 405, _client.getNickName() + " " + _channel);
 	}
 }
 /*
@@ -39,5 +36,5 @@ Message Join::execute(){
 		Server::addChannel(channel);
 	}
 	Server::addClientToChannel(_client, channel);
-	return Message(channel.getFds(), 0, _client.getNickName(), _type, ": " +  _channel);
+	return Message(channel.getFds(), _client.getNickName(), "JOIN " + _channel);
 }

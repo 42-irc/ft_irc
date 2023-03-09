@@ -7,6 +7,7 @@
 #include "commands/Join.hpp"
 #include "commands/PrivMsg.hpp"
 #include "commands/Oper.hpp"
+#include "commands/User.hpp"
 #include <iostream>
 
 int main()
@@ -112,6 +113,14 @@ int main()
     Oper oper2(client2, "admin1", "admin");
     try {
         Message message = oper2.execute();
+        std::cout << message.getMessage() << std::endl;
+    } catch (Message &e) {
+        std::cout << e.getMessage() << std::endl;
+    }
+    std::cout << "------------------User test------------------" << std::endl;
+    User user(client, "name");
+    try {
+        Message message = user.execute();
         std::cout << message.getMessage() << std::endl;
     } catch (Message &e) {
         std::cout << e.getMessage() << std::endl;

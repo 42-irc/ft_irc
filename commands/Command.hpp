@@ -6,6 +6,7 @@
 
 # include "../Message.hpp"
 # include "../Client.hpp"
+# include "../srcs/utils.hpp"
 
 class Command {
 	protected:

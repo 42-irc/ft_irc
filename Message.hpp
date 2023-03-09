@@ -9,12 +9,12 @@ class Message {
 		std::vector<int> _targets;
 		int _code;
 		std::string _prefix;
-		std::string _command;
-		std::string _params;
+		std::string _content;
 
 	public:
 		Message();
-		Message(std::vector<int> targets, int code, std::string prefix, std::string command, std::string params = "");
+		Message(std::vector<int> targets, int code, std::string content);
+		Message(std::vector<int> targets, std::string prefix, std::string content);
 		~Message();
 		const std::string getMessage();
 };

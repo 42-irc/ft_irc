@@ -14,7 +14,7 @@ Message Oper::execute()
 	_client.setIsAdmin(true);
 	std::vector<int> targetFd;
 	targetFd.push_back(_client.getFd());
-	return Message(targetFd, 381, "ft_irc", "", ":You are now an IRC operator");
+	return Message(targetFd, RPL_YOUREOPER, _client.getNickName());
 }
 
 void Oper::checkValidPassword()
@@ -24,6 +24,6 @@ void Oper::checkValidPassword()
 	{
 		std::vector<int> targetFd;
 		targetFd.push_back(_client.getFd());
-		throw Message(targetFd, 464, "ft_irc", "ERROR", ":Password incorrect");
+		throw Message(targetFd, 464, _client.getNickName());
 	}
 }

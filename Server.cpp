@@ -18,7 +18,7 @@ const Channel Server::findChannel(Client client, std::string name) {
 		return (it->second);
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
-	throw Message(fd, 403, "ft_irc", "ERROR", name + " :No such channel");
+	throw Message(fd, ERR_NOSUCHCHANNEL, name);
 	return (Channel());
 }
 
@@ -31,7 +31,7 @@ const Client Server::findClient(Client client, std::string name) {
 		return (it->second);
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
-	throw Message(fd, 401, "ft_irc", "ERROR", name + " :No such nick");
+	throw Message(fd, ERR_NOSUCHNICK, name);
 	return (Client());
 }
 
