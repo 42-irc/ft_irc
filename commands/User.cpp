@@ -4,9 +4,10 @@ User::User(Client client, std::string userName) : Command(client, "USER"), _user
 
 User::~User() {}
 
-Message User::execute() {
+std::vector<Message> User::execute() {
 	std::vector<int> targetFd;
 	targetFd.push_back(_client.getFd());
-	Message message(targetFd, RPL_WELCOME, _client.getNickName());
-	return message;
+	std::vector<Message> messages;
+	messages.push_back(Message(targetFd, RPL_WELCOME, _client.getNickName()));
+	return messages;
 }

@@ -7,6 +7,7 @@
 # include "../Message.hpp"
 # include "../Client.hpp"
 # include "../srcs/utils.hpp"
+# include <vector>
 
 class Command {
 	protected:
@@ -16,7 +17,7 @@ class Command {
 	public:
 		Command(Client client, std::string type);
 		virtual ~Command();
-		virtual Message execute() = 0;
+		virtual std::vector<Message>  execute() = 0;
 };
 
 #endif
