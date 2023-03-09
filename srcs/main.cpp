@@ -5,17 +5,6 @@ void err_exit(std::string error_msg) {
 	exit(1);
 }
 
-void validate_args(int argc, char *argv[]) {
-	if (argc != 3)
-		err_exit("invalid args\nTYPE FORM >> ./ircserv <port> <password>");
-
-	char *port = argv[1];
-	char *password = argv[2];
-
-	validate_port();
-	validate_password();
-}
-
 int main(int argc, char *argv[]) {
 	validate_args(argc, argv);
 	int server_socket = create_server_socket();
