@@ -42,4 +42,6 @@ void Channel::addClient(Client client) {
 
 void Channel::removeClient(Client client) {
 	_clients.erase(client.getNickName());
+	if(_operator == client)
+		_operator = Client();
 }

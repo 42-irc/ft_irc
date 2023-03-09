@@ -3,13 +3,11 @@
 
 # include "../Server.hpp"
 # include "Command.hpp"
+# include <unistd.h>
 
 class Quit : public Command {
-	private:
-		std::string _channel;
-
 	public:
-		Quit(Client client, std::string channel);
+		Quit(Client client);
 		~Quit();
 
 		Message execute();

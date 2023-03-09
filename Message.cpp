@@ -1,7 +1,7 @@
 #include "Message.hpp"
 #include "srcs/utils.hpp"
 
-Message::Message() {
+Message::Message(): _code(0) {
 }
 
 Message::Message(std::vector<int> targets, int code, std::string prefix, std::string command, std::string params) : _targets(targets), _code(code), _prefix(prefix), _command(command), _params(params) {

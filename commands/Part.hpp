@@ -2,16 +2,15 @@
 # define PART_HPP
 
 # include "Command.hpp"
-# include <vector>
+# include "../Server.hpp"
 
 class Part : public Command
 {
 	private:
-		std::vector<std::string> _channelNames;
-		Client _client;
+		std::string _channel;
 
 	public:
-		Part(std::vector<std::string> channelNames, Client client);
+		Part(Client client, std::string channel);
 		~Part();
 		Message	execute();
 };
