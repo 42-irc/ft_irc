@@ -16,7 +16,8 @@ enum e_code {
 	ERR_CHANOPRIVSNEEDED = 482,
 	RPL_LIST = 322,
 	RPL_LISTEND = 323,
-	RPL_YOUREOPER = 381
+	RPL_YOUREOPER = 381,
+	ERR_NEEDMOREPARAMS = 461,
 };
 
 # define CODE_001 ":Welcome to the ft_IRC server"
@@ -29,12 +30,13 @@ enum e_code {
 # define CODE_322 ""
 # define CODE_381 ":You are now an IRC operator"
 # define CODE_323 ":End of /LIST"
-
+# define CODE_461 ":Not enough parameters"
 namespace ft
 {
-	std::vector<std::string> split(const std::string &str, char charset);
 
+	std::vector<std::string> split(const std::string &str, char charset, int n = 0);
 	const std::string get_code_messages(int &code);
+
 }
 
 #endif

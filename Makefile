@@ -1,12 +1,15 @@
 NAME = ircserv
 CXX = c++
-CXXFLAGS = -g#-Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98
+
 SRCS =	commands/Command.cpp \
 		commands/Join.cpp \
 		commands/PrivMsg.cpp \
 		commands/Kick.cpp \
 		commands/List.cpp \
 		commands/Oper.cpp \
+    commands/Part.cpp \
+    commands/User.cpp \
 		Server.cpp \
 		Client.cpp \
 		srcs/utils.cpp \
@@ -18,11 +21,11 @@ SRCS =	commands/Command.cpp \
 		srcs/validate_args.cpp \
 		srcs/main.cpp \
 		# testCommand.cpp
+    
+OBJS=$(SRCS:.cpp=.o)
 
 CLT_SRC	=	client_test.cpp
 CLT_OBJ =	$(CLT_SRC:.cpp=.o)
-
-OBJS=$(SRCS:.cpp=.o)
 
 
 all: $(NAME)
