@@ -22,9 +22,9 @@ Message	PrivMsg::execute()
 	{
 		Channel target = Server::findChannel(_client, _target);
 		targetFd = target.getFds();
-		return (Message(targetFd, 0, getPrefix(), "PRIVMSG", getMsg()));
+		return (Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
 	}
 	Client target = Server::findClient(_client, _target);
 	targetFd.push_back(target.getFd());
-	return (Message(targetFd, 0, getPrefix(), "PRIVMSG", getMsg()));
+	return (Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
 }

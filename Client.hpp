@@ -16,7 +16,7 @@ class Client {
 	public:
 		Client();
 		Client(int fd);
-		Client(int fd, std::string name, std::string nickName, std::string hostName);
+		Client(int fd, std::string name, std::string nickName, std::string hostName = "");
 		~Client();
 		const std::string getName() const;
 		const std::string getNickName() const;

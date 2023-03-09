@@ -14,18 +14,18 @@ Message Kick::execute() {
 	Client target = channel.findClient(_client, _target);
 	channel.removeClient(target);
 	std::vector<int> targetFd = channel.getFds();
-	return (Message(targetFd, 0, _client.getNickName(), _type, getMsg()));
+	return (Message(targetFd, _client.getNickName(), getMsg()));
 }
 
 const std::string Kick::getMsg() const
 {
-	return (_channel + " " + _target + " :" + _reason);
+	return (_type + " " + _channel + " " + _target + " :" + _reason);
 }
 
 void Kick::checkIsAdmin(Channel &channel) {
 	if (_client.getIsAdmin() == false && channel.getOperator() != _client) {
 		std::vector<int> targetFd;
 		targetFd.push_back(_client.getFd());
-		throw (Message(targetFd, 482, ":ft_irc", "", _channel + " :You're not an channel operator"));
+		throw (Message(targetFd, ERR_CHANOPRIVSNEEDED, _channel));
 	}
 }

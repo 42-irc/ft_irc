@@ -28,7 +28,7 @@ const Client Channel::findClient(Client client, std::string name) const {
 	if (it != _clients.end()) return (it->second);
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
-	throw Message(fd, 401, "ft_irc", "ERROR", name + " :No such nick");
+	throw Message(fd, ERR_NOSUCHNICK, name);
 	return (Client());
 }
 

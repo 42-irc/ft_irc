@@ -6,12 +6,10 @@
 
 class User : public Command {
 	private:
-		std::string _name;
-		std::string _nickName;
-		std::string _hostName;
+		std::string _userName;
 
 	public:
-		User(Client client, std::string name, std::string nickName, std::string hostName);
+		User(Client client, std::string userName);
 		~User();
 
 		Message execute();
