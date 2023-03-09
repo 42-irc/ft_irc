@@ -1,4 +1,4 @@
-# include "Channel.hpp"
+#include "Channel.hpp"
 
 Channel::Channel() : _name(""), _operator(Client()) {};
 

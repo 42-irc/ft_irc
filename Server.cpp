@@ -72,12 +72,12 @@ void Server::removeClient(Client client) {
 
 void Server::addClientToChannel(Client client, Channel channel) {
 	_channels[channel.getName()].addClient(client);
-	_clients[client.getNickName()].addChannel(channel);
+	_clients[client.getNickName()].addChannel(channel.getName());
 }
 
 void Server::removeClientFromChannel(Client client, Channel channel) {
 	_channels[channel.getName()].removeClient(client);
-	_client[client.getNickName()].removeChannel(channel);
+	_clients[client.getNickName()].removeChannel(channel.getName());
 	if (channel.getClients().size() == 1)
 		Server::removeChannel(channel);
 }

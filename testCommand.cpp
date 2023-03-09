@@ -17,12 +17,18 @@ int main()
 {
 //      Server(int port, std::string password, std::string adminName, std::string adminPassword);
     Server server(6667, "password", "admin", "admin");
-	Client client( 0, "name", "nickName");
-    Client client2( 1, "name2", "nickName2");
-    Client client3( 2, "name3", "nickName3");
-    Client client4( 3, "name4", "nickName4");
-    Client client5( 4, "name5", "nickName5");
-    Client client6( 5, "name6", "nickName6");
+	Client client(0);
+    client.setNickName("nickName");
+    Client client2(1);
+    client2.setNickName("nickName2");
+    Client client3(2);
+    client3.setNickName("nickName3");
+    Client client4(3);
+    client4.setNickName("nickName4");
+    Client client5(4);
+    client5.setNickName("nickName5");
+    Client client6(5);
+    client6.setNickName("nickName6");
 
     Channel channel("#Quit", client);
     Server::addChannel(channel);
@@ -157,6 +163,19 @@ int main()
         Part part(client, "#Part");
         std::vector<Message> mssag = part.execute();
         std::cout << mssag[0].getMessage() << std::endl;
+    }catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
+    std::cout << "------------------Multi Part test------------------" << std::endl;
+    try{
+        Join join(client, "#Part,#Part2,#Part3");
+        Join join2(client2, "#Part");
+        join.execute();
+        join2.execute();
+        Part part(client, "#Part,#Part2,#Part3,#Part4");
+        std::vector<Message> mssag = part.execute();
+        for (unsigned int i = 0; i < mssag.size(); i++)
+            std::cout << mssag[i].getMessage() << std::endl;
     }catch (std::vector<Message> &e) {
         std::cout << e[0].getMessage() << std::endl;
     }
