@@ -56,31 +56,32 @@ int main() {
 		for (int i = 0; i < occured_events_cnt; ++i) {
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
 			if (occurred_events[i].ident == server_socket) {
-				int client_socket = accept(server_socket, NULL, NULL);
-				if (client_socket == -1)
+				int new_client_socket = accept(server_socket, NULL, NULL);
+				if (new_client_socket == -1)
 					err_exit("accepting client : " + std::string(strerror(errno)));
 
-				std::cout << client_socket << ": New client connected\n" << std::endl;
+				std::cout << new_client_socket << ": New client connected\n" << std::endl;
 
-				if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
+				if (fcntl(new_client_socket, F_SETFL, O_NONBLOCK) == -1)
 					err_exit("setting client socket flag : " + std::string(strerror(errno)));
 
 				struct kevent client_socket_event[2];
-				EV_SET(&client_socket_event[0], client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
-				EV_SET(&client_socket_event[1], client_socket, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
+				EV_SET(&client_socket_event[0], new_client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
+				EV_SET(&client_socket_event[1], new_client_socket, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
 				kevent(kq, &client_socket_event[0], 2, NULL, 0, NULL);
 			}
 			// 이벤트가 발생한 식별자가 클라이언트 소켓의 fd인 경우
 			else {
 				// READ 이벤트 발생
+				int event_client_socket = occurred_events[i].ident;
 				if (occurred_events[i].filter == EVFILT_READ) {
 					char buffer[1024];
-					ssize_t n = recv(occurred_events[i].ident, buffer, sizeof(buffer), 0);
+					ssize_t n = recv(event_client_socket, buffer, sizeof(buffer), 0);
 					if (n < 0) {
 						err_exit("receiving from client socket : " + std::string(strerror(errno)));
 					} else if (n == 0) {
-						std::cout << occurred_events[i].ident << " Client closed connection\n" << std::endl;
-						close(occurred_events[i].ident);
+						std::cout << event_client_socket << " Client closed connection\n" << std::endl;
+						close(event_client_socket);
 					} else {
 						// 클라이언트 메시지 수신 성공
 						std::cout << buffer << std::endl;
@@ -89,7 +90,7 @@ int main() {
 				} else {
 					// 해당 클라이언트에 보낼 메시지가 있는 경우만 전송하게 조건 추가
 					char message[] = "Message";
-					ssize_t n = send(occurred_events[i].ident, message, sizeof(message), 0);
+					ssize_t n = send(event_client_socket, message, sizeof(message), 0);
 					if (n < 0) {
 						err_exit("sending to client socket : " + std::string(strerror(errno)));
 					} else {
