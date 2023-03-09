@@ -9,7 +9,7 @@ class List : public Command
 	public:
 		List(Client client);
 		~List();
-		Message	execute();
+		std::vector<Message> execute();
 };
 
 #endif

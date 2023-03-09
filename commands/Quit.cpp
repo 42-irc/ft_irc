@@ -6,7 +6,7 @@ Quit::Quit(Client client, std::string channel) : Command(client, "QUIT"), _chann
 Quit::~Quit(){
 }
 
-Message Quit::execute(){
+std::vector<Message> Quit::execute(){
 	Server::removeClient(_client);
-	return Message();
+	return std::vector<Message>();
 }

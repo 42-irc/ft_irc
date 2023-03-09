@@ -18,7 +18,7 @@ Client::~Client() {}
 bool Client::checkNickName(std::string nickName) {
 	// try {
 	// 	Server::findClient(NULL, nickName);
-	// } catch (Message &e) {
+	// } catch (std::vector<Message> &e) {
 		if (nickName.find(' ') != std::string::npos
 		|| nickName.find(',') != std::string::npos
 		|| nickName.find('*') != std::string::npos

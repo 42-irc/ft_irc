@@ -18,8 +18,9 @@ const Channel Server::findChannel(Client client, std::string name) {
 		return (it->second);
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
-	throw Message(fd, ERR_NOSUCHCHANNEL, name);
-	return (Channel());
+	std::vector<Message> messages;
+	messages.push_back(Message(fd, ERR_NOSUCHCHANNEL, name));
+	throw (messages);
 }
 
 const std::map<std::string, Client> Server::getClients() { return (_clients); }
@@ -31,8 +32,9 @@ const Client Server::findClient(Client client, std::string name) {
 		return (it->second);
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
-	throw Message(fd, ERR_NOSUCHNICK, name);
-	return (Client());
+	std::vector<Message> messages;
+	messages.push_back(Message(fd, ERR_NOSUCHNICK, name));
+	throw (messages);
 }
 
 const std::string Server::getPassword() const { return (_password); }

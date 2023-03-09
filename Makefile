@@ -1,6 +1,6 @@
 NAME = test
 CXX = c++
-# CXXFLAGS = #-Wall -Wextra -Werror -std=c++98
+CXXFLAGS = -g#-Wall -Wextra -Werror -std=c++98
 SRCS = testCommand.cpp \
 		commands/Command.cpp \
 		commands/Join.cpp \

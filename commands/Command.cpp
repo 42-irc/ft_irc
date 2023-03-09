@@ -4,4 +4,4 @@ Command::Command(Client client, std::string type): _client(client), _type(type) 
 
 Command::~Command() {}
 
-Message Command::execute() { return Message(); }
+std::vector<Message> Command::execute() { return std::vector<Message>(); }

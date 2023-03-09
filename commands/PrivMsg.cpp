@@ -12,19 +12,22 @@ const std::string PrivMsg::getPrefix() const
 const std::string PrivMsg::getMsg() const { return (_target + " :" + _msg); }
 
 /*
-message format
+std::vector<Message> format
 - :<clientNick>!<clientName>@<clientHost> PRIVMSG <target> :<msg>
 */
-Message	PrivMsg::execute()
+std::vector<Message>	PrivMsg::execute()
 {
 	std::vector<int> targetFd;
+	std::vector<Message> messages;
 	if (_target[0] == '#')
 	{
 		Channel target = Server::findChannel(_client, _target);
 		targetFd = target.getFds();
-		return (Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
+		messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
+		return (messages);
 	}
 	Client target = Server::findClient(_client, _target);
 	targetFd.push_back(target.getFd());
-	return (Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
+	messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
+	return (messages);
 }
