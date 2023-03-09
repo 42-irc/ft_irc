@@ -31,6 +31,8 @@ class Server{
 		static void removeChannel(Channel channel);
 		static void addClient(Client client);
 		static void removeClient(Client client);
+		static void addClientToChannel(Client client, Channel channel);
+		static void removeClientFromChannel(Client client, Channel channel);
 };
 
 #endif

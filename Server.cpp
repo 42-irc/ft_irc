@@ -14,10 +14,8 @@ const std::map<std::string, Channel> Server::getChannels() { return (_channels);
 const Channel Server::findChannel(Client client, std::string name) {
 	std::map<std::string, Channel>::iterator it = _channels.find(name);
 
-	if (it != _channels.end()){
-				return (it->second);
-}
-
+	if (it != _channels.end())
+		return (it->second);
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
 	throw Message(fd, 403, "ft_irc", "ERROR", name + " :No such channel");
@@ -29,9 +27,8 @@ const std::map<std::string, Client> Server::getClients() { return (_clients); }
 const Client Server::findClient(Client client, std::string name) {
 	std::map<std::string, Client>::iterator it = _clients.find(name);
 
-	if (it != _clients.end()) return (it->second);
-	// if (!client) throw Message();
-
+	if (it != _clients.end())
+		return (it->second);
 	std::vector<int> fd;
 	fd.push_back(client.getFd());
 	throw Message(fd, 401, "ft_irc", "ERROR", name + " :No such nick");
@@ -65,4 +62,12 @@ void Server::removeClient(Client client) {
 		first++;
 	}
 	_clients.erase(client.getNickName());
+}
+
+void Server::addClientToChannel(Client client, Channel channel) {
+	_channels[channel.getName()].addClient(client);
+}
+
+void Server::removeClientFromChannel(Client client, Channel channel) {
+	_channels[channel.getName()].removeClient(client);
 }
