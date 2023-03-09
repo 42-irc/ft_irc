@@ -10,11 +10,15 @@ namespace ft
 		unsigned long i = 0;
 
 		if (n) {
-			while (++i < n && getline(ss, tmp, charset)) ret.push_back(tmp);
-			if (i == n && getline(ss, tmp, '\0')) ret.push_back(tmp);
-			while (ret.size() < n) ret.push_back("");
+			while (++i < n && getline(ss, tmp, charset))
+				ret.push_back(tmp);
+			if (i == n && getline(ss, tmp, '\0'))
+				ret.push_back(tmp);
+			while (ret.size() < n)
+				ret.push_back("");
 		} else {
-			while (getline(ss, tmp, charset)) ret.push_back(tmp);
+			while (getline(ss, tmp, charset))
+				ret.push_back(tmp);
 		}
         return ret;
     }
