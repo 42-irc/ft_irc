@@ -9,7 +9,7 @@ void Join::checkValidName(std::string& name) {
 		std::vector<int> targetFd;
 		std::vector<Message> messages;
 		messages.push_back(Message(targetFd, ERR_NOSUCHCHANNEL, name));
-		throw (messages);
+		throw messages;
 	}
 }
 
