@@ -74,4 +74,6 @@ void Server::addClientToChannel(Client client, Channel channel) {
 
 void Server::removeClientFromChannel(Client client, Channel channel) {
 	_channels[channel.getName()].removeClient(client);
+	if(channel.getClients().size() == 1)
+		Server::removeChannel(channel);
 }

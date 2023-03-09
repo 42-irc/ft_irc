@@ -12,7 +12,7 @@ std::vector<Message> Kick::execute() {
 	Channel channel = Server::findChannel(_client, _channel);
 	checkIsAdmin(channel);
 	Client target = channel.findClient(_client, _target);
-	channel.removeClient(target);
+	Server::removeClientFromChannel(target, channel);
 	std::vector<int> targetFd = channel.getFds();
 	std::vector<Message> messages;
 	messages.push_back(Message(targetFd, _client.getNickName(), getMsg()));
