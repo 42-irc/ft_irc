@@ -1,8 +1,8 @@
 #include "Client.hpp"
 
-Client::Client(): _isAdmin(false), _fd(-1) {}
+Client::Client():  _fd(-1), _isAdmin(false) {}
 
-Client::Client(int fd): _isAdmin(false), _fd(fd) {}
+Client::Client(int fd): _fd(fd), _isAdmin(false) {}
 
 Client::~Client() {}
 
@@ -24,12 +24,12 @@ void Client::setHostName(const std::string hostName) { _hostName = hostName; }
 
 void Client::setIsAdmin(const bool isAdmin) { _isAdmin = isAdmin; }
 
-void Client::addChannel(Channel channel) {
-	_joinedChannels.insert(std::pair<std::string, Channel>(channel.getName(), channel));
+void Client::addChannel(std::string channel) {
+	_joinedChannels.insert(channel);
 }
 
-void Client::removeChannel(Channel channel) {
-	_joinedChannels.erase(channel.getName());
+void Client::removeChannel(std::string channel) {
+	_joinedChannels.erase(channel);
 }
 
 bool Client::operator==(const Client &client) const { return _nickName == client._nickName; }

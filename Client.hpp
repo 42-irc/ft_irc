@@ -3,11 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include <map>
-
-#include "Channel.hpp"
-
-class Channel;
+#include <set>
 
 class Client {
 	private:
@@ -15,7 +11,7 @@ class Client {
 		std::string _name;
 		std::string _nickName;
 		std::string _hostName;
-		std::map<std::string, Channel> _joinedChannels;
+		std::set<std::string> _joinedChannels;
 		bool _isAdmin;
 
 	public:
@@ -31,8 +27,8 @@ class Client {
 		void setNickName(const std::string nickName);
 		void setHostName(const std::string hostName);
 		void setIsAdmin(const bool isAdmin);
-		void addChannel(Channel channel);
-		void removeChannel(Channel channel);
+		void addChannel(std::string channel);
+		void removeChannel(std::string channel);
 		bool operator==(const Client &client) const;
 		bool operator!=(const Client &client) const;
 };
