@@ -52,7 +52,7 @@ namespace ft
 		}
 	}
 
-	const std::string toString(unsigned int n) {
+	const std::string codeToString(unsigned int n) {
 		std::stringstream ss;
 		if (n < 10)
 			ss << "00";
