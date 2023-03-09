@@ -5,16 +5,18 @@ Oper::Oper(Client client, std::string name, std::string password) : Command(clie
 Oper::~Oper() {}
 
 /*
-message format
+std::vector<Message> format
 - :<server> 381 <nickname> :You are now an IRC operator
 */
-Message Oper::execute()
+std::vector<Message> Oper::execute()
 {
 	checkValidPassword();
 	_client.setIsAdmin(true);
 	std::vector<int> targetFd;
 	targetFd.push_back(_client.getFd());
-	return Message(targetFd, 381, "ft_irc", "", ":You are now an IRC operator");
+	std::vector<Message> messages;
+	messages.push_back(Message(targetFd, RPL_YOUREOPER, _client.getNickName()));
+	return (messages);
 }
 
 void Oper::checkValidPassword()
@@ -24,6 +26,8 @@ void Oper::checkValidPassword()
 	{
 		std::vector<int> targetFd;
 		targetFd.push_back(_client.getFd());
-		throw Message(targetFd, 464, "ft_irc", "ERROR", ":Password incorrect");
+		std::vector<Message> messages;
+		messages.push_back(Message(targetFd, 464, _client.getNickName()));
+		throw (messages);
 	}
 }

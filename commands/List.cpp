@@ -1,18 +1,23 @@
 #include "List.hpp"
 
-List::List(Client client) : Command(client, "LIST") { }
+List::List(Client client) : Command(client, "LIST") {}
 
 List::~List() {}
 
 /*
-message format
+std::vector<Message> format
 - :<server> 322 <nickname> <channel> <# of clients> :<topic>
 - :<server> 323 <nickname> :End of LIST
 */
-Message List::execute() {
+std::vector<Message> List::execute() {
 	std::vector<int> targetFd;
 	targetFd.push_back(_client.getFd());
 	std::map<std::string, Channel> channels = Server::getChannels();
-	Message message(targetFd, 322, _client.getNickName(), channels.begin()->first, std::to_string(channels.begin()->second.getClients().size()));
-	return message;
+	std::map<std::string, Channel>::iterator it = channels.begin();
+	std::map<std::string, Channel>::iterator ite = channels.end();
+	std::vector<Message> messages;
+	for (; it != ite; it++) {
+		messages.push_back(Message(targetFd, RPL_LIST, it->second.getName()));
+	}
+	return (messages);
 }

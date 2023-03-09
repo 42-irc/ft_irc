@@ -12,7 +12,7 @@ class Quit : public Command {
 		Quit(Client client, std::string channel);
 		~Quit();
 
-		Message execute();
+		std::vector<Message> execute();
 };
 
 #endif
