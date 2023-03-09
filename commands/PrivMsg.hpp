@@ -12,7 +12,7 @@ class PrivMsg : public Command
 		std::vector<int> findTargetClient(std::string target);
 		std::vector<int> findTargetChannel(std::string target);
 		const std::string getPrefix() const;
-		const std::string getMsg() const;
+		const std::string getMsg(std::string &name) const;
 
 	public:
 		PrivMsg(Client client, std::string target, std::string msg);

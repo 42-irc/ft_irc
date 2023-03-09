@@ -82,6 +82,15 @@ int main()
     } catch (std::vector<Message> &e) {
         std::cout << e[0].getMessage() << std::endl;
     }
+    std::cout << "------------------Multi Join test------------------" << std::endl;
+    try {
+        Join join7(client, "#new4,#new5,#new6,5,6,7,#new7");
+        std::vector<Message> mssag = join7.execute();
+        for (size_t i = 0; i < mssag.size(); i++)
+            std::cout << mssag[i].getMessage() << std::endl;
+    } catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
     std::cout << "------------------findChannel test------------------" << std::endl;
     try {
         Channel newChannel = Server::findChannel(client, "#new");
@@ -119,6 +128,15 @@ int main()
         PrivMsg privMg(client, client2.getNickName(), "hello");
         std::vector<Message> mssag = privMg.execute();
         std::cout << mssag[0].getMessage() << std::endl;
+    } catch (std::vector<Message> &e) {
+        std::cout << e[0].getMessage() << std::endl;
+    }
+    std::cout << "------------------Multi PrivMsg test------------------" << std::endl;
+    try {
+        PrivMsg privMg(client, client2.getNickName() + ",#new,#5,#hi", "hello");
+        std::vector<Message> mssag = privMg.execute();
+        for (size_t i = 0; i < mssag.size(); i++)
+            std::cout << mssag[i].getMessage() << std::endl;
     } catch (std::vector<Message> &e) {
         std::cout << e[0].getMessage() << std::endl;
     }
