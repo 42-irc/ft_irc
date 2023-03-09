@@ -3,7 +3,6 @@
 
 # include "../Server.hpp"
 # include "Command.hpp"
-# include <unistd.h>
 
 class Quit : public Command {
 	public:
