@@ -4,13 +4,11 @@ Join::Join(Client client, std::string channel) : Command(client, "JOIN"), _chann
 
 Join::~Join() {}
 
-void Join::checkValidName() {
-	if ((_channel[0] != '#' && _channel[0] != '&') || _channel.size() > 200) {
+void Join::checkValidName(std::string& name) {
+	if ((name[0] != '#' && name[0] != '&') || name.size() > 200) {
 		std::vector<int> targetFd;
 		std::vector<Message> messages;
-
-		targetFd.push_back(_client.getFd());
-		messages.push_back(Message(targetFd, ERR_NOSUCHCHANNEL, _channel));
+		messages.push_back(Message(targetFd, ERR_NOSUCHCHANNEL, name));
 		throw messages;
 	}
 }
@@ -28,21 +26,33 @@ void Join::checkChannelNum() {
 /*
 	prefix JOIN :channel
 */
-std::vector<Message> Join::execute() {
+std::vector<Message> Join::execute(){
+	std::vector<std::string> targetList = ft::split(_channel, ',');
+	std::vector<std::string>::iterator it = targetList.begin();
+	std::vector<std::string>::iterator ite = targetList.end();
+	std::vector<Message> messages;
 	Channel channel;
 
-	try{
-		channel = Server::findChannel(_client, _channel);
-	} catch (std::vector<Message> &e) {
-		checkValidName();
-		checkChannelNum();
-		std::vector<int> targetFd;
-		targetFd.push_back(_client.getFd());
-		channel = Channel(_channel, _client);
-		Server::addChannel(channel);
+	for (; it != ite; it++) {
+		try{
+			channel = Server::findChannel(_client, *it);
+			Server::addClientToChannel(_client, channel);
+			messages.push_back(Message(channel.getFds(), _client.getNickName(), _type + " " + *it));
+		}
+		catch (std::vector<Message> &e){
+			std::vector<int> targetFd;
+			try {
+				checkValidName(*it);
+				checkChannelNum();
+				targetFd.push_back(_client.getFd());
+				channel = Channel(*it, _client);
+				Server::addChannel(channel);
+				Server::addClientToChannel(_client, channel);
+				messages.push_back(Message(channel.getFds(), _client.getNickName(), _type + " " + *it));
+			} catch (std::vector<Message> &e) {
+				messages.push_back(e[0]);
+			}
+		}
 	}
-	Server::addClientToChannel(_client, channel);
-	std::vector<Message> messages;
-	messages.push_back(Message(channel.getFds(), _client.getNickName(), _type + " " + _channel));
 	return messages;
 }
