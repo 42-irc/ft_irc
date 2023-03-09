@@ -31,8 +31,9 @@ const Client Server::findClient(Client client, std::string name) {
 	if (it != _clients.end())
 		return (it->second);
 	std::vector<int> fd;
-	fd.push_back(client.getFd());
 	std::vector<Message> messages;
+
+	fd.push_back(client.getFd());
 	messages.push_back(Message(fd, ERR_NOSUCHNICK, name));
 	throw (messages);
 }
