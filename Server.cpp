@@ -17,8 +17,9 @@ const Channel Server::findChannel(Client client, std::string name) {
 	if (it != _channels.end())
 		return (it->second);
 	std::vector<int> fd;
-	fd.push_back(client.getFd());
 	std::vector<Message> messages;
+
+	fd.push_back(client.getFd());
 	messages.push_back(Message(fd, ERR_NOSUCHCHANNEL, name));
 	throw (messages);
 }
