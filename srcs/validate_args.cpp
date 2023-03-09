@@ -2,8 +2,8 @@
 
 void err_exit(std::string error_msg);
 
-int num_of_digit(int num) {
-	int cnt = 1;
+unsigned long num_of_digit(int num) {
+	unsigned long cnt = 1;
 	while (num >= 10) {
 		num /= 10;
 		++cnt;

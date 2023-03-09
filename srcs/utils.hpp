@@ -34,7 +34,7 @@ enum e_code {
 namespace ft
 {
 
-	std::vector<std::string> split(const std::string &str, char charset, int n = 0);
+	std::vector<std::string> split(const std::string &str, char charset, unsigned long n = 0);
 	const std::string get_code_messages(int &code);
 
 }
