@@ -49,7 +49,7 @@ int main()
 		err_exit("creating kqueue : " + std::string(strerror(errno)));
 
 	std::vector<struct kevent> register_events;
-	initialize_new_event(register_event, server_socket, EVFILT_READ, EV_ADD);
+	initialize_new_event(register_events, server_socket, EVFILT_READ, EV_ADD);
 
 	std::cout << "Waiting for incoming connections..." << std::endl;
 
@@ -67,7 +67,7 @@ int main()
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
 			if (occured_events[i].ident == server_socket)
 			{
-				std::cout << "TYPE " << register_event[i].filter << " event occurs in server_socket!" << std::endl;
+				std::cout << "TYPE " << register_events[i].filter << " event occurs in server_socket!" << std::endl;
 
 				int client_socket = accept(server_socket, NULL, NULL);
 				if (client_socket == -1)
@@ -77,6 +77,9 @@ int main()
 
 				if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 					err_exit("setting client socket flag : " + std::string(strerror(errno)));
+
+				initialize_new_event(register_events, client_socket, EVFILT_READ, EV_ADD);
+				initialize_new_event(register_events, client_socket, EVFILT_WRITE, EV_ADD);
 			}
 			else
 			{
