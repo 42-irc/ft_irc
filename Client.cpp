@@ -37,6 +37,8 @@ const std::string Client::getName() const { return _name; }
 
 const std::string Client::getNickName() const { return _nickName; }
 
+const std::string Client::getHostName() const { return _hostName; }
+
 const int Client::getFd() const { return _fd; }
 
 bool Client::getIsAdmin() const { return _isAdmin; }

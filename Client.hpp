@@ -20,6 +20,7 @@ class Client {
 		~Client();
 		const std::string getName() const;
 		const std::string getNickName() const;
+		const std::string getHostName() const;
 		const int getFd() const;
 		bool getIsAdmin() const;
 		void setName(const std::string name);
