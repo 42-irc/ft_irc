@@ -13,6 +13,14 @@ void err_exit(std::string error_msg)
 	exit(1);
 }
 
+void initialize_new_event(std::vector<struct kevent> event_list,
+						  uintptr_t sock_fd, int16_t filter, uint16_t flags)
+{
+	struct kevent new_event;
+	EV_SET(&new_event, sock_fd, filter, flags, 0, 0, NULL);
+	event_list.push_back(new_event);
+}
+
 int main()
 {
 	int server_socket;
@@ -40,26 +48,24 @@ int main()
 	if (kq == -1)
 		err_exit("creating kqueue : " + std::string(strerror(errno)));
 
-	std::vector<struct kevent> register_event;
-	struct kevent new_event;
-	EV_SET(&new_event, server_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
-	register_event.push_back(new_event);
+	std::vector<struct kevent> register_events;
+	initialize_new_event(register_event, server_socket, EVFILT_READ, EV_ADD);
 
 	std::cout << "Waiting for incoming connections..." << std::endl;
 
 	while (true)
 	{
-		struct kevent occured_event[2];
-		int occured_event_cnt = kevent(kq, &register_event[0], register_event.size(), occured_event, 2, NULL);
-		if (occured_event_cnt == -1)
+		struct kevent occured_events[2];
+		int occured_events_cnt = kevent(kq, &register_events[0], register_events.size(), occured_events, 2, NULL);
+		if (occured_events_cnt == -1)
 			err_exit("calling kevent : " + std::string(strerror(errno)));
 
-		std::cout << occured_event_cnt << " events occur!\n"
+		std::cout << occured_events_cnt << " events occur!\n"
 				  << std::endl;
-		for (int i = 0; i < occured_event_cnt; ++i)
+		for (int i = 0; i < occured_events_cnt; ++i)
 		{
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
-			if (occured_event[i].ident == server_socket)
+			if (occured_events[i].ident == server_socket)
 			{
 				std::cout << "TYPE " << register_event[i].filter << " event occurs in server_socket!" << std::endl;
 
