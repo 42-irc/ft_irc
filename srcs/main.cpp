@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
 				int event_client_socket = occurred_events[i].ident;
 				if (occurred_events[i].filter == EVFILT_READ) {
 					char buffer[1024];
+					memset(buffer, 0, sizeof(buffer));
 					ssize_t n = recv(event_client_socket, buffer, sizeof(buffer), 0);
 					if (n < 0) {
 						err_exit("receiving from client socket : " + std::string(strerror(errno)));
@@ -44,17 +45,22 @@ int main(int argc, char *argv[]) {
 						close(event_client_socket);
 					} else {
 						// 클라이언트 메시지 수신 성공
-						std::cout << buffer << std::endl;
+						std::cout << "[" << event_client_socket << "] client : " << buffer << std::endl;
+						// 클라이언트에 보낼 메시지 작성 후 전송
+						char *reply = buffer;
+						send(event_client_socket, reply, sizeof(buffer), 0);
 					}
 				// WRITE 이벤트 발생
 				} else if (occurred_events[i].filter == EVFILT_WRITE) {
 					// 해당 클라이언트에 보낼 메시지가 있는 경우만 전송하게 조건 추가
-					char message[] = "Message";
-					ssize_t n = send(event_client_socket, message, sizeof(message), 0);
-					if (n < 0) {
-						err_exit("sending to client socket : " + std::string(strerror(errno)));
-					} else {
-						// 메시지 전송 성공 -> 해당 클라이언트에 보낼 메시지 삭제 해주기
+					if (false) {
+						char message[] = "";
+						ssize_t n = send(event_client_socket, message, sizeof(message), 0);
+						if (n < 0) {
+							err_exit("sending to client socket : " + std::string(strerror(errno)));
+						} else {
+							// 메시지 전송 성공 -> 해당 클라이언트에 보낼 메시지 삭제 해주기
+						}
 					}
 				}
 			}
