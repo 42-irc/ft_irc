@@ -1,5 +1,5 @@
-#ifndef _SERVER_SOCKET_HPP_
-#define _SERVER_SOCKET_HPP_
+#ifndef SERVER_SOCKET_HPP
+#define SERVER_SOCKET_HPP
 
 #include <iostream>
 #include <sys/types.h>
