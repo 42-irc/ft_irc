@@ -3,8 +3,7 @@
 User::User(Client client, std::string name, std::string nickName, std::string hostName) : Command(client, "USER"), _name(name), _nickName(nickName), _hostName(hostName) {
 }
 
-User::~User() {
-}
+User::~User() { }
 
 Message User::execute() {
 	std::vector<int> targetFd;
