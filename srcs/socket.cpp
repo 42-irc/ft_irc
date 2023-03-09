@@ -20,7 +20,7 @@ int main()
 
 	server_socket = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (server_socket == -1)
-		err_exit("creating socket : " + std::string(strerror(errno)));
+		err_exit("creating server socket : " + std::string(strerror(errno)));
 
 	memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
@@ -28,13 +28,13 @@ int main()
 	server_addr.sin_port = htons(8080);
 
 	if (bind(server_socket, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1)
-		err_exit("binding socket : " + std::string(strerror(errno)));
+		err_exit("binding server socket : " + std::string(strerror(errno)));
 
 	if (listen(server_socket, 5) == -1)
-		err_exit("socket listening : " + std::string(strerror(errno)));
+		err_exit("server socket listening : " + std::string(strerror(errno)));
 
 	if (fcntl(server_socket, F_SETFL, O_NONBLOCK) == -1)
-		err_exit("setting socket flag : " + std::string(strerror(errno)));
+		err_exit("setting server socket flag : " + std::string(strerror(errno)));
 
 	int kq = kqueue();
 	if (kq == -1)
@@ -68,6 +68,9 @@ int main()
 					err_exit("accepting client : " + std::string(strerror(errno)));
 
 				std::cout << client_socket << ": New client connected" << std::endl;
+
+				if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
+					err_exit("setting client socket flag : " + std::string(strerror(errno)));
 			}
 			else
 			{
