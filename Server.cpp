@@ -7,7 +7,7 @@ Server::Server(int port, std::string password, std::string adminName, std::strin
 
 Server::~Server() {};
 
-const int Server::getPort() const { return (_port); }
+int Server::getPort() const { return (_port); }
 
 const std::map<std::string, Channel> Server::getChannels() { return (_channels); }
 

@@ -3,11 +3,11 @@
 namespace ft
 {
 
-    std::vector<std::string> split(const std::string &str, char charset, int n) {
+    std::vector<std::string> split(const std::string &str, char charset, unsigned long n) {
         std::vector<std::string> ret;
         std::stringstream ss(str);
         std::string tmp;
-		int i = 0;
+		unsigned long i = 0;
 
 		if (n) {
 			while (++i < n && getline(ss, tmp, charset)) ret.push_back(tmp);

@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
 		for (int i = 0; i < occured_events_cnt; ++i) {
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
-			if (occurred_events[i].ident == server_socket) {
+			if (occurred_events[i].ident == (uintptr_t)server_socket) {
 				if (occurred_events[i].filter == EVFILT_READ)
 					create_client_socket(server_socket, kq);
 				else

@@ -3,9 +3,9 @@
 
 Client::Client(): _name(""), _nickName(""), _isAdmin(false), _fd(-1) {}
 
-Client::Client(int fd): _fd(fd), _isAdmin(false) {}
+Client::Client(int fd): _isAdmin(false), _fd(fd) {}
 
-Client::Client(int fd, std::string name, std::string nickName, std::string hostName): _fd(fd), _isAdmin(false) {
+Client::Client(int fd, std::string name, std::string nickName, std::string hostName): _isAdmin(false), _fd(fd) {
 	if (name.length() == 0 || nickName.length() == 0) throw;
 	if (!checkNickName(nickName)) throw Message();
 	_name = name;
@@ -39,7 +39,7 @@ const std::string Client::getNickName() const { return _nickName; }
 
 const std::string Client::getHostName() const { return _hostName; }
 
-const int Client::getFd() const { return _fd; }
+int Client::getFd() const { return _fd; }
 
 bool Client::getIsAdmin() const { return _isAdmin; }
 

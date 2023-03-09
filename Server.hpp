@@ -20,7 +20,7 @@ class Server{
 	public:
 		Server(int port, std::string password, std::string adminName, std::string adminPassword);
 		~Server();
-		const int getPort() const;
+		int getPort() const;
 		static const std::map<std::string, Channel> getChannels();
 		static const Channel findChannel(Client client, std::string name);
 		static const std::map<std::string, Client> getClients();
