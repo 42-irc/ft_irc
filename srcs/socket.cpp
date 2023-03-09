@@ -13,14 +13,6 @@ void err_exit(std::string error_msg)
 	exit(1);
 }
 
-void initialize_new_event(std::vector<struct kevent> event_list,
-						  uintptr_t sock_fd, int16_t filter, uint16_t flags)
-{
-	struct kevent new_event;
-	EV_SET(&new_event, sock_fd, filter, flags, 0, 0, NULL);
-	event_list.push_back(new_event);
-}
-
 int main()
 {
 	int server_socket;
@@ -48,43 +40,46 @@ int main()
 	if (kq == -1)
 		err_exit("creating kqueue : " + std::string(strerror(errno)));
 
-	std::vector<struct kevent> register_events;
-	initialize_new_event(register_events, server_socket, EVFILT_READ, EV_ADD);
+	struct kevent server_socket_event;
+	EV_SET(&server_socket_event, server_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
+	kevent(kq, &server_socket_event, 1, NULL, 0, NULL);
 
 	std::cout << "Waiting for incoming connections..." << std::endl;
 
 	while (true)
 	{
-		struct kevent occured_events[2];
-		int occured_events_cnt = kevent(kq, &register_events[0], register_events.size(), occured_events, 2, NULL);
+		struct kevent client_socket_event[2];
+		struct kevent occured_events[100];
+		int occured_events_cnt = kevent(kq, NULL, 0, occured_events, 100, NULL);
 		if (occured_events_cnt == -1)
 			err_exit("calling kevent : " + std::string(strerror(errno)));
 
-		std::cout << occured_events_cnt << " events occur!\n"
-				  << std::endl;
+		std::cout << occured_events_cnt << " events occur!" << std::endl;
+
 		for (int i = 0; i < occured_events_cnt; ++i)
 		{
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
 			if (occured_events[i].ident == server_socket)
 			{
-				std::cout << "TYPE " << register_events[i].filter << " event occurs in server_socket!" << std::endl;
+				std::cout << "READ event occurs in server_socket!" << std::endl;
 
 				int client_socket = accept(server_socket, NULL, NULL);
 				if (client_socket == -1)
 					err_exit("accepting client : " + std::string(strerror(errno)));
 
-				std::cout << client_socket << ": New client connected" << std::endl;
+				std::cout << client_socket << ": New client connect\n"
+						  << std::endl;
 
 				if (fcntl(client_socket, F_SETFL, O_NONBLOCK) == -1)
 					err_exit("setting client socket flag : " + std::string(strerror(errno)));
 
-				initialize_new_event(register_events, client_socket, EVFILT_READ, EV_ADD);
-				initialize_new_event(register_events, client_socket, EVFILT_WRITE, EV_ADD);
+				EV_SET(&client_socket_event[0], client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
+				EV_SET(&client_socket_event[1], client_socket, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
+				kevent(kq, &client_socket_event[0], 2, NULL, 0, NULL);
 			}
+			// 이벤트가 발생한 식별자가 클라이언트 소켓의 fd인 경우
 			else
 			{
-				// 이벤트가 발생한 식별자가 클라이언트 소켓의 fd인 경우
-				std::cout << "event occurs in client_socket!" << std::endl;
 			}
 		}
 	}
