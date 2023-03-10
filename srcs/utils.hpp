@@ -18,6 +18,7 @@ enum e_code {
 	RPL_LISTEND = 323,
 	RPL_YOUREOPER = 381,
 	ERR_NEEDMOREPARAMS = 461,
+	ERR_PASSWDMISMATCH = 464
 };
 
 # define CODE_001 ":Welcome to the ft_IRC server"
@@ -31,6 +32,7 @@ enum e_code {
 # define CODE_381 ":You are now an IRC operator"
 # define CODE_323 ":End of /LIST"
 # define CODE_461 ":Not enough parameters"
+# define CODE_464 ":Password incorrect"
 namespace ft
 {
 

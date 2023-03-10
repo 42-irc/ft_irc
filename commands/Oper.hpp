@@ -1,11 +1,10 @@
 #ifndef OPER_HPP
 # define OPER_HPP
 
-# include "Command.hpp"
-# include "../Server.hpp"
+#include "Command.hpp"
+#include "../Server.hpp"
 
-class Oper : public Command
-{
+class Oper : public Command {
 	private:
 		std::string _name;
 		std::string _password;

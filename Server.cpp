@@ -1,13 +1,20 @@
 # include "Server.hpp"
 
+int Server::_port;
 std::map<std::string, Channel> Server::_channels;
 std::map<std::string, Client> Server::_clients;
+std::map<int, Client> Server::_clientsFd;
+std::string Server::_password;
+std::string Server::_adminName = "admin";
+std::string Server::_adminPassword = "admin";
 
-Server::Server(int port, std::string password, std::string adminName, std::string adminPassword) : _port(port), _password(password), _adminName(adminName), _adminPassword(adminPassword) {};
+Server::Server() {};
 
 Server::~Server() {};
 
-int Server::getPort() const { return _port; }
+int Server::getPort() { return _port; }
+
+void Server::setPort(int port) { _port = port; };
 
 const std::map<std::string, Channel> Server::getChannels() { return _channels; }
 
@@ -41,11 +48,24 @@ const Client Server::findClient(Client client, std::string name) {
 	throw messages;
 }
 
-const std::string Server::getPassword() const { return _password; }
+const Client Server::findClient(int fd) {
+	std::map<int, Client>::iterator it = _clientsFd.find(fd);
 
-const std::string Server::getAdminName() const { return _adminName; }
+	if (it != _clientsFd.end())
+		return it->second;
 
-const std::string Server::getAdminPassword() const { return _adminPassword; }
+	std::vector<Message> messages;
+	
+	throw messages;
+}
+
+const std::string Server::getPassword() { return _password; }
+
+void Server::setPassword(std::string password) { _password = password; }
+
+const std::string Server::getAdminName() { return _adminName; }
+
+const std::string Server::getAdminPassword() { return _adminPassword; }
 
 void Server::addChannel(Channel channel) {
 	_channels.insert(std::pair<std::string, Channel>(channel.getName(), channel));
