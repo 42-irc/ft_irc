@@ -1,16 +1,15 @@
 #ifndef NICK_HPP
 # define NICK_HPP
 
-# include <string>
+# include "../Server.hpp"
 # include "Command.hpp"
 
 class Nick : public Command
 {
 	private:
 		std::string _nick;
-
 	public:
-		Nick(std::string nick, Client client);
+		Nick(Client client ,std::string nick);
 		~Nick();
 		std::vector<Message> execute();
 };
