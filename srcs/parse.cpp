@@ -11,7 +11,7 @@ namespace ft
 		std::string command = idx == std::string::npos ? str : str.substr(0, idx);
 
 		if (str.length()) {
-			for (int i = 0; i < sizeof(commands); i++) {
+			for (unsigned int i = 0; i < sizeof(commands); i++) {
 				if (command == commands[i]) {
 					switch (i) {
 						case 0:
@@ -25,7 +25,7 @@ namespace ft
 							return new List(client);
 						case 3:
 							params = ft::split(str, ' ', 2);
-							return new Nick(client, params[1]);
+							// return new Nick(client, params[1]);
 						case 4:
 							params = ft::split(str, ' ', 3);
 							return new Oper(client, params[1], params[2]);
