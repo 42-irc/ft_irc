@@ -14,3 +14,5 @@ const std::string Message::getMessage() {
 		return (":ft_irc " + ft::codeToString(_code) + " " + _content + " " + ft::getCodeMessage(_code));
 	return (_prefix + " " + _content);
 }
+
+const std::vector<int> Message::getTargets() { return _targets; }
