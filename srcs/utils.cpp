@@ -47,6 +47,8 @@ namespace ft
 				return CODE_381;
 			case ERR_NEEDMOREPARAMS:
 				return CODE_461;
+			case ERR_PASSWDMISMATCH:
+				return CODE_464;
 			default:
 				return "";
 		}
