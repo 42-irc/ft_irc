@@ -11,7 +11,6 @@ class User : public Command {
 	public:
 		User(Client client, std::string userName);
 		~User();
-
 		std::vector<Message> execute();
 };
 

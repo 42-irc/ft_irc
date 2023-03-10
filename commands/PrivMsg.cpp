@@ -4,12 +4,11 @@ PrivMsg::PrivMsg(Client client, std::string target, std::string msg) : Command(c
 
 PrivMsg::~PrivMsg() {}
 
-const std::string PrivMsg::getPrefix() const
-{
-	return (_client.getNickName() + "!" + _client.getName() + "@" + _client.getHostName());
+const std::string PrivMsg::getPrefix() const {
+	return _client.getNickName() + "!" + _client.getName() + "@" + _client.getHostName();
 }
 
-const std::string PrivMsg::getMsg(std::string &name) const { return (name + " :" + _msg); }
+const std::string PrivMsg::getMsg(std::string &name) const { return name + " :" + _msg; }
 
 /*
 std::vector<Message> format

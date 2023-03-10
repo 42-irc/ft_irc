@@ -4,8 +4,7 @@
 # include "Command.hpp"
 # include "../Server.hpp"
 
-class PrivMsg : public Command
-{
+class PrivMsg : public Command {
 	private:
 		std::string _target;
 		std::string _msg;

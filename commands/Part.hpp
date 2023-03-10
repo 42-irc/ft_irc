@@ -4,8 +4,7 @@
 # include "Command.hpp"
 # include "../Server.hpp"
 
-class Part : public Command
-{
+class Part : public Command {
 	private:
 		std::string _channel;
 

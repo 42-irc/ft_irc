@@ -3,11 +3,11 @@
 
 # include <iostream>
 # include <string>
+# include <vector>
 
 # include "../Message.hpp"
 # include "../Client.hpp"
 # include "../srcs/utils.hpp"
-# include <vector>
 
 class Command {
 	protected:

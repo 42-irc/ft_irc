@@ -7,6 +7,7 @@
 class Pass : public Command {
 	private:
 		std::string _password;
+
 	public:
 		Pass(Client client, std::string password);
 		~Pass();

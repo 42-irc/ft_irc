@@ -4,8 +4,7 @@
 # include "Command.hpp"
 # include "../Server.hpp"
 
-class Oper : public Command
-{
+class Oper : public Command {
 	private:
 		std::string _name;
 		std::string _password;
