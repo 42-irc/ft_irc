@@ -1,8 +1,8 @@
 #ifndef PART_HPP
 # define PART_HPP
 
-# include "Command.hpp"
-# include "../Server.hpp"
+#include "Command.hpp"
+#include "../Server.hpp"
 
 class Part : public Command {
 	private:

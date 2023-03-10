@@ -1,8 +1,8 @@
 #ifndef OPER_HPP
 # define OPER_HPP
 
-# include "Command.hpp"
-# include "../Server.hpp"
+#include "Command.hpp"
+#include "../Server.hpp"
 
 class Oper : public Command {
 	private:

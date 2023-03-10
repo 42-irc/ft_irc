@@ -26,7 +26,6 @@ std::vector<Message> Oper::execute() {
 }
 
 void Oper::checkValidPassword() {
-	// if (_name != Server::getAdminName() || _password != Server::getAdminPassword())
 	if (_name != "admin" || _password != "admin") {
 		std::vector<int> targetFd;
 		std::vector<Message> messages;

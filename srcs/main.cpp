@@ -9,7 +9,6 @@ void err_exit(std::string error_msg) {
 
 int main(int argc, char *argv[]) {
 	int port = validate_args(argc, argv);
-	// Server server(port, argv[2], "admin", "adminpwd");
 	Server::setPort(port);
 	Server::setPassword(std::string(argv[2]));
 	int server_socket = create_server_socket(port);
@@ -51,7 +50,6 @@ int main(int argc, char *argv[]) {
 						// 클라이언트 메시지 수신 성공
 						std::cout << "[" << event_client_socket << "] client : " << buffer << std::endl;
 						// 클라이언트에 보낼 메시지 작성 후 전송
-						// char *reply = buffer;
 						Command* command = ft::parse(Server::findClient(event_client_socket), std::string(buffer));
 						std::vector<Message> messages = command->execute();
 						std::vector<Message>::iterator first = messages.begin();

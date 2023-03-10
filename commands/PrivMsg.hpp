@@ -1,8 +1,8 @@
 #ifndef PRIVMSG_HPP
 # define PRIVMSG_HPP
 
-# include "Command.hpp"
-# include "../Server.hpp"
+#include "Command.hpp"
+#include "../Server.hpp"
 
 class PrivMsg : public Command {
 	private:

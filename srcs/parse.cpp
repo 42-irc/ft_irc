@@ -25,7 +25,7 @@ namespace ft
 							return new List(client);
 						case 3:
 							params = ft::split(str, ' ', 2);
-							// return new Nick(client, params[1]);
+							return new Nick(client, params[1]);
 						case 4:
 							params = ft::split(str, ' ', 3);
 							return new Oper(client, params[1], params[2]);

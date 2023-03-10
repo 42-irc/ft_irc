@@ -1,13 +1,12 @@
 #ifndef COMMAND_HPP
 # define COMMAND_HPP
 
-# include <iostream>
-# include <string>
-# include <vector>
+#include <iostream>
+#include <vector>
 
-# include "../Message.hpp"
-# include "../Client.hpp"
-# include "../srcs/utils.hpp"
+#include "../Message.hpp"
+#include "../Client.hpp"
+#include "../srcs/utils.hpp"
 
 class Command {
 	protected:

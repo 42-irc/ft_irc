@@ -1,12 +1,13 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-# include <iostream>
-# include <map>
-# include <vector>
-# include "Channel.hpp"
-# include "Message.hpp"
-# include "srcs/utils.hpp"
+#include <iostream>
+#include <map>
+#include <vector>
+
+#include "Channel.hpp"
+#include "Message.hpp"
+#include "srcs/utils.hpp"
 
 class Server{
 	private:

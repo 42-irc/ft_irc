@@ -1,8 +1,8 @@
 #ifndef QUIT_HPP
 # define QUIT_HPP
 
-# include "../Server.hpp"
-# include "Command.hpp"
+#include "../Server.hpp"
+#include "Command.hpp"
 
 class Quit : public Command {
 	public:

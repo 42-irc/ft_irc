@@ -54,11 +54,8 @@ const Client Server::findClient(int fd) {
 	if (it != _clientsFd.end())
 		return it->second;
 
-	// std::vector<int> fd;
 	std::vector<Message> messages;
-
-	// fd.push_back(client.getFd());
-	// messages.push_back(Message(fd, ERR_NOSUCHNICK, name));
+	
 	throw messages;
 }
 
