@@ -8,18 +8,21 @@ SRCS =	commands/Command.cpp \
 		commands/Kick.cpp \
 		commands/List.cpp \
 		commands/Oper.cpp \
-    	commands/Part.cpp \
-    	commands/User.cpp \
+		commands/Part.cpp \
+		commands/Pass.cpp \
+		commands/User.cpp \
+		commands/Quit.cpp \
 		Server.cpp \
 		Client.cpp \
-		srcs/utils.cpp \
 		Channel.cpp \
 		Message.cpp \
-		commands/Quit.cpp \
-		testCommand.cpp
-		# srcs/client_socket.cpp srcs/server_socket.cpp \
-		# srcs/validate_args.cpp \
-		# srcs/main.cpp
+		srcs/utils.cpp \
+		srcs/parse.cpp \
+		srcs/client_socket.cpp \
+		srcs/server_socket.cpp \
+		srcs/validate_args.cpp \
+		srcs/main.cpp
+		# testCommand.cpp
     
 OBJS=$(SRCS:.cpp=.o)
 
