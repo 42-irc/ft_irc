@@ -52,10 +52,10 @@ int main(int argc, char *argv[]) {
 						std::cout << "[" << event_client_socket << "] client : " << buffer << std::endl;
 						// 클라이언트에 보낼 메시지 작성 후 전송
 						// char *reply = buffer;
-						Command* cmd = ft::parse(Server::findClient(event_client_socket), std::string(buffer));
-						std::vector<Message> msg = cmd->execute();
-						std::vector<Message>::iterator first = msg.begin();
-						std::vector<Message>::iterator last = msg.end();
+						Command* command = ft::parse(Server::findClient(event_client_socket), std::string(buffer));
+						std::vector<Message> messages = command->execute();
+						std::vector<Message>::iterator first = messages.begin();
+						std::vector<Message>::iterator last = messages.end();
 
 						while (first != last) {
 							std::vector<int> targets = first->getTargets();
