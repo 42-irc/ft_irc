@@ -1,4 +1,6 @@
 #include "main.hpp"
+#include "parse.hpp"
+#include "../commands/Command.hpp"
 
 void err_exit(std::string error_msg) {
 	std::cerr << "Error " << error_msg << std::endl;
@@ -7,7 +9,9 @@ void err_exit(std::string error_msg) {
 
 int main(int argc, char *argv[]) {
 	int port = validate_args(argc, argv);
-	Server server(port, argv[2], "admin", "adminpwd");
+	// Server server(port, argv[2], "admin", "adminpwd");
+	Server::setPort(port);
+	Server::setPassword(std::string(argv[2]));
 	int server_socket = create_server_socket(port);
 	int kq = set_server_on_kqueue(server_socket);
 
@@ -47,8 +51,23 @@ int main(int argc, char *argv[]) {
 						// 클라이언트 메시지 수신 성공
 						std::cout << "[" << event_client_socket << "] client : " << buffer << std::endl;
 						// 클라이언트에 보낼 메시지 작성 후 전송
-						char *reply = buffer;
-						send(event_client_socket, reply, sizeof(buffer), 0);
+						// char *reply = buffer;
+						Command* cmd = ft::parse(Server::findClient(event_client_socket), std::string(buffer));
+						std::vector<Message> msg = cmd->execute();
+						std::vector<Message>::iterator first = msg.begin();
+						std::vector<Message>::iterator last = msg.end();
+
+						while (first != last) {
+							std::vector<int> targets = first->getTargets();
+							std::vector<int>::iterator firstTarget = targets.begin();
+							std::vector<int>::iterator lastTarget = targets.end();
+
+							while (firstTarget != lastTarget) {
+								send(*firstTarget, first->getMessage().c_str(), first->getMessage().size(), 0);
+								firstTarget++;
+							}
+							first++;
+						}
 					}
 				// WRITE 이벤트 발생
 				} else if (occurred_events[i].filter == EVFILT_WRITE) {
