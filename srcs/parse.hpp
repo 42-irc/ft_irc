@@ -11,6 +11,7 @@
 #include "../commands/Nick.hpp"
 #include "../commands/Oper.hpp"
 #include "../commands/Part.hpp"
+#include "../commands/Pass.hpp"
 #include "../commands/PrivMsg.hpp"
 #include "../commands/Quit.hpp"
 #include "../commands/User.hpp"

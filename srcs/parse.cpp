@@ -4,7 +4,7 @@ namespace ft
 {
 
 	Command* parse(Client client, std::string str) {
-		std::string commands[9] = { "JOIN ", "KICK ", "LIST ", "NICK ", "OPER ", "PART ", "PRIVMSG ", "QUIT", "USER" };
+		std::string commands[10] = { "JOIN ", "KICK ", "LIST ", "NICK ", "OPER ", "PART ", "PASS" , "PRIVMSG ", "QUIT", "USER"};
 		std::vector<std::string> params;
 
 		std::size_t idx =  str.find_first_of(" ");
@@ -33,12 +33,15 @@ namespace ft
 							params = ft::split(str, ' ', 2);
 							return new Part(client, params[1]);
 						case 6:
+							params = ft::split(str, ' ', 2);
+							return new Pass(client, params[1]);
+						case 7:
 							params = ft::split(str, ' ', 3);
 							return new PrivMsg(client, params[1], params[2]);
-						case 7:
+						case 8:
 							params = ft::split(str, ' ', 2);
 							return new Quit(client);
-						case 8:
+						case 9:
 							params = ft::split(str, ' ', 4);
 							if (params[2] != "0" || params[3] != "*") throw Message(); // 461
 							return new User(client, params[1]);
