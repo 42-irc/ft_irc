@@ -10,24 +10,28 @@
 
 class Server{
 	private:
-		int _port;
+		static int _port;
 		static std::map<std::string, Channel> _channels;
 		static std::map<std::string, Client> _clients;
-		std::string _password;
-		std::string _adminName;
-		std::string _adminPassword;
+		static std::map<int, Client> _clientsFd;
+		static std::string _password;
+		static std::string _adminName;
+		static std::string _adminPassword;
 
 	public:
-		Server(int port, std::string password, std::string adminName, std::string adminPassword);
+		Server();
 		~Server();
-		int getPort() const;
+		static int getPort();
 		static const std::map<std::string, Channel> getChannels();
 		static const Channel findChannel(Client client, std::string name);
 		static const std::map<std::string, Client> getClients();
 		static const Client findClient(Client client, std::string name);
-		const std::string getPassword() const;
-		const std::string getAdminName() const;
-		const std::string getAdminPassword() const;
+		static const Client findClient(int fd);
+		static const std::string getPassword();
+		static const std::string getAdminName();
+		static const std::string getAdminPassword();
+		static void setPort(int port);
+		static void setPassword(std::string password);
 		static void addChannel(Channel channel);
 		static void removeChannel(Channel channel);
 		static void addClient(Client client);
