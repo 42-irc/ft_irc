@@ -15,7 +15,7 @@ void create_client_socket(int server_socket, int kq) {
 	if (fcntl(new_client_socket, F_SETFL, O_NONBLOCK) == -1)
 		err_exit("setting client socket flag : " + std::string(strerror(errno)));
 
-	Client client;
+	Client client(new_client_socket);
 	client.setHostName(client_host);
 	Server::addClient(client);
 
