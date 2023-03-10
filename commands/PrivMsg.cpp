@@ -9,7 +9,7 @@ const std::string PrivMsg::getPrefix() const
 	return (_client.getNickName() + "!" + _client.getName() + "@" + _client.getHostName());
 }
 
-const std::string PrivMsg::getMsg() const { return (_target + " :" + _msg); }
+const std::string PrivMsg::getMsg(std::string &name) const { return (name + " :" + _msg); }
 
 /*
 std::vector<Message> format
@@ -24,13 +24,21 @@ std::vector<Message> PrivMsg::execute() {
 
 	for (; it != ite; it++) {
 		if ((*it)[0] == '#') {
-			Channel target = Server::findChannel(_client, *it);
-			targetFd = target.getFds();
-			messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
+			try {
+				Channel target = Server::findChannel(_client, *it);;
+				targetFd = target.getFds();
+				messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
+			} catch (std::vector<Message> &e) {
+				messages.push_back(e[0]);
+			}
 		} else {
-			Client target = Server::findClient(_client, *it);
-			targetFd.push_back(target.getFd());
-			messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg()));
+			try {
+				Client target = Server::findClient(_client, *it);
+				targetFd.push_back(target.getFd());
+				messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
+			} catch (std::vector<Message> &e) {
+				messages.push_back(e[0]);
+			}
 		}
 	}
 	return messages;

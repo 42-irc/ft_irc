@@ -23,7 +23,7 @@ namespace ft
         return ret;
     }
 
-	const std::string get_code_messages(int code) {
+	const std::string getCodeMessage(int code) {
 		switch (code) {
 			case RPL_WELCOME:
 				return CODE_001;
@@ -50,6 +50,16 @@ namespace ft
 			default:
 				return "";
 		}
+	}
+
+	const std::string codeToString(unsigned int n) {
+		std::stringstream ss;
+		if (n < 10)
+			ss << "00";
+		else if (n < 100)
+			ss << "0";
+		ss << n;
+		return ss.str();
 	}
 
 }
