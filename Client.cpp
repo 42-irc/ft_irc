@@ -16,7 +16,7 @@ int Client::getFd() const { return _fd; }
 
 bool Client::getIsAdmin() const { return _isAdmin; }
 
-const std::set<std::string> Client::getChannels() const { return _joinedChannels; }
+const std::set<std::string> Client::getJoinedChannels() const { return _joinedChannels; }
 
 void Client::setName(const std::string name) { _name = name; }
 

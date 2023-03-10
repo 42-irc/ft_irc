@@ -36,6 +36,8 @@ std::vector<Message> Join::execute(){
 	for (; it != ite; it++) {
 		try{
 			channel = Server::findChannel(_client, *it);
+			if (channel.findClient(_client, _client.getNickName()) == _client)
+				continue;
 			Server::addClientToChannel(_client, channel);
 			messages.push_back(Message(channel.getFds(), _client.getNickName(), _type + " " + *it));
 		}

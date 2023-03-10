@@ -21,7 +21,7 @@ class Client {
 		const std::string getName() const;
 		const std::string getNickName() const;
 		const std::string getHostName() const;
-		const std::set<std::string> getChannels() const;
+		const std::set<std::string> getJoinedChannels() const;
 		int getFd() const;
 		bool getIsAdmin() const;
 		void setName(const std::string name);

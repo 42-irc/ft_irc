@@ -52,7 +52,7 @@ void printClients()
         std::cout << "Client name: " << it->second.getNickName() << std::endl;
         std::cout << "Client fd: " << it->second.getFd() << std::endl;
         std::cout << "Client channels: " << std::endl;
-        std::set<std::string> channels = it->second.getChannels();
+        std::set<std::string> channels = it->second.getJoinedChannels();
         std::set<std::string>::iterator it2 = channels.begin();
         std::set<std::string>::iterator ite2 = channels.end();
         for (; it2 != ite2; it2++) {
@@ -115,6 +115,11 @@ int main()
         printMessages(join.execute());
     }
     printChannels();
+    std::cout << "------------------Join again------------------" << std::endl;
+    {
+        Join join(client, "#new");
+        printMessages(join.execute());
+    }
     std::cout << "------------------PrivMsg test(to channel)------------------" << std::endl;
     {
         PrivMsg privMg(client, "#new", "hello");
