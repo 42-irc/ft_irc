@@ -1,6 +1,6 @@
 #include "Part.hpp"
 
-Part::Part(Client client, std::string channel) : Command(client, "PART"), _channel(channel) {}
+Part::Part(Client* client, std::string channel) : Command(client, "PART"), _channel(channel) {}
 
 Part::~Part() {}
 
@@ -12,16 +12,11 @@ std::vector<Message> Part::execute() {
 
 	for (; it != ite; it++) {
 		try {
-			Channel channel;
-
-			channel = Server::findChannel( _client, *it);
-			channel.findClient(_client, _client.getNickName());
+			Channel* channel = Server::findChannel( _client, *it);
+			channel->findClient(_client, _client->getNickName());
+			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
 			Server::removeClientFromChannel(_client, channel);
-			messages.push_back(Message(channel.getFds(), _client.getNickName(), _type + " " + *it));
 		} catch (std::vector<Message> &e) {
-			std::vector<int> targetFd;
-			std::vector<Message> messages;
-			
 			messages.push_back(e[0]);
 		}
 	}

@@ -10,11 +10,12 @@
 
 class Command {
 	protected:
-		Client _client;
+		Client* _client;
 		std::string _type;
+		std::string getPrefix();
 
 	public:
-		Command(Client client, std::string type);
+		Command(Client* client, std::string type);
 		virtual ~Command();
 		virtual std::vector<Message>  execute() = 0;
 };

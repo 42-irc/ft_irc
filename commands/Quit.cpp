@@ -1,6 +1,6 @@
 # include "Quit.hpp"
 
-Quit::Quit(Client client) : Command(client, "QUIT") {}
+Quit::Quit(Client* client) : Command(client, "QUIT") {}
 
 Quit::~Quit() {}
 

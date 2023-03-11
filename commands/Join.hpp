@@ -12,7 +12,7 @@ class Join : public Command {
 		void checkValidName(std::string& name);
 
 	public:
-		Join(Client client, std::string channel);
+		Join(Client* client, std::string channel);
 		~Join();
 
 		std::vector<Message> execute();

@@ -6,7 +6,7 @@
 
 class Quit : public Command {
 	public:
-		Quit(Client client);
+		Quit(Client* client);
 		~Quit();
 		std::vector<Message> execute();
 };

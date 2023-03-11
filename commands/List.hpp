@@ -7,7 +7,7 @@
 class List : public Command
 {
 	public:
-		List(Client client);
+		List(Client* client);
 		~List();
 		std::vector<Message> execute();
 };
