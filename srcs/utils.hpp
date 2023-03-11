@@ -37,6 +37,7 @@ namespace ft
 {
 
 	std::vector<std::string> split(const std::string &str, char charset, unsigned long n = 0);
+	std::vector<std::string> split(const std::string &str, std::string charset);
 	const std::string getCodeMessage(int code);
 	const std::string codeToString(unsigned int n);
 

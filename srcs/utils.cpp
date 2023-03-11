@@ -23,6 +23,23 @@ namespace ft
         return ret;
     }
 
+	// split a string with multiple charsets
+	std::vector<std::string> split(const std::string &str, std::string charset) {
+		std::vector<std::string> ret;
+		std::stringstream ss(str);
+		std::string tmp = str;
+
+		while (tmp.size()) {
+			std::size_t idx = tmp.find_first_of(charset);
+			if (idx)
+				ret.push_back(tmp.substr(0, idx));
+			tmp.erase(0, idx);
+			idx = tmp.find_first_not_of(charset);
+			tmp.erase(0, idx);
+		}
+		return ret;
+	}
+
 	const std::string getCodeMessage(int code) {
 		switch (code) {
 			case RPL_WELCOME:
