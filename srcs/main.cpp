@@ -2,6 +2,25 @@
 #include "parse.hpp"
 #include "../commands/Command.hpp"
 
+void printMessages(std::vector<Message> messages)
+{
+    std::vector<Message>::iterator it = messages.begin();
+    std::vector<Message>::iterator ite = messages.end();
+	if (it == ite)
+		return;
+	std::vector<int> targets = it->getTargets();
+	std::vector<int>::iterator firstTarget = targets.begin();
+	std::vector<int>::iterator lastTarget = targets.end();
+	std::cout << "--- Messages ---" << std::endl;
+	for (; firstTarget != lastTarget; firstTarget++) {
+		std::cout << "\tTarget : " << *firstTarget << std::endl;
+	}
+    for (; it != ite; it++) {
+        std::cout << "Message - " << it->getMessage() << std::endl;
+    }
+	std::cout << "----------------" << std::endl;
+}
+
 void err_exit(std::string error_msg) {
 	std::cerr << "Error " << error_msg << std::endl;
 	exit(1);
@@ -49,20 +68,33 @@ int main(int argc, char *argv[]) {
 					} else {
 						// 클라이언트 메시지 수신 성공
 						std::cout << "[" << event_client_socket << "] client : " << buffer << std::endl;
-						// 클라이언트에 보낼 메시지 작성 후 전송
-						Command* command = ft::parse(Server::findClient(event_client_socket), std::string(buffer));
-						std::vector<Message> messages = command->execute();
-						std::vector<Message>::iterator first = messages.begin();
-						std::vector<Message>::iterator last = messages.end();
+						std::vector<std::string> tokens = ft::split(std::string(buffer), "\r\n");
+						std::vector<std::string>::iterator first = tokens.begin();
+						std::vector<std::string>::iterator last = tokens.end();
 
 						while (first != last) {
-							std::vector<int> targets = first->getTargets();
-							std::vector<int>::iterator firstTarget = targets.begin();
-							std::vector<int>::iterator lastTarget = targets.end();
+							// 클라이언트에 보낼 메시지 작성 후 전송
+							try {
+								Command* command = ft::parse(Server::findClient(event_client_socket), *first);
+								std::vector<Message> messages = command->execute();
+								delete command;
+								std::vector<Message>::iterator first = messages.begin();
+								std::vector<Message>::iterator last = messages.end();
 
-							while (firstTarget != lastTarget) {
-								send(*firstTarget, first->getMessage().c_str(), first->getMessage().size(), 0);
-								firstTarget++;
+								while (first != last) {
+									std::vector<int> targets = first->getTargets();
+									std::vector<int>::iterator firstTarget = targets.begin();
+									std::vector<int>::iterator lastTarget = targets.end();
+
+									while (firstTarget != lastTarget) {
+										send(*firstTarget, first->getMessage().c_str(), first->getMessage().size(), 0);
+										firstTarget++;
+									}
+									first++;
+								}
+								printMessages(messages);
+							} catch (Message e) {
+								send(event_client_socket, e.getMessage().c_str(), e.getMessage().size(), 0);
 							}
 							first++;
 						}
