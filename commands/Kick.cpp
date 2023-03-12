@@ -18,8 +18,8 @@ std::vector<Message> Kick::execute() {
 		messages.push_back(Message(targetFd, _client->getNickName(), getMsg()));
 		Server::removeClientFromChannel(target, channel);
 	}
-	catch (std::vector<Message> &e) {
-		messages.push_back(e[0]);
+	catch (Message &e) {
+		messages.push_back(e);
 	}
 	return (messages);
 }
@@ -33,8 +33,8 @@ void Kick::checkIsAdmin(Channel* channel) {
 	if (_client->getIsAdmin() == false && channel->getOperator() != _client) {
 		std::vector<int> targetFd;
 		std::vector<Message> messages;
+
 		targetFd.push_back(_client->getFd());
-		messages.push_back(Message(targetFd, ERR_CHANOPRIVSNEEDED, _channel));
-		throw (messages);
+		throw Message(targetFd, ERR_CHANOPRIVSNEEDED, _channel);
 	}
 }

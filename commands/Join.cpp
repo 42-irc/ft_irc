@@ -7,9 +7,9 @@ Join::~Join() {}
 void Join::checkValidName(std::string& name) {
 	if ((name[0] != '#' && name[0] != '&') || name.size() > 200) {
 		std::vector<int> targetFd;
-		std::vector<Message> messages;
-		messages.push_back(Message(targetFd, ERR_NOSUCHCHANNEL, name));
-		throw messages;
+
+		targetFd.push_back(_client->getFd());
+		throw Message(targetFd, ERR_NOSUCHCHANNEL, name);
 	}
 }
 
@@ -19,8 +19,7 @@ void Join::checkChannelNum() {
 		std::vector<Message> messages;
 		
 		targetFd.push_back(_client->getFd());
-		messages.push_back(Message(targetFd, 405, _client->getNickName() + " " + _channel));
-		throw messages;
+		throw Message(targetFd, 405, _client->getNickName() + " " + _channel);
 	}
 }
 
@@ -36,23 +35,22 @@ std::vector<Message> Join::execute(){
 	for (; it != ite; it++) {
 		try{
 			Channel* channel = Server::findChannel(_client, *it);
-			if (channel->checkClientExist(_client->getNickName()) == true)
+			if (channel->checkClientExist(_client->getNickName()))
 				continue;
 			Server::addClientToChannel(_client, channel);
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
 		}
-		catch (std::vector<Message> &e){
-			std::vector<int> targetFd;
+		catch (Message &e){
 			try {
 				checkValidName(*it);
 				checkChannelNum();
-				targetFd.push_back(_client->getFd());
+
 				Channel *channel = new Channel(*it, _client);
 				Server::addChannel(channel);
 				Server::addClientToChannel(_client, channel);
 				messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
-			} catch (std::vector<Message> &e) {
-				messages.push_back(e[0]);
+			} catch (Message &e) {
+				messages.push_back(e);
 			}
 		}
 	}

@@ -12,7 +12,7 @@ class Command {
 	protected:
 		Client* _client;
 		std::string _type;
-		std::string getPrefix();
+		const std::string getPrefix() const;
 
 	public:
 		Command(Client* client, std::string type);

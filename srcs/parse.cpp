@@ -42,7 +42,6 @@ namespace ft
 							return new Quit(client);
 						case 9:
 							params = ft::split(str, ' ', 4);
-							// if (params[2] != "0" || params[3] != "*") throw Message(); // 461
 							return new User(client, params[1]);
 						case 10:
 							params = ft::split(str, ' ', 2);

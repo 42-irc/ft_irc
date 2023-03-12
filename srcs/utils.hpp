@@ -33,6 +33,7 @@ enum e_code {
 # define CODE_323 ":End of /LIST"
 # define CODE_461 ":Not enough parameters"
 # define CODE_464 ":Password incorrect"
+
 namespace ft
 {
 

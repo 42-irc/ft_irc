@@ -2,8 +2,8 @@
 #include "parse.hpp"
 #include "../commands/Command.hpp"
 
-void printMessages(std::vector<Message> messages)
-{
+/* 디버깅용 프린트 함수 */
+void printMessages(std::vector<Message> messages) {
     std::vector<Message>::iterator it = messages.begin();
     std::vector<Message>::iterator ite = messages.end();
 	if (it == ite)
@@ -28,8 +28,7 @@ void err_exit(std::string error_msg) {
 
 int main(int argc, char *argv[]) {
 	int port = validate_args(argc, argv);
-	Server::setPort(port);
-	Server::setPassword(std::string(argv[2]));
+	Server server(port, argv[2], "admin", "admin");
 	int server_socket = create_server_socket(port);
 	int kq = set_server_on_kqueue(server_socket);
 
@@ -92,7 +91,7 @@ int main(int argc, char *argv[]) {
 									}
 									first++;
 								}
-								printMessages(messages);
+								// printMessages(messages);// 디버깅용 프린트 함수
 							} catch (Message e) {
 								send(event_client_socket, e.getMessage().c_str(), e.getMessage().size(), 0);
 							}

@@ -6,6 +6,6 @@ Command::~Command() {}
 
 std::vector<Message> Command::execute() { return std::vector<Message>(); }
 
-std::string Command::getPrefix() {
+const std::string Command::getPrefix() const {
 	return _client->getNickName() + "!" + _client->getName() + "@" + _client->getHostName();
 }

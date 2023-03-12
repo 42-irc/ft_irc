@@ -1,7 +1,6 @@
 #include "client_socket.hpp"
 
-void printChannels()
-{
+void printChannels() {
     std::cout << "------------------exist channels------------------" << std::endl;
     std::map<std::string, Channel*> channels = Server::getChannels();
     std::map<std::string, Channel*>::iterator it = channels.begin();
@@ -20,8 +19,7 @@ void printChannels()
     std::cout << std::endl;
 }
 
-void printClients()
-{
+void printClients() {
     std::cout << "------------------exist clients------------------" << std::endl;
     std::map<std::string, Client*> clients = Server::getClients();
     std::map<std::string, Client*>::iterator it = clients.begin();
@@ -54,9 +52,13 @@ void create_client_socket(int server_socket, int kq) {
 	if (fcntl(new_client_socket, F_SETFL, O_NONBLOCK) == -1)
 		err_exit("setting client socket flag : " + std::string(strerror(errno)));
 
-	Client *client = new Client(new_client_socket);
-	client->setHostName(client_host);
-	Server::addClient(client);
+    try {
+        Server::findClient(new_client_socket);
+    } catch (Message& e) {
+        Client* client = new Client(new_client_socket);
+        client->setHostName(client_host);
+        Server::addClient(client);
+    }
 
 	struct kevent client_socket_event[2];
 	EV_SET(&client_socket_event[0], new_client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
@@ -66,6 +68,6 @@ void create_client_socket(int server_socket, int kq) {
 	// 임시 접속 메시지
 	char message[] = "🍀 WELCOME TO IRC SERVER 🍀\n";
 	send(new_client_socket, message, sizeof(message), 0);
-	printChannels();
-	printClients();
+	// printChannels();// 디버깅용 프린트 함수
+	// printClients();// 디버깅용 프린트 함수
 }

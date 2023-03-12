@@ -8,9 +8,28 @@ std::string Server::_password;
 std::string Server::_adminName = "admin";
 std::string Server::_adminPassword = "admin";
 
-Server::Server() {};
+Server::Server(int port, std::string password, std::string adminName, std::string adminPassword) {
+	_port = port;
+	_password = password;
+	_adminName = adminName;
+	_adminPassword = adminPassword;
+}
 
-Server::~Server() {};
+Server::~Server() {
+	std::map<std::string, Channel*>::iterator it = _channels.begin();
+	std::map<std::string, Channel*>::iterator ite = _channels.end();
+
+	for (; it != ite; it++) {
+		delete it->second;
+	}
+
+	std::map<std::string, Client*>::iterator it2 = _clients.begin();
+	std::map<std::string, Client*>::iterator it2e = _clients.end();
+
+	for (; it2 != it2e; it2++) {
+		delete it2->second;
+	}
+};
 
 int Server::getPort() { return _port; }
 
@@ -25,11 +44,9 @@ Channel* Server::findChannel(Client* client, std::string name) {
 		return it->second;
 
 	std::vector<int> fd;
-	std::vector<Message> messages;
 
 	fd.push_back(client->getFd());
-	messages.push_back(Message(fd, ERR_NOSUCHCHANNEL, name));
-	throw messages;
+	throw Message(fd, ERR_NOSUCHCHANNEL, name);
 }
 
 std::map<std::string, Client*> Server::getClients() { return _clients; }
@@ -41,11 +58,9 @@ Client* Server::findClient(Client* client, std::string name) {
 		return it->second;
 
 	std::vector<int> fd;
-	std::vector<Message> messages;
 
 	fd.push_back(client->getFd());
-	messages.push_back(Message(fd, ERR_NOSUCHNICK, name));
-	throw messages;
+	throw Message(fd, ERR_NOSUCHNICK, name);
 }
 
 Client* Server::findClient(int fd) {
@@ -54,9 +69,7 @@ Client* Server::findClient(int fd) {
 	if (it != _clientsFd.end())
 		return it->second;
 
-	std::vector<Message> messages;
-	
-	throw messages;
+	throw Message();
 }
 
 const std::string Server::getPassword() { return _password; }
@@ -86,7 +99,7 @@ void Server::removeClient(Client* client) {
 	std::set<std::string>::iterator last = channels.end();
 	
 	while (first != last) {
-		_channels[*first]->removeClient(client);
+		removeClientFromChannel(client, _channels[*first]);
 		first++;
 	}
 	_clients.erase(client->getNickName());

@@ -20,24 +20,28 @@ class Server {
 		static std::string _adminPassword;
 
 	public:
-		Server();
+		Server(int port, std::string password, std::string adminName, std::string adminPassword);
 		~Server();
 		static int getPort();
 		static std::map<std::string, Channel*> getChannels();
-		static Channel* findChannel(Client* client, std::string name);
 		static std::map<std::string, Client*> getClients();
-		static Client* findClient(Client* client, std::string name);
-		static Client* findClient(int fd);
 		static const std::string getPassword();
 		static const std::string getAdminName();
 		static const std::string getAdminPassword();
+
 		static void setPort(int port);
 		static void setPassword(std::string password);
+
+		static Channel* findChannel(Client* client, std::string name);
+		static Client* findClient(Client* client, std::string name);
+		static Client* findClient(int fd);
+
 		static void addChannel(Channel* channel);
-		static void removeChannel(Channel* channel);
 		static void addClient(Client* client);
-		static void removeClient(Client* client);
 		static void addClientToChannel(Client* client, Channel* channel);
+
+		static void removeChannel(Channel* channel);
+		static void removeClient(Client* client);
 		static void removeClientFromChannel(Client* client, Channel* channel);
 };
 

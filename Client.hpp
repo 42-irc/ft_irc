@@ -19,18 +19,22 @@ class Client {
 		Client(int fd);
 		Client(Client const &client);
 		~Client();
+
 		const std::string getName() const;
 		const std::string getNickName() const;
 		const std::string getHostName() const;
 		const std::set<std::string> getJoinedChannels() const;
 		int getFd() const;
 		bool getIsAdmin() const;
+
 		void setName(const std::string name);
 		void setNickName(const std::string nickName);
 		void setHostName(const std::string hostName);
 		void setIsAdmin(const bool isAdmin);
+
 		void addChannel(std::string channel);
 		void removeChannel(std::string channel);
+
 		bool operator==(const Client &client) const;
 		bool operator!=(const Client &client) const;
 };

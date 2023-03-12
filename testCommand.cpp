@@ -65,17 +65,17 @@ void printMessages(std::vector<Message> messages)
 int main()
 {
 //      Server(int port, std::string password, std::string adminName, std::string adminPassword);
-	Client *client = new Client(0);
+	Client* client = new Client(0);
     client->setNickName("nickName");
-    Client *client2 = new Client(1);
+    Client* client2 = new Client(1);
     client2->setNickName("nickName2");
-    Client *client3 = new Client(2);
+    Client* client3 = new Client(2);
     client3->setNickName("nickName3");
-    Client *client4 = new Client(3);
+    Client* client4 = new Client(3);
     client4->setNickName("nickName4");
-    Client *client5 = new Client(4);
+    Client* client5 = new Client(4);
     client5->setNickName("nickName5");
-    Client *client6 = new Client(5);
+    Client* client6 = new Client(5);
     client6->setNickName("nickName6");
 
     Server::addClient(client);
@@ -199,7 +199,7 @@ int main()
     }
     std::cout << "------------------Nick test(new user)------------------" << std::endl;
     {
-        Client *client5 = new Client(5);
+        Client* client5 = new Client(5);
         Nick nick(client5, "newNick5");
         printMessages(nick.execute());
     }

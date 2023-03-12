@@ -14,21 +14,23 @@ class Channel {
 	private:
 		std::map<std::string, Client*> _clients;
 		std::string _name;
-		Client *_operator;
+		Client* _operator;
 
 	public:
 		Channel();
-		Channel(std::string name, Client *oper);
+		Channel(std::string name, Client* oper);
 		~Channel();
+
+		const Client* getOperator() const;
 		const std::string getName() const;
-		std::map<std::string, Client*> getClients() const;
 		const std::vector<int> getFds() const;
-		const std::vector<int> getFds(Client* client) const;
+		const std::vector<int> getFdsExceptClient(Client* client) const;
+		const std::map<std::string, Client*> getClients() const;
+
 		Client* findClient(Client* client, std::string name) const;
-		bool checkClientExist(std::string name) const;
-		Client* getOperator() const;
 		void addClient(Client* client);
 		void removeClient(Client* client);
+		bool checkClientExist(std::string name) const;
 };
 
 #endif

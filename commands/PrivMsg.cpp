@@ -18,22 +18,19 @@ std::vector<Message> PrivMsg::execute() {
 	std::vector<std::string>::iterator ite = targetList.end();
 
 	for (; it != ite; it++) {
-		if ((*it)[0] == '#') {
-			try {
-				Channel* target = Server::findChannel(_client, *it);;
-				targetFd = target->getFds(_client);
-				messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
-			} catch (std::vector<Message> &e) {
-				messages.push_back(e[0]);
+		try {
+			if ((*it)[0] == '#') { // 채널에 보내는 경우
+					Channel* target = Server::findChannel(_client, *it); // 채널이 없으면 에러
+					target->findClient(_client, _client->getNickName()); // 유저가 채널에 없으면 에러
+					targetFd = target->getFdsExceptClient(_client);		 // 자기 자신 제외
+					messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
+			} else { // 유저에게 보내는 경우
+					Client* target = Server::findClient(_client, *it); // 유저가 없으면 에러
+					targetFd.push_back(target->getFd());
+					messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
 			}
-		} else {
-			try {
-				Client* target = Server::findClient(_client, *it);
-				targetFd.push_back(target->getFd());
-				messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
-			} catch (std::vector<Message> &e) {
-				messages.push_back(e[0]);
-			}
+		} catch (Message &e) {
+			messages.push_back(e);
 		}
 	}
 	return messages;

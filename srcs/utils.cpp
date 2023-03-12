@@ -26,7 +26,6 @@ namespace ft
 	// split a string with multiple charsets
 	std::vector<std::string> split(const std::string &str, std::string charset) {
 		std::vector<std::string> ret;
-		std::stringstream ss(str);
 		std::string tmp = str;
 
 		while (tmp.size()) {
