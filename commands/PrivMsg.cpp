@@ -1,6 +1,6 @@
 #include "PrivMsg.hpp"
 
-PrivMsg::PrivMsg(Client* client, std::string target, std::string msg) : Command(client, "PRIVMSG"), _target(target), _msg(msg) {}
+PrivMsg::PrivMsg(Client* client, const std::string& target, const std::string& msg) : Command(client, "PRIVMSG"), _target(target), _msg(msg) {}
 
 PrivMsg::~PrivMsg() {}
 

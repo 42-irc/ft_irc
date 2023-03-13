@@ -1,6 +1,6 @@
 #include "Oper.hpp"
 
-Oper::Oper(Client* client, std::string name, std::string password) : Command(client, "OPER"), _name(name), _password(password) { }
+Oper::Oper(Client* client, const std::string& name, const std::string& password) : Command(client, "OPER"), _name(name), _password(password) { }
 
 Oper::~Oper() {}
 

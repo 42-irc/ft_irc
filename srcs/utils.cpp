@@ -3,7 +3,7 @@
 namespace ft
 {
 
-    std::vector<std::string> split(const std::string &str, char charset, unsigned long n) {
+    std::vector<std::string> split(const std::string& str, char charset, unsigned long n) {
         std::vector<std::string> ret;
         std::stringstream ss(str);
         std::string tmp;
@@ -24,7 +24,7 @@ namespace ft
     }
 
 	// split a string with multiple charsets
-	std::vector<std::string> split(const std::string &str, std::string charset) {
+	std::vector<std::string> split(const std::string& str, const std::string charset) {
 		std::vector<std::string> ret;
 		std::string tmp = str;
 

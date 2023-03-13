@@ -6,11 +6,11 @@ Client::Client(int fd, Server* server) : _fd(fd), _server(server), _isAdmin(fals
 	_server->addClient(this);
 }
 
-Client::Client(Client const &client) : _fd(client._fd), _server(client._server), _name(client._name), _nickName(client._nickName), _hostName(client._hostName), _joinedChannels(client._joinedChannels), _isAdmin(client._isAdmin) {}
+Client::Client(const Client& client) : _fd(client._fd), _server(client._server), _name(client._name), _nickName(client._nickName), _hostName(client._hostName), _joinedChannels(client._joinedChannels), _isAdmin(client._isAdmin) {}
 
 Client::~Client() {}
 
- Server* Client::getServer() { return _server; };
+Server* Client::getServer() { return _server; };
 
 const std::string Client::getName() const { return _name; }
 
@@ -24,20 +24,20 @@ bool Client::getIsAdmin() const { return _isAdmin; }
 
 const std::set<std::string> Client::getJoinedChannels() const { return _joinedChannels; }
 
-void Client::setName(const std::string name) { _name = name; }
+void Client::setName(const std::string& name) { _name = name; }
 
-void Client::setNickName(const std::string nickName) { _nickName = nickName; }
+void Client::setNickName(const std::string& nickName) { _nickName = nickName; }
 
-void Client::setHostName(const std::string hostName) { _hostName = hostName; }
+void Client::setHostName(const std::string& hostName) { _hostName = hostName; }
 
 void Client::setIsAdmin(const bool isAdmin) { _isAdmin = isAdmin; }
 
-void Client::joinChannel(std::string target) { 
+void Client::joinChannel(const std::string& target) { 
 	_server->findChannel(this, target)->addClient(this);
 	_joinedChannels.insert(target);
 }
 
-void Client::leaveChannel(std::string target) {
+void Client::leaveChannel(const std::string& target) {
 	Channel *channel = _server->findChannel(this, target);
 
 	channel->removeClient(this);
@@ -58,6 +58,6 @@ void Client::leaveServer() {
 	_server->removeClient(this);
 }
 
-bool Client::operator==(const Client &client) const { return _nickName == client._nickName; }
+bool Client::operator==(const Client& client) const { return _nickName == client._nickName; }
 
-bool Client::operator!=(const Client &client) const { return _nickName != client._nickName; }
+bool Client::operator!=(const Client& client) const { return _nickName != client._nickName; }

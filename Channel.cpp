@@ -2,7 +2,7 @@
 
 Channel::Channel() : _clients(std::map<std::string, Client*>()), _name(""), _operator(NULL) {};
 
-Channel::Channel(std::string name, Client* oper) : _name(name), _operator(oper) {};
+Channel::Channel(const std::string& name, Client* oper) : _name(name), _operator(oper) {};
 
 Channel::~Channel() {};
 
@@ -32,7 +32,7 @@ const std::vector<int> Channel::getFdsExceptClient(Client* client) const {
 	return fds;
 }
 
-Client* Channel::findClient(Client* client, std::string name) const {
+Client* Channel::findClient(Client* client, const std::string& name) const {
 	std::map<std::string, Client*>::const_iterator it = _clients.find(name);
 
 	if (it != _clients.end())
@@ -44,7 +44,7 @@ Client* Channel::findClient(Client* client, std::string name) const {
 	throw Message(fd, ERR_NOSUCHNICK, name);
 }
 
-bool Channel::checkClientExist(std::string name) const {
+bool Channel::checkClientExist(const std::string& name) const {
 	std::map<std::string, Client*>::const_iterator it = _clients.find(name);
 
 	return it != _clients.end();

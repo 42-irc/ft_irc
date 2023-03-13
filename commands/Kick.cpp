@@ -1,6 +1,6 @@
 #include "Kick.hpp"
 
-Kick::Kick(Client* client, std::string channel, std::string target, std::string reason) : Command(client, "KICK"), _channel(channel), _target(target), _reason(reason) { }
+Kick::Kick(Client* client, const std::string& channel, const std::string& target, const std::string& reason) : Command(client, "KICK"), _channel(channel), _target(target), _reason(reason) { }
 
 Kick::~Kick() {}
 

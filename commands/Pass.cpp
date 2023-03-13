@@ -1,6 +1,6 @@
 #include "Pass.hpp"
 
-Pass::Pass(Client* client, std::string password) : Command(client, "PASS"), _password(password) {};
+Pass::Pass(Client* client, const std::string& password) : Command(client, "PASS"), _password(password) {};
 
 Pass::~Pass() {};
 

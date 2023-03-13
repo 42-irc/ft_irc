@@ -1,6 +1,6 @@
 # include "Server.hpp"
 
-Server::Server(int port, std::string password, std::string adminName, std::string adminPassword): _port(port), _password(password),_adminName(adminName), _adminPassword(adminPassword) {}
+Server::Server(int port, const std::string& password, const std::string& adminName, const std::string& adminPassword): _port(port), _password(password),_adminName(adminName), _adminPassword(adminPassword) {}
 
 Server::~Server() {
 	std::map<std::string, Channel*>::const_iterator it = _channels.begin();
@@ -20,11 +20,21 @@ Server::~Server() {
 
 int Server::getPort() { return _port; }
 
-void Server::setPort(int port) { _port = port; };
-
 std::map<std::string, Channel*> Server::getChannels() { return _channels; }
 
-Channel* Server::findChannel(Client* client, std::string name) {
+std::map<std::string, Client*> Server::getClients() { return _clients; }
+
+const std::string Server::getPassword() { return _password; }
+
+const std::string Server::getAdminName() { return _adminName; }
+
+const std::string Server::getAdminPassword() { return _adminPassword; }
+
+void Server::setPort(int port) { _port = port; };
+
+void Server::setPassword(const std::string& password) { _password = password; }
+
+Channel* Server::findChannel(Client* client, const std::string& name) {
 	std::map<std::string, Channel*>::const_iterator it = _channels.find(name);
 
 	if (it != _channels.end())
@@ -36,9 +46,8 @@ Channel* Server::findChannel(Client* client, std::string name) {
 	throw Message(fd, ERR_NOSUCHCHANNEL, name);
 }
 
-std::map<std::string, Client*> Server::getClients() { return _clients; }
 
-Client* Server::findClient(Client* client, std::string name) {
+Client* Server::findClient(Client* client, const std::string& name) {
 	std::map<std::string, Client*>::const_iterator it = _clients.find(name);
 
 	if (it != _clients.end())
@@ -59,25 +68,17 @@ Client* Server::findClient(int fd) {
 	throw Message();
 }
 
-const std::string Server::getPassword() { return _password; }
-
-void Server::setPassword(std::string password) { _password = password; }
-
-const std::string Server::getAdminName() { return _adminName; }
-
-const std::string Server::getAdminPassword() { return _adminPassword; }
-
 void Server::addChannel(Channel* channel) {
 	_channels.insert(std::pair<std::string, Channel*>(channel->getName(), channel));
-}
-
-void Server::removeChannel(Channel* channel) {
-	_channels.erase(channel->getName());
 }
 
 void Server::addClient(Client* client) {
 	_clients[client->getNickName()] = client;
 	_clientsFd[client->getFd()] = client;
+}
+
+void Server::removeChannel(Channel* channel) {
+	_channels.erase(channel->getName());
 }
 
 void Server::removeClient(Client* client) {

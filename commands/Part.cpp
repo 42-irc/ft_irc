@@ -1,6 +1,6 @@
 #include "Part.hpp"
 
-Part::Part(Client* client, std::string channel) : Command(client, "PART"), _channel(channel) {}
+Part::Part(Client* client, const std::string& channel) : Command(client, "PART"), _channel(channel) {}
 
 Part::~Part() {}
 

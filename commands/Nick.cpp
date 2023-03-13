@@ -1,10 +1,10 @@
 #include "Nick.hpp"
 
-Nick::Nick(Client* client, std::string nick) : Command(client, "NICK"), _nick(nick) {}
+Nick::Nick(Client* client, const std::string& nick) : Command(client, "NICK"), _nick(nick) {}
 
 Nick::~Nick() {}
 
-std::string Nick::getPrefix(std::string oldNick) const {
+std::string Nick::getPrefix(const std::string& oldNick) const {
 	return oldNick + "!" + _client->getName() + "@" + _client->getHostName();
 }
 

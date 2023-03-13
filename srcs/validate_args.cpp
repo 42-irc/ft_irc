@@ -1,4 +1,5 @@
 #include "validate_args.hpp"
+#include "main.hpp"
 
 void err_exit(std::string error_msg);
 
@@ -11,7 +12,7 @@ unsigned long num_of_digit(int num) {
 	return cnt;
 }
 
-int validate_port(char *port) {
+int validate_port(char* port) {
 	int port_num = atoi(port);
 
 	// 숫자만으로 구성되는지 확인

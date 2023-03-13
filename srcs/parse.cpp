@@ -3,7 +3,7 @@
 namespace ft
 {
 
-	Command* parse(Client* client, std::string str) {
+	Command* parse(Client* client, const std::string& str) {
 		std::string commands[11] = { "JOIN", "KICK", "LIST", "NICK", "OPER", "PART", "PASS" , "PRIVMSG", "QUIT", "USER", "PING"};
 		std::vector<std::string> params;
 

@@ -1,4 +1,5 @@
 #include "client_socket.hpp"
+#include "main.hpp"
 
 void printChannels(Server* server) {
     std::cout << "------------------exist channels------------------" << std::endl;

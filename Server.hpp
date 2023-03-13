@@ -23,7 +23,7 @@ class Server {
 		std::string _adminPassword;
 
 	public:
-		Server(int port, std::string password, std::string adminName, std::string adminPassword);
+		Server(int port, const std::string& password, const std::string& adminName, const std::string& adminPassword);
 		~Server();
 
 		int getPort();
@@ -34,10 +34,10 @@ class Server {
 		const std::string getAdminPassword();
 
 		void setPort(int port);
-		void setPassword(std::string password);
+		void setPassword(const std::string& password);
 
-		Channel* findChannel(Client* client, std::string name);
-		Client* findClient(Client* client, std::string name);
+		Channel* findChannel(Client* client, const std::string& name);
+		Client* findClient(Client* client, const std::string& name);
 		Client* findClient(int fd);
 
 		void addChannel(Channel* channel);

@@ -1,6 +1,6 @@
 #include "Join.hpp"
 
-Join::Join(Client* client, std::string channel) : Command(client, "JOIN"), _channel(channel) {}
+Join::Join(Client* client, const std::string& channel) : Command(client, "JOIN"), _channel(channel) {}
 
 Join::~Join() {}
 
