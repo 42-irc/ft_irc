@@ -39,21 +39,19 @@ std::vector<Message> Nick::execute() {
 	std::set<std::string>::iterator it2 = channels.begin();
 	std::set<std::string>::iterator end2 = channels.end();
 
-	std::string origin_nick = getPrefix(_client->getNickName());
+	std::string prefix = getPrefix(_client->getNickName());
 	Client* new_nick = new Client(*_client);
 	new_nick->setNickName(_nick);
 	Server::addClient(new_nick);
 	while (it2 != end2) {
 		Channel* channel = Server::findChannel(new_nick, *it2);
-		targetFd = channel->getFds();
-		messages.push_back(Message(targetFd, origin_nick, "NICK " + _nick));
+		targetFd = channel->getFdsExceptClient(_client);
+		messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
 		Server::addClientToChannel(new_nick, channel);
 		it2++;
 	}
 	Server::removeClient(_client);
-	if (messages.size() == 0) {
-		targetFd.push_back(new_nick->getFd());
-		messages.push_back(Message(targetFd, origin_nick, "NICK " + _nick));
-	}
+	targetFd.push_back(new_nick->getFd());
+	messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
 	return messages;
 }
