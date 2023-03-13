@@ -9,8 +9,8 @@ Quit::~Quit() {}
 */
 std::vector<Message> Quit::execute() {
 	std::set<std::string> channels = _client->getJoinedChannels();
-	std::set<std::string>::iterator it = channels.begin();
-	std::set<std::string>::iterator ite = channels.end();
+	std::set<std::string>::const_iterator it = channels.begin();
+	std::set<std::string>::const_iterator ite = channels.end();
 	std::vector<Message> messages;
 
 	for (; it != ite; it++) {

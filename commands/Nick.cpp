@@ -37,8 +37,8 @@ std::vector<Message> Nick::execute() {
 	newClient->getServer()->addClient(newClient);
 
 	std::set<std::string> channels = _client->getJoinedChannels();
-	std::set<std::string>::iterator it = channels.begin();
-	std::set<std::string>::iterator ite = channels.end();
+	std::set<std::string>::const_iterator it = channels.begin();
+	std::set<std::string>::const_iterator ite = channels.end();
 	std::string prefix = getPrefix(_client->getNickName());
 
 	for (; it != ite; it++) {

@@ -4,13 +4,13 @@
 
 /* 디버깅용 프린트 함수 */
 void printMessages(std::vector<Message> messages) {
-    std::vector<Message>::iterator it = messages.begin();
-    std::vector<Message>::iterator ite = messages.end();
+    std::vector<Message>::const_iterator it = messages.begin();
+    std::vector<Message>::const_iterator ite = messages.end();
 	if (it == ite)
 		return;
 	std::vector<int> targets = it->getTargets();
-	std::vector<int>::iterator firstTarget = targets.begin();
-	std::vector<int>::iterator lastTarget = targets.end();
+	std::vector<int>::const_iterator firstTarget = targets.begin();
+	std::vector<int>::const_iterator lastTarget = targets.end();
 	std::cout << "--- Messages ---" << std::endl;
 	for (; firstTarget != lastTarget; firstTarget++) {
 		std::cout << "\tTarget : " << *firstTarget << std::endl;
@@ -67,8 +67,8 @@ int main(int argc, char *argv[]) {
 						// 클라이언트 메시지 수신 성공
 						std::cout << "[" << event_client_socket << "] client : " << buffer << std::endl;
 						std::vector<std::string> tokens = ft::split(std::string(buffer), "\r\n");
-						std::vector<std::string>::iterator first = tokens.begin();
-						std::vector<std::string>::iterator last = tokens.end();
+						std::vector<std::string>::const_iterator first = tokens.begin();
+						std::vector<std::string>::const_iterator last = tokens.end();
 
 						while (first != last) {
 							// 클라이언트에 보낼 메시지 작성 후 전송
@@ -76,13 +76,13 @@ int main(int argc, char *argv[]) {
 								Command* command = ft::parse(server->findClient(event_client_socket), *first);
 								std::vector<Message> messages = command->execute();
 								delete command;
-								std::vector<Message>::iterator first = messages.begin();
-								std::vector<Message>::iterator last = messages.end();
+								std::vector<Message>::const_iterator first = messages.begin();
+								std::vector<Message>::const_iterator last = messages.end();
 
 								while (first != last) {
 									std::vector<int> targets = first->getTargets();
-									std::vector<int>::iterator firstTarget = targets.begin();
-									std::vector<int>::iterator lastTarget = targets.end();
+									std::vector<int>::const_iterator firstTarget = targets.begin();
+									std::vector<int>::const_iterator lastTarget = targets.end();
 
 									while (firstTarget != lastTarget) {
 										send(*firstTarget, first->getMessage().c_str(), first->getMessage().size(), 0);

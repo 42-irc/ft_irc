@@ -3,15 +3,15 @@
 void printChannels(Server* server) {
     std::cout << "------------------exist channels------------------" << std::endl;
     std::map<std::string, Channel*> channels = server->getChannels();
-    std::map<std::string, Channel*>::iterator it = channels.begin();
-    std::map<std::string, Channel*>::iterator ite = channels.end();
+    std::map<std::string, Channel*>::const_iterator it = channels.begin();
+    std::map<std::string, Channel*>::const_iterator ite = channels.end();
     for (; it != ite; it++) {
         std::cout << "Channel name: " << it->second->getName() << std::endl;
         // std::cout << "Channel operator: " << it->second->getOperator()->getNickName() << std::endl;
         std::cout << "Channel clients: " << std::endl;
         std::map<std::string, Client*> clients = it->second->getClients();
-        std::map<std::string, Client*>::iterator it2 = clients.begin();
-        std::map<std::string, Client*>::iterator ite2 = clients.end();
+        std::map<std::string, Client*>::const_iterator it2 = clients.begin();
+        std::map<std::string, Client*>::const_iterator ite2 = clients.end();
         for (; it2 != ite2; it2++) {
             std::cout << "\tClient name: " << it2->second->getNickName() << std::endl;
         }
@@ -22,15 +22,15 @@ void printChannels(Server* server) {
 void printClients(Server* server) {
     std::cout << "------------------exist clients------------------" << std::endl;
     std::map<std::string, Client*> clients = server->getClients();
-    std::map<std::string, Client*>::iterator it = clients.begin();
-    std::map<std::string, Client*>::iterator ite = clients.end();
+    std::map<std::string, Client*>::const_iterator it = clients.begin();
+    std::map<std::string, Client*>::const_iterator ite = clients.end();
     for (; it != ite; it++) {
         std::cout << "Client name: " << it->second->getNickName() << std::endl;
         std::cout << "Client fd: " << it->second->getFd() << std::endl;
         std::cout << "Client channels: " << std::endl;
         std::set<std::string> channels = it->second->getJoinedChannels();
-        std::set<std::string>::iterator it2 = channels.begin();
-        std::set<std::string>::iterator ite2 = channels.end();
+        std::set<std::string>::const_iterator it2 = channels.begin();
+        std::set<std::string>::const_iterator ite2 = channels.end();
         for (; it2 != ite2; it2++) {
             std::cout << "\tChannel name: " << *it2 << std::endl;
         }

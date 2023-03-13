@@ -14,8 +14,8 @@ std::vector<Message> PrivMsg::execute() {
 	std::vector<int> targetFd;
 	std::vector<Message> messages;
 	std::vector<std::string> targetList = ft::split(_target, ',');
-	std::vector<std::string>::iterator it = targetList.begin();
-	std::vector<std::string>::iterator ite = targetList.end();
+	std::vector<std::string>::const_iterator it = targetList.begin();
+	std::vector<std::string>::const_iterator ite = targetList.end();
 
 	for (; it != ite; it++) {
 		try {

@@ -50,8 +50,8 @@ void Client::leaveChannel(std::string target) {
 
 void Client::leaveServer() {
 	std::set<std::string> channels = getJoinedChannels();
-	std::set<std::string>::iterator it = channels.begin();
-	std::set<std::string>::iterator ite = channels.end();
+	std::set<std::string>::const_iterator it = channels.begin();
+	std::set<std::string>::const_iterator ite = channels.end();
 	
 	for (; it != ite; it++)
 		leaveChannel(*it);

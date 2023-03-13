@@ -28,8 +28,8 @@ void Join::checkChannelNum() {
 */
 std::vector<Message> Join::execute(){
 	std::vector<std::string> targetChannels = ft::split(_channel, ',');
-	std::vector<std::string>::iterator it = targetChannels.begin();
-	std::vector<std::string>::iterator ite = targetChannels.end();
+	std::vector<std::string>::const_iterator it = targetChannels.begin();
+	std::vector<std::string>::const_iterator ite = targetChannels.end();
 	std::vector<Message> messages;
 
 	for (; it != ite; it++) {

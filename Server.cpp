@@ -3,15 +3,15 @@
 Server::Server(int port, std::string password, std::string adminName, std::string adminPassword): _port(port), _password(password),_adminName(adminName), _adminPassword(adminPassword) {}
 
 Server::~Server() {
-	std::map<std::string, Channel*>::iterator it = _channels.begin();
-	std::map<std::string, Channel*>::iterator ite = _channels.end();
+	std::map<std::string, Channel*>::const_iterator it = _channels.begin();
+	std::map<std::string, Channel*>::const_iterator ite = _channels.end();
 
 	for (; it != ite; it++) {
 		delete it->second;
 	}
 
-	std::map<std::string, Client*>::iterator it2 = _clients.begin();
-	std::map<std::string, Client*>::iterator it2e = _clients.end();
+	std::map<std::string, Client*>::const_iterator it2 = _clients.begin();
+	std::map<std::string, Client*>::const_iterator it2e = _clients.end();
 
 	for (; it2 != it2e; it2++) {
 		delete it2->second;
@@ -25,7 +25,7 @@ void Server::setPort(int port) { _port = port; };
 std::map<std::string, Channel*> Server::getChannels() { return _channels; }
 
 Channel* Server::findChannel(Client* client, std::string name) {
-	std::map<std::string, Channel*>::iterator it = _channels.find(name);
+	std::map<std::string, Channel*>::const_iterator it = _channels.find(name);
 
 	if (it != _channels.end())
 		return it->second;
@@ -39,7 +39,7 @@ Channel* Server::findChannel(Client* client, std::string name) {
 std::map<std::string, Client*> Server::getClients() { return _clients; }
 
 Client* Server::findClient(Client* client, std::string name) {
-	std::map<std::string, Client*>::iterator it = _clients.find(name);
+	std::map<std::string, Client*>::const_iterator it = _clients.find(name);
 
 	if (it != _clients.end())
 		return it->second;
@@ -51,7 +51,7 @@ Client* Server::findClient(Client* client, std::string name) {
 }
 
 Client* Server::findClient(int fd) {
-	std::map<int, Client*>::iterator it = _clientsFd.find(fd);
+	std::map<int, Client*>::const_iterator it = _clientsFd.find(fd);
 
 	if (it != _clientsFd.end())
 		return it->second;
