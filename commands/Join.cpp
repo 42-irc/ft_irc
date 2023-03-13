@@ -14,7 +14,7 @@ void Join::checkValidName(std::string& name) {
 }
 
 void Join::checkChannelNum() {
-	if (Server::getChannels().size() > 20) {
+	if (_client->getJoinedChannels().size() > 20) {
 		std::vector<int> targetFd;
 		std::vector<Message> messages;
 		
@@ -34,10 +34,8 @@ std::vector<Message> Join::execute(){
 
 	for (; it != ite; it++) {
 		try{
-			Channel* channel = Server::findChannel(_client, *it);
-			if (channel->checkClientExist(_client->getNickName()))
-				continue;
-			Server::addClientToChannel(_client, channel);
+			Channel* channel = _client->getServer()->findChannel(_client, *it);
+			_client->joinChannel(*it);
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
 		}
 		catch (Message &e){
@@ -46,8 +44,8 @@ std::vector<Message> Join::execute(){
 				checkChannelNum();
 
 				Channel *channel = new Channel(*it, _client);
-				Server::addChannel(channel);
-				Server::addClientToChannel(_client, channel);
+				_client->getServer()->addChannel(channel);
+				_client->joinChannel(*it);
 				messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
 			} catch (Message &e) {
 				messages.push_back(e);
