@@ -37,7 +37,7 @@ void printClients() {
     }
 }
 
-void create_client_socket(int server_socket, int kq) {
+void create_client_socket(int server_socket, int kq, Server* server) {
 	struct sockaddr_in client_addr;
 	socklen_t client_addr_size = sizeof(client_addr);
 	int new_client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_addr_size);
@@ -53,11 +53,10 @@ void create_client_socket(int server_socket, int kq) {
 		err_exit("setting client socket flag : " + std::string(strerror(errno)));
 
     try {
-        Server::findClient(new_client_socket);
+        server->findClient(new_client_socket);
     } catch (Message& e) {
-        Client* client = new Client(new_client_socket);
+        Client* client = new Client(new_client_socket, server);
         client->setHostName(client_host);
-        Server::addClient(client);
     }
 
 	struct kevent client_socket_event[2];

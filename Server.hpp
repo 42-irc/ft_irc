@@ -11,38 +11,36 @@
 
 class Server {
 	private:
-		static int _port;
-		static std::map<std::string, Channel*> _channels;
-		static std::map<std::string, Client*> _clients;
-		static std::map<int, Client*> _clientsFd;
-		static std::string _password;
-		static std::string _adminName;
-		static std::string _adminPassword;
+		int _port;
+		std::map<std::string, Channel*> _channels;
+		std::map<std::string, Client*> _clients;
+		std::map<int, Client*> _clientsFd;
+		std::string _password;
+		std::string _adminName;
+		std::string _adminPassword;
 
 	public:
 		Server(int port, std::string password, std::string adminName, std::string adminPassword);
 		~Server();
-		static int getPort();
-		static std::map<std::string, Channel*> getChannels();
-		static std::map<std::string, Client*> getClients();
-		static const std::string getPassword();
-		static const std::string getAdminName();
-		static const std::string getAdminPassword();
+		int getPort();
+		std::map<std::string, Channel*> getChannels();
+		std::map<std::string, Client*> getClients();
+		const std::string getPassword();
+		const std::string getAdminName();
+		const std::string getAdminPassword();
 
-		static void setPort(int port);
-		static void setPassword(std::string password);
+		void setPort(int port);
+		void setPassword(std::string password);
 
-		static Channel* findChannel(Client* client, std::string name);
-		static Client* findClient(Client* client, std::string name);
-		static Client* findClient(int fd);
+		Channel* findChannel(Client* client, std::string name);
+		Client* findClient(Client* client, std::string name);
+		Client* findClient(int fd);
 
-		static void addChannel(Channel* channel);
-		static void addClient(Client* client);
-		static void addClientToChannel(Client* client, Channel* channel);
+		void addChannel(Channel* channel);
+		void addClient(Client* client);
 
-		static void removeChannel(Channel* channel);
-		static void removeClient(Client* client);
-		static void removeClientFromChannel(Client* client, Channel* channel);
+		void removeChannel(Channel* channel);
+		void removeClient(Client* client);
 };
 
 #endif

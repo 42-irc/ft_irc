@@ -6,6 +6,6 @@
 #include "../Client.hpp"
 #include "../Server.hpp"
 
-void create_client_socket(int server_socket, int kq);
+void create_client_socket(int server_socket, int kq, Server* server);
 
 #endif

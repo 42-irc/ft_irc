@@ -11,8 +11,8 @@ Message::~Message() {}
 
 const std::string Message::getMessage() {
 	if (_code)
-		return (":ft_irc " + ft::codeToString(_code) + " " + _content + " " + ft::getCodeMessage(_code) + "\r\n");
-	return (_prefix + " " + _content + "\r\n");
+		return (":ft_irc " + ft::codeToString(_code) + " " + _content + " " + ft::getCodeMessage(_code));
+	return (_prefix + " " + _content);
 }
 
 const std::vector<int> Message::getTargets() { return _targets; }

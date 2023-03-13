@@ -28,7 +28,7 @@ void err_exit(std::string error_msg) {
 
 int main(int argc, char *argv[]) {
 	int port = validate_args(argc, argv);
-	Server server(port, argv[2], "admin", "admin");
+	Server* server = new Server(port, argv[2], "admin", "admin");
 	int server_socket = create_server_socket(port);
 	int kq = set_server_on_kqueue(server_socket);
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
 			if (occurred_events[i].ident == (uintptr_t)server_socket) {
 				if (occurred_events[i].filter == EVFILT_READ)
-					create_client_socket(server_socket, kq);
+					create_client_socket(server_socket, kq, server);
 				else
 					std::cerr << "something in server socket" << std::endl;
 			}
