@@ -4,12 +4,12 @@
 # include "Command.hpp"
 # include "../Server.hpp"
 
-class List : public Command
-{
+class List : public Command {
 	public:
 		List(Client* client);
 		~List();
-		std::vector<Message> execute();
+
+		void execute();
 };
 
 #endif

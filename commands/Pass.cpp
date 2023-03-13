@@ -1,10 +1,10 @@
 #include "Pass.hpp"
 
-Pass::Pass(Client* client, std::string password) : Command(client, "PASS"), _password(password) {};
+Pass::Pass(Client* client, const std::string& password) : Command(client, "PASS"), _password(password) {};
 
 Pass::~Pass() {};
 
-std::vector<Message> Pass::execute() {
+void Pass::execute() {
 	std::vector<Message> messages;
 
 	if (_client->getServer()->getPassword() != _password) {
@@ -12,6 +12,7 @@ std::vector<Message> Pass::execute() {
 		
 		targets.push_back(_client->getFd());
 		messages.push_back(Message(targets, ERR_PASSWDMISMATCH, _client->getNickName()));
+		sendMessages(messages);
+		_client->leaveServer();
 	}
-	return messages;
 };

@@ -1,10 +1,10 @@
 #include "Join.hpp"
 
-Join::Join(Client* client, std::string channel) : Command(client, "JOIN"), _channel(channel) {}
+Join::Join(Client* client, const std::string& channel) : Command(client, "JOIN"), _channel(channel) {}
 
 Join::~Join() {}
 
-void Join::checkValidName(std::string& name) {
+void Join::checkValidName(const std::string& name) {
 	if ((name[0] != '#' && name[0] != '&') || name.size() > 200) {
 		std::vector<int> targetFd;
 
@@ -26,24 +26,25 @@ void Join::checkChannelNum() {
 /*
 	prefix JOIN :channel
 */
-std::vector<Message> Join::execute(){
-	std::vector<std::string> targetList = ft::split(_channel, ',');
-	std::vector<std::string>::iterator it = targetList.begin();
-	std::vector<std::string>::iterator ite = targetList.end();
+void Join::execute(){
+	std::vector<std::string> targetChannels = ft::split(_channel, ',');
+	std::vector<std::string>::const_iterator it = targetChannels.begin();
+	std::vector<std::string>::const_iterator ite = targetChannels.end();
 	std::vector<Message> messages;
 
 	for (; it != ite; it++) {
-		try{
+		try {
 			Channel* channel = _client->getServer()->findChannel(_client, *it);
+
 			_client->joinChannel(*it);
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
-		}
-		catch (Message &e){
+		} catch (Message &e) {
 			try {
 				checkValidName(*it);
 				checkChannelNum();
 
 				Channel *channel = new Channel(*it, _client);
+				
 				_client->getServer()->addChannel(channel);
 				_client->joinChannel(*it);
 				messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
@@ -52,5 +53,5 @@ std::vector<Message> Join::execute(){
 			}
 		}
 	}
-	return messages;
+	sendMessages(messages);
 }

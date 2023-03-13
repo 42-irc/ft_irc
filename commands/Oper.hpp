@@ -11,9 +11,10 @@ class Oper : public Command {
 		void checkValidPassword();
 
 	public:
-		Oper(Client* client, std::string name, std::string password);
+		Oper(Client* client, const std::string& name, const std::string& password);
 		~Oper();
-		std::vector<Message> execute();
+
+		void execute();
 };
 
 #endif

@@ -11,7 +11,6 @@
 #include <vector>
 #include <unistd.h>
 
-void err_exit(std::string error_msg);
 int create_server_socket(int port);
 int set_server_on_kqueue(int server_socket);
 
