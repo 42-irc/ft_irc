@@ -14,10 +14,10 @@ std::vector<Message> Quit::execute() {
 	std::set<std::string>::iterator ite = channels.end();
 
 	for (; it != ite; it++) {
-		Channel* channel = Server::findChannel(_client, *it);
+		Channel* channel =_client->getServer()->findChannel(_client, *it);
 		messages.push_back(Message(channel->getFdsExceptClient(_client), getPrefix(), _type));
 	}
-	Server::removeClient(_client);
+	_client->leaveServer();
 	return messages;
 }
 

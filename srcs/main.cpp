@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
 						while (first != last) {
 							// 클라이언트에 보낼 메시지 작성 후 전송
 							try {
-								Command* command = ft::parse(Server::findClient(event_client_socket), *first);
+								Command* command = ft::parse(server->findClient(event_client_socket), *first);
 								std::vector<Message> messages = command->execute();
 								delete command;
 								std::vector<Message>::iterator first = messages.begin();
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
 									}
 									first++;
 								}
-								// printMessages(messages);// 디버깅용 프린트 함수
+								printMessages(messages);// 디버깅용 프린트 함수
 							} catch (Message e) {
 								send(event_client_socket, e.getMessage().c_str(), e.getMessage().size(), 0);
 							}

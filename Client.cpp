@@ -10,7 +10,7 @@ Client::Client(Client const &client) : _fd(client._fd), _server(client._server),
 
 Client::~Client() {}
 
- Server* Client::getServer() const{ return _server; };
+ Server* Client::getServer() { return _server; };
 
 const std::string Client::getName() const { return _name; }
 

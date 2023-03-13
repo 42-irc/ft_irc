@@ -6,6 +6,7 @@
 #include <set>
 #include "Server.hpp"
 
+class Server;
 
 class Client {
 	private:
@@ -23,7 +24,7 @@ class Client {
 		Client(Client const &client);
 		~Client();
 
-		Server* getServer() const;
+		Server* getServer();
 		const std::string getName() const;
 		const std::string getNickName() const;
 		const std::string getHostName() const;

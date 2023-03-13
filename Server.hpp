@@ -9,6 +9,9 @@
 #include "Message.hpp"
 #include "srcs/utils.hpp"
 
+class Client;
+class Channel;
+
 class Server {
 	private:
 		int _port;
