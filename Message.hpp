@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "srcs/utils.hpp"
+#include <sys/socket.h>
 
 class Message {
 	private:
@@ -20,6 +21,7 @@ class Message {
 
 		const std::string getMessage();
 		const std::vector<int> getTargets();
+		void sendMessage();
 };
 
 #endif

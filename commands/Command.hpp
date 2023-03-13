@@ -18,6 +18,7 @@ class Command {
 		Command(Client* client, std::string type);
 		virtual ~Command();
 		virtual std::vector<Message>  execute() = 0;
+		virtual void sendMessages(std::vector<Message> messages);
 };
 
 #endif
