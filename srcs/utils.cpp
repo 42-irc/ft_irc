@@ -80,4 +80,9 @@ namespace ft
 		return ss.str();
 	}
 
+	time_t getSecondDiff(time_t lastPingTime) {
+		time_t currentTime = time(NULL);
+		return (currentTime - lastPingTime);
+	}
+
 }
