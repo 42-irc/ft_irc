@@ -9,7 +9,7 @@ class Nick : public Command
 	private:
 		std::string _nick;
 		std::string getPrefix(std::string oldNick) const;
-		void checkFirstNick();
+		void renameFirstNick();
 
 	public:
 		Nick(Client* client, std::string nick);

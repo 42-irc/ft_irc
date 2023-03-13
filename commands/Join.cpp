@@ -27,23 +27,24 @@ void Join::checkChannelNum() {
 	prefix JOIN :channel
 */
 std::vector<Message> Join::execute(){
-	std::vector<std::string> targetList = ft::split(_channel, ',');
-	std::vector<std::string>::iterator it = targetList.begin();
-	std::vector<std::string>::iterator ite = targetList.end();
+	std::vector<std::string> targetChannels = ft::split(_channel, ',');
+	std::vector<std::string>::iterator first = targetChannels.begin();
+	std::vector<std::string>::iterator last = targetChannels.end();
 	std::vector<Message> messages;
 
-	for (; it != ite; it++) {
-		try{
+	whiile (first != last) {
+		try {
 			Channel* channel = _client->getServer()->findChannel(_client, *it);
+
 			_client->joinChannel(*it);
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
-		}
-		catch (Message &e){
+		} catch (Message &e) {
 			try {
-				checkValidName(*it);
+				checkValidName(*first);
 				checkChannelNum();
 
 				Channel *channel = new Channel(*it, _client);
+				
 				_client->getServer()->addChannel(channel);
 				_client->joinChannel(*it);
 				messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
@@ -51,6 +52,7 @@ std::vector<Message> Join::execute(){
 				messages.push_back(e);
 			}
 		}
+		first++;
 	}
 	return messages;
 }

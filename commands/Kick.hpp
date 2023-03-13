@@ -16,6 +16,7 @@ class Kick : public Command
 	public:
 		Kick(Client* client, std::string channel, std::string target, std::string reason);
 		~Kick();
+
 		std::vector<Message> execute();
 };
 

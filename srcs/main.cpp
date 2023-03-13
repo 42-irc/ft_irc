@@ -28,20 +28,19 @@ void err_exit(std::string error_msg) {
 
 int main(int argc, char *argv[]) {
 	int port = validate_args(argc, argv);
-	Server* server = new Server(port, argv[2], "admin", "admin");
 	int server_socket = create_server_socket(port);
 	int kq = set_server_on_kqueue(server_socket);
+	Server* server = new Server(port, argv[2], "admin", "admin");
 
 	while (true) {
 		std::cout << "Waiting for events..." << std::endl;
 
 		struct kevent occurred_events[100];
 		int occured_events_cnt = kevent(kq, NULL, 0, occurred_events, 100, NULL);
+
 		if (occured_events_cnt == -1)
 			err_exit("calling kevent : " + std::string(strerror(errno)));
-
 		std::cout << occured_events_cnt << " events occur!" << std::endl;
-
 		for (int i = 0; i < occured_events_cnt; ++i) {
 			// 이벤트가 발생한 식별자가 서버 소켓의 fd인 경우
 			if (occurred_events[i].ident == (uintptr_t)server_socket) {
@@ -91,9 +90,11 @@ int main(int argc, char *argv[]) {
 									}
 									first++;
 								}
-								printMessages(messages);// 디버깅용 프린트 함수
-							} catch (Message e) {
+								// printMessages(messages);// 디버깅용 프린트 함수
+							} catch (Message &e) {
 								send(event_client_socket, e.getMessage().c_str(), e.getMessage().size(), 0);
+							} catch (std::exception &e) {
+								send(event_client_socket, MALLOC_ERR, strlen(MALLOC_ERR),0);
 							}
 							first++;
 						}

@@ -34,6 +34,8 @@ enum e_code {
 # define CODE_461 ":Not enough parameters"
 # define CODE_464 ":Password incorrect"
 
+# define MALLOC_ERR ":Malloc failed\r\n"
+
 namespace ft
 {
 
