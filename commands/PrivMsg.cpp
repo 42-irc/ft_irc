@@ -4,7 +4,7 @@ PrivMsg::PrivMsg(Client* client, std::string target, std::string msg) : Command(
 
 PrivMsg::~PrivMsg() {}
 
-const std::string PrivMsg::getMsg(std::string &name) const { return name + " " + _msg; }
+const std::string PrivMsg::getMsg(const std::string &name) const { return name + " " + _msg; }
 
 /*
 std::vector<Message> format

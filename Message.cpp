@@ -9,10 +9,10 @@ Message::Message(std::vector<int> targets, std::string prefix, std::string conte
 
 Message::~Message() {}
 
-const std::string Message::getMessage() {
+const std::string Message::getMessage() const {
 	if (_code)
 		return (":ft_irc " + ft::codeToString(_code) + " " + _content + " " + ft::getCodeMessage(_code) + "\r\n");
 	return (_prefix + " " + _content + "\r\n");
 }
 
-const std::vector<int> Message::getTargets() { return _targets; }
+const std::vector<int> Message::getTargets() const { return _targets; }

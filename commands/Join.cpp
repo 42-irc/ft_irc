@@ -4,7 +4,7 @@ Join::Join(Client* client, std::string channel) : Command(client, "JOIN"), _chan
 
 Join::~Join() {}
 
-void Join::checkValidName(std::string& name) {
+void Join::checkValidName(const std::string& name) {
 	if ((name[0] != '#' && name[0] != '&') || name.size() > 200) {
 		std::vector<int> targetFd;
 
