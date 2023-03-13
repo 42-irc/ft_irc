@@ -18,7 +18,7 @@ class Channel {
 
 	public:
 		Channel();
-		Channel(std::string name, Client* oper);
+		Channel(const std::string& name, Client* oper);
 		~Channel();
 
 		const Client* getOperator() const;
@@ -27,10 +27,10 @@ class Channel {
 		const std::vector<int> getFdsExceptClient(Client* client) const;
 		const std::map<std::string, Client*> getClients() const;
 
-		Client* findClient(Client* client, std::string name) const;
+		Client* findClient(Client* client, const std::string& name) const;
 		void addClient(Client* client);
 		void removeClient(Client* client);
-		bool checkClientExist(std::string name) const;
+		bool checkClientExist(const std::string& name) const;
 };
 
 #endif

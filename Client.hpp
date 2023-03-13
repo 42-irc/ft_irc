@@ -22,7 +22,7 @@ class Client {
 	public:
 		Client();
 		Client(int fd, Server* server);
-		Client(Client const &client);
+		Client(const Client& client);
 		~Client();
 
 		Server* getServer();
@@ -34,18 +34,18 @@ class Client {
 		bool getIsAdmin() const;
 		time_t getLastPingTime() const;
 
-		void setName(const std::string name);
-		void setNickName(const std::string nickName);
-		void setHostName(const std::string hostName);
+		void setName(const std::string& name);
+		void setNickName(const std::string& nickName);
+		void setHostName(const std::string& hostName);
 		void setIsAdmin(const bool isAdmin);
 		void setLastPingTime(const size_t pingTime);
 
-		void joinChannel(std::string target);
-		void leaveChannel(std::string target);
+		void joinChannel(const std::string& target);
+		void leaveChannel(const std::string& target);
 		void leaveServer();
 
-		bool operator==(const Client &client) const;
-		bool operator!=(const Client &client) const;
+		bool operator==(const Client& client) const;
+		bool operator!=(const Client& client) const;
 };
 
 #endif

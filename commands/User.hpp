@@ -9,8 +9,9 @@ class User : public Command {
 		std::string _userName;
 
 	public:
-		User(Client* client, std::string userName);
+		User(Client* client, const std::string& userName);
 		~User();
+
 		std::vector<Message> execute();
 };
 

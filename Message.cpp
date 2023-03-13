@@ -3,13 +3,13 @@
 
 Message::Message() : _code(0) {}
 
-Message::Message(std::vector<int> targets, unsigned int code, std::string content) : _targets(targets), _code(code), _content(content) {}
+Message::Message(std::vector<int> targets, unsigned int code, const std::string& content) : _targets(targets), _code(code), _content(content) {}
 
-Message::Message(std::vector<int> targets, std::string prefix, std::string content) : _targets(targets), _code(0), _prefix(":" + prefix), _content(content) {}
+Message::Message(std::vector<int> targets, const std::string& prefix, const std::string& content) : _targets(targets), _code(0), _prefix(":" + prefix), _content(content) {}
 
 Message::~Message() {}
 
-const std::string Message::getMessage() {
+const std::string Message::getMessage() const {
 	if (_code)
 		return (":ft_irc " + ft::codeToString(_code) + " " + _content + " " + ft::getCodeMessage(_code) + "\r\n");
 	if (_prefix.empty())
@@ -17,4 +17,4 @@ const std::string Message::getMessage() {
 	return (_prefix + " " + _content + "\r\n");
 }
 
-const std::vector<int> Message::getTargets() { return _targets; }
+const std::vector<int> Message::getTargets() const { return _targets; }

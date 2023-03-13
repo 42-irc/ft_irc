@@ -20,7 +20,7 @@
 namespace ft
 {
 
-	Command* parse(Client* client, std::string str);
+	Command* parse(Client* client, const std::string& str);
 
 }
 #endif

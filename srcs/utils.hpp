@@ -34,11 +34,13 @@ enum e_code {
 # define CODE_461 ":Not enough parameters"
 # define CODE_464 ":Password incorrect"
 
+# define MALLOC_ERR ":Malloc failed\r\n"
+
 namespace ft
 {
 
-	std::vector<std::string> split(const std::string &str, char charset, unsigned long n = 0);
-	std::vector<std::string> split(const std::string &str, std::string charset);
+	std::vector<std::string> split(const std::string& str, char charset, unsigned long n = 0);
+	std::vector<std::string> split(const std::string& str, const std::string charset);
 	const std::string getCodeMessage(int code);
 	const std::string codeToString(unsigned int n);
 	time_t getSecondDiff(time_t lastPingTime);

@@ -9,8 +9,9 @@ class Part : public Command {
 		std::string _channel;
 
 	public:
-		Part(Client* client, std::string channel);
+		Part(Client* client, const std::string& channel);
 		~Part();
+
 		std::vector<Message> execute();
 };
 

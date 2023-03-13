@@ -8,12 +8,13 @@ class Nick : public Command
 {
 	private:
 		std::string _nick;
-		std::string getPrefix(std::string oldNick) const;
-		void checkFirstNick();
+		std::string getPrefix(const std::string& oldNick) const;
+		void renameFirstNick();
 
 	public:
-		Nick(Client* client, std::string nick);
+		Nick(Client* client, const std::string& nick);
 		~Nick();
+
 		std::vector<Message> execute();
 };
 
