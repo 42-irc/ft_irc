@@ -63,6 +63,6 @@ void Client::leaveServer() {
 	_server->removeClient(this);
 }
 
-bool Client::operator==(const Client& client) const { return _nickName == client._nickName; }
+bool Client::operator==(const Client& client) const { return _fd == client._fd; }
 
-bool Client::operator!=(const Client& client) const { return _nickName != client._nickName; }
+bool Client::operator!=(const Client& client) const { return _fd != client._fd; }

@@ -2,7 +2,7 @@
 
 Channel::Channel() : _clients(std::map<std::string, Client*>()), _name(""), _operator(NULL) {};
 
-Channel::Channel(const std::string& name, Client* oper) : _name(name), _operator(oper) {};
+Channel::Channel(const std::string& name, Client* oper) : _clients(std::map<std::string, Client*>()), _name(name), _operator(oper) {};
 
 Channel::~Channel() {};
 
@@ -11,7 +11,7 @@ const std::string Channel::getName() const { return _name; }
 const std::map<std::string, Client*> Channel::getClients() const { return _clients; }
 
 const std::vector<int> Channel::getFds() const {
-	std::vector<int> fds;
+	std::vector<int> fds = std::vector<int>(0);
 	std::map<std::string, Client*>::const_iterator it = _clients.begin();
 	std::map<std::string, Client*>::const_iterator ite = _clients.end();
 
@@ -21,7 +21,7 @@ const std::vector<int> Channel::getFds() const {
 }
 
 const std::vector<int> Channel::getFdsExceptClient(Client* client) const {
-	std::vector<int> fds;
+	std::vector<int> fds = std::vector<int>(0);
 	std::map<std::string, Client*>::const_iterator it = _clients.begin();
 	std::map<std::string, Client*>::const_iterator ite = _clients.end();
 

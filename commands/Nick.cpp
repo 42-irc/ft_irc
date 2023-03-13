@@ -19,16 +19,19 @@ void Nick::renameFirstNick() {
 }
 
 void Nick::execute() {
-	std::vector<int> targetFd;
+	std::set<int> targetFd;
+	std::vector<int> targetFdVector;
 	std::map<std::string, Client*> clients = _client->getServer()->getClients();
 	std::vector<Message> messages;
 
 	if (_client->getNickName() == "") {
 		renameFirstNick();
 	} else if (clients.find(_nick) != clients.end()) {
-		targetFd.push_back(_client->getFd());
-		messages.push_back(Message(targetFd, ERR_NICKNAMEINUSE, _client->getNickName()));
+		targetFd.insert(_client->getFd());
+		targetFdVector.insert(targetFdVector.begin(), targetFd.begin(), targetFd.end());
+		messages.push_back(Message(targetFdVector, ERR_NICKNAMEINUSE, _client->getNickName()));
 		sendMessages(messages);
+		return ;
 	}
 
 	Client* newClient = new Client(*_client);
@@ -44,12 +47,13 @@ void Nick::execute() {
 	for (; it != ite; it++) {
 		Channel* channel = _client->getServer()->findChannel(newClient, *it);
 
+		std::vector<int> channelFds = channel->getFdsExceptClient(newClient);
+		targetFd.insert(channelFds.begin(), channelFds.end());
 		newClient->joinChannel(*it);
-		targetFd = channel->getFdsExceptClient(_client);
-		messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
 	}
 	_client->leaveServer();
-	targetFd.push_back(newClient->getFd());
-	messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
+	targetFd.insert(newClient->getFd());
+	targetFdVector.insert(targetFdVector.begin(),targetFd.begin(), targetFd.end());
+	messages.push_back(Message(targetFdVector, prefix, "NICK " + _nick));
 	sendMessages(messages);
 }
