@@ -7,7 +7,7 @@ Quit::~Quit() {}
 /*
 :<nick>!<user>@<host> QUIT [<Quit message>]
 */
-std::vector<Message> Quit::execute() {
+void Quit::execute() {
 	std::set<std::string> channels = _client->getJoinedChannels();
 	std::set<std::string>::const_iterator it = channels.begin();
 	std::set<std::string>::const_iterator ite = channels.end();
@@ -19,5 +19,5 @@ std::vector<Message> Quit::execute() {
 		messages.push_back(Message(channel->getFdsExceptClient(_client), getPrefix(), _type));
 	}
 	_client->leaveServer();
-	return messages;
+	sendMessages(messages);
 }

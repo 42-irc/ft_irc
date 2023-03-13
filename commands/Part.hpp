@@ -12,7 +12,7 @@ class Part : public Command {
 		Part(Client* client, const std::string& channel);
 		~Part();
 
-		std::vector<Message> execute();
+		void execute();
 };
 
 #endif

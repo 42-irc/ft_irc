@@ -15,7 +15,7 @@ class Join : public Command {
 		Join(Client* client, const std::string& channel);
 		~Join();
 
-		std::vector<Message> execute();
+		void execute();
 };
 
 #endif

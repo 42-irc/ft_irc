@@ -22,7 +22,7 @@ void Kick::checkIsAdmin(Channel* channel) {
 std::vector<Message> format
 <clientNick>!<clientName>@<clientHost> KICK <channel> <target> :<reason>
 */
-std::vector<Message> Kick::execute() {
+void Kick::execute() {
 	std::vector<Message> messages;
 
 	try {
@@ -36,5 +36,5 @@ std::vector<Message> Kick::execute() {
 	} catch (Message &e) {
 		messages.push_back(e);
 	}
-	return messages;
+	sendMessages(messages);
 }

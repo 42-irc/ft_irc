@@ -26,7 +26,7 @@ void Join::checkChannelNum() {
 /*
 	prefix JOIN :channel
 */
-std::vector<Message> Join::execute(){
+void Join::execute(){
 	std::vector<std::string> targetChannels = ft::split(_channel, ',');
 	std::vector<std::string>::const_iterator it = targetChannels.begin();
 	std::vector<std::string>::const_iterator ite = targetChannels.end();
@@ -53,5 +53,5 @@ std::vector<Message> Join::execute(){
 			}
 		}
 	}
-	return messages;
+	sendMessages(messages);
 }

@@ -9,7 +9,7 @@ Message::Message(std::vector<int> targets, const std::string& prefix, const std:
 
 Message::~Message() {}
 
-const std::string Message::getMessage() const {
+const std::string Message::getMessage() {
 	if (_code)
 		return (":ft_irc " + ft::codeToString(_code) + " " + _content + " " + ft::getCodeMessage(_code) + "\r\n");
 	if (_prefix.empty())
@@ -17,4 +17,4 @@ const std::string Message::getMessage() const {
 	return (_prefix + " " + _content + "\r\n");
 }
 
-const std::vector<int> Message::getTargets() const { return _targets; }
+std::vector<int> Message::getTargets() { return _targets; }

@@ -2,25 +2,6 @@
 #include "parse.hpp"
 #include "../commands/Command.hpp"
 
-/* 디버깅용 프린트 함수 */
-void printMessages(std::vector<Message> messages) {
-    std::vector<Message>::const_iterator it = messages.begin();
-    std::vector<Message>::const_iterator ite = messages.end();
-	if (it == ite)
-		return;
-	std::vector<int> targets = it->getTargets();
-	std::vector<int>::const_iterator firstTarget = targets.begin();
-	std::vector<int>::const_iterator lastTarget = targets.end();
-	std::cout << "--- Messages ---" << std::endl;
-	for (; firstTarget != lastTarget; firstTarget++) {
-		std::cout << "\tTarget : " << *firstTarget << std::endl;
-	}
-    for (; it != ite; it++) {
-        std::cout << "Message - " << it->getMessage() << std::endl;
-    }
-	std::cout << "----------------" << std::endl;
-}
-
 void err_exit(std::string error_msg) {
 	std::cerr << "Error " << error_msg << std::endl;
 	exit(1);
@@ -74,23 +55,8 @@ int main(int argc, char *argv[]) {
 							// 클라이언트에 보낼 메시지 작성 후 전송
 							try {
 								Command* command = ft::parse(server->findClient(event_client_socket), *first);
-								std::vector<Message> messages = command->execute();
+								command->execute();
 								delete command;
-								std::vector<Message>::const_iterator first = messages.begin();
-								std::vector<Message>::const_iterator last = messages.end();
-
-								while (first != last) {
-									std::vector<int> targets = first->getTargets();
-									std::vector<int>::const_iterator firstTarget = targets.begin();
-									std::vector<int>::const_iterator lastTarget = targets.end();
-
-									while (firstTarget != lastTarget) {
-										send(*firstTarget, first->getMessage().c_str(), first->getMessage().size(), 0);
-										firstTarget++;
-									}
-									first++;
-								}
-								// printMessages(messages);// 디버깅용 프린트 함수
 							} catch (Message &e) {
 								send(event_client_socket, e.getMessage().c_str(), e.getMessage().size(), 0);
 							} catch (std::exception &e) {

@@ -14,7 +14,7 @@ class Oper : public Command {
 		Oper(Client* client, const std::string& name, const std::string& password);
 		~Oper();
 
-		std::vector<Message> execute();
+		void execute();
 };
 
 #endif

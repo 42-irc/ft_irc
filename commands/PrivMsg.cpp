@@ -10,7 +10,7 @@ const std::string PrivMsg::getMsg(const std::string &name) const { return name +
 std::vector<Message> format
 - :<clientNick>!<clientName>@<clientHost> PRIVMSG <target> :<msg>
 */
-std::vector<Message> PrivMsg::execute() {
+void PrivMsg::execute() {
 	std::vector<int> targetFd;
 	std::vector<Message> messages;
 	std::vector<std::string> targetList = ft::split(_target, ',');
@@ -35,5 +35,5 @@ std::vector<Message> PrivMsg::execute() {
 			messages.push_back(e);
 		}
 	}
-	return messages;
+	sendMessages(messages);
 }

@@ -14,7 +14,7 @@ class PrivMsg : public Command {
 		PrivMsg(Client* client, const std::string& target, const std::string& msg);
 		~PrivMsg();
 
-		std::vector<Message> execute();
+		void execute();
 };
 
 #endif

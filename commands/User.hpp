@@ -12,7 +12,7 @@ class User : public Command {
 		User(Client* client, const std::string& userName);
 		~User();
 
-		std::vector<Message> execute();
+		void execute();
 };
 
 #endif

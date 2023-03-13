@@ -8,7 +8,7 @@ Oper::~Oper() {}
 std::vector<Message> format
 - :<server> 381 <nickname> :You are now an IRC operator
 */
-std::vector<Message> Oper::execute() {
+void Oper::execute() {
 	std::vector<Message> messages;
 
 	try {
@@ -22,7 +22,7 @@ std::vector<Message> Oper::execute() {
 	} catch (Message &e) {
 		messages.push_back(e);
 	}
-	return messages;
+	sendMessages(messages);
 }
 
 void Oper::checkValidPassword() {

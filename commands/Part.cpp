@@ -4,7 +4,7 @@ Part::Part(Client* client, const std::string& channel) : Command(client, "PART")
 
 Part::~Part() {}
 
-std::vector<Message> Part::execute() {
+void Part::execute() {
 	std::vector<std::string> targetChannels = ft::split(_channel, ',');
 	std::vector<std::string>::const_iterator it = targetChannels.begin();
 	std::vector<std::string>::const_iterator ite = targetChannels.end();
@@ -21,5 +21,5 @@ std::vector<Message> Part::execute() {
 			messages.push_back(e);
 		}
 	}
-	return messages;
+	sendMessages(messages);
 }

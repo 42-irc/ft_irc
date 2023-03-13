@@ -18,7 +18,7 @@ void Nick::renameFirstNick() {
 		_nick += "_";
 }
 
-std::vector<Message> Nick::execute() {
+void Nick::execute() {
 	std::vector<int> targetFd;
 	std::map<std::string, Client*> clients = _client->getServer()->getClients();
 	std::vector<Message> messages;
@@ -28,7 +28,7 @@ std::vector<Message> Nick::execute() {
 	} else if (clients.find(_nick) != clients.end()) {
 		targetFd.push_back(_client->getFd());
 		messages.push_back(Message(targetFd, ERR_NICKNAMEINUSE, _client->getNickName()));
-		return messages;
+		sendMessages(messages);
 	}
 
 	Client* newClient = new Client(*_client);
@@ -51,5 +51,5 @@ std::vector<Message> Nick::execute() {
 	_client->leaveServer();
 	targetFd.push_back(newClient->getFd());
 	messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
-	return messages;
+	sendMessages(messages);
 }
