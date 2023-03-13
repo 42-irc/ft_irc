@@ -14,12 +14,12 @@ class Message {
 
 	public:
 		Message();
-		Message(std::vector<int> targets, unsigned int code, std::string content);
-		Message(std::vector<int> targets, std::string prefix, std::string content);
+		Message(std::vector<int> targets, unsigned int code, const std::string& content);
+		Message(std::vector<int> targets, const std::string& prefix, const std::string& content);
 		~Message();
 
-		const std::string getMessage();
-		const std::vector<int> getTargets();
+		const std::string getMessage() const;
+		const std::vector<int> getTargets() const;
 };
 
 #endif

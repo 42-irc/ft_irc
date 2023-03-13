@@ -9,8 +9,9 @@ class Pass : public Command {
 		std::string _password;
 
 	public:
-		Pass(Client* client, std::string password);
+		Pass(Client* client, const std::string& password);
 		~Pass();
+
 		std::vector<Message> execute();
 };
 

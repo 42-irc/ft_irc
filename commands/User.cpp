@@ -1,6 +1,6 @@
 #include "User.hpp"
 
-User::User(Client* client, std::string userName) : Command(client, "USER"), _userName(userName) {}
+User::User(Client* client, const std::string& userName) : Command(client, "USER"), _userName(userName) {}
 
 User::~User() {}
 
