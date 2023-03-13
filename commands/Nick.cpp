@@ -44,7 +44,7 @@ std::vector<Message> Nick::execute() {
 	new_nick->setNickName(_nick);
 	new_nick->getServer()->addClient(new_nick);
 	while (it2 != end2) {
-		Channel* channel = _client->getServer()->findChannel(_client, *it2);
+		Channel* channel = _client->getServer()->findChannel(new_nick, *it2);
 		targetFd = channel->getFdsExceptClient(_client);
 		messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
 		new_nick->joinChannel(*it2);
