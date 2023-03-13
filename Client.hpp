@@ -16,6 +16,7 @@ class Client {
 		std::string _nickName;
 		std::string _hostName;
 		std::set<std::string> _joinedChannels;
+		bool _isVerified;
 		bool _isAdmin;
 		time_t _lastPingTime;
 
@@ -38,6 +39,7 @@ class Client {
 		void setNickName(const std::string& nickName);
 		void setHostName(const std::string& hostName);
 		void setIsAdmin(const bool isAdmin);
+		void setIsVerified(const bool isVerified)
 		void setLastPingTime(const size_t pingTime);
 
 		void joinChannel(const std::string& target);

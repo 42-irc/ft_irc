@@ -7,8 +7,10 @@ Pass::Pass(Client* client, const std::string& password) : Command(client, "PASS"
 Pass::~Pass() {};
 
 void Pass::execute() {
-	if (_client->getServer()->getPassword() == _password)
+	if (_client->getServer()->getPassword() == _password) {
+		_client->setIsVerified(true);
 		return ;
+	}
 
 	std::vector<int> targets;
 	std::vector<Message> messages;

@@ -1,13 +1,13 @@
 #include "Client.hpp"
 
-Client::Client() :  _fd(-1), _isAdmin(false) {}
+Client::Client() :  _fd(-1), _isVerified(false), _isAdmin(false) {}
 
-Client::Client(int fd, Server* server) : _fd(fd), _server(server), _isAdmin(false) {
+Client::Client(int fd, Server* server) : _fd(fd), _server(server), _isVerified(false), _isAdmin(false) {
 	_server->addClient(this);
 	_lastPingTime = time(NULL);
 }
 
-Client::Client(const Client& client) : _fd(client._fd), _server(client._server), _name(client._name), _nickName(client._nickName), _hostName(client._hostName), _joinedChannels(client._joinedChannels), _isAdmin(client._isAdmin) {}
+Client::Client(const Client& client) : _fd(client._fd), _server(client._server), _isVerified(client._isVerified), _name(client._name), _nickName(client._nickName), _hostName(client._hostName), _joinedChannels(client._joinedChannels), _isAdmin(client._isAdmin) {}
 
 Client::~Client() {}
 
@@ -34,6 +34,8 @@ void Client::setNickName(const std::string& nickName) { _nickName = nickName; }
 void Client::setHostName(const std::string& hostName) { _hostName = hostName; }
 
 void Client::setIsAdmin(const bool isAdmin) { _isAdmin = isAdmin; }
+
+void Client::setIsVerified(const bool isVerified) { _isVerified = isVerified; }
 
 void Client::setLastPingTime(const size_t pingTime) { _lastPingTime = pingTime; }
 
