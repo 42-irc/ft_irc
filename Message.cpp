@@ -18,3 +18,10 @@ const std::string Message::getMessage() {
 }
 
 std::vector<int> Message::getTargets() { return _targets; }
+
+void Message::sendMessage() {
+	std::string message = getMessage();
+	for (std::vector<int>::iterator it = _targets.begin(); it != _targets.end(); it++) {
+		send(*it, message.c_str(), message.size(), 0);
+	}
+}
