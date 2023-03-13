@@ -3,15 +3,14 @@
 namespace ft
 {
 
-	Command* parse(Client client, std::string str) {
-		std::string commands[10] = { "JOIN ", "KICK ", "LIST ", "NICK ", "OPER ", "PART ", "PASS" , "PRIVMSG ", "QUIT", "USER"};
+	Command* parse(Client* client, std::string str) {
+		std::string commands[11] = { "JOIN", "KICK", "LIST", "NICK", "OPER", "PART", "PASS" , "PRIVMSG", "QUIT", "USER", "PING"};
 		std::vector<std::string> params;
 
 		std::size_t idx =  str.find_first_of(" ");
 		std::string command = idx == std::string::npos ? str : str.substr(0, idx);
-
 		if (str.length()) {
-			for (unsigned int i = 0; i < sizeof(commands); i++) {
+			for (unsigned int i = 0; i < 11; i++) {
 				if (command == commands[i]) {
 					switch (i) {
 						case 0:
@@ -43,13 +42,18 @@ namespace ft
 							return new Quit(client);
 						case 9:
 							params = ft::split(str, ' ', 4);
-							if (params[2] != "0" || params[3] != "*") throw Message(); // 461
 							return new User(client, params[1]);
+						case 10:
+							params = ft::split(str, ' ', 2);
+							return new Ping(client);
 					}
-				}
+				} else
+					continue;
 			}
 		}
-		throw Message(); // 421
+		std::vector<int> targets;
+		targets.push_back(client->getFd());
+		throw Message(targets, ERR_UNKNOWNCOMMAND, command); // 421
 	};
 
 }

@@ -4,6 +4,8 @@ Client::Client() :  _fd(-1), _isAdmin(false) {}
 
 Client::Client(int fd) : _fd(fd), _isAdmin(false) {}
 
+Client::Client(Client const &client) : _fd(client._fd), _name(client._name), _nickName(client._nickName), _hostName(client._hostName), _joinedChannels(client._joinedChannels), _isAdmin(client._isAdmin) {}
+
 Client::~Client() {}
 
 const std::string Client::getName() const { return _name; }

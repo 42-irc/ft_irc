@@ -15,11 +15,12 @@
 #include "../commands/PrivMsg.hpp"
 #include "../commands/Quit.hpp"
 #include "../commands/User.hpp"
+#include "../commands/Ping.hpp"
 
 namespace ft
 {
 
-	Command* parse(Client client, std::string str);
+	Command* parse(Client* client, std::string str);
 
 }
 #endif

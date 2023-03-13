@@ -1,6 +1,6 @@
 #include "Oper.hpp"
 
-Oper::Oper(Client client, std::string name, std::string password) : Command(client, "OPER"), _name(name), _password(password) { }
+Oper::Oper(Client* client, std::string name, std::string password) : Command(client, "OPER"), _name(name), _password(password) { }
 
 Oper::~Oper() {}
 
@@ -13,25 +13,23 @@ std::vector<Message> Oper::execute() {
 
 	try {
 		checkValidPassword();
-		_client.setIsAdmin(true);
+		_client->setIsAdmin(true);
 
 		std::vector<int> targetFd;
 
-		targetFd.push_back(_client.getFd());
-		messages.push_back(Message(targetFd, RPL_YOUREOPER, _client.getNickName()));
-	} catch (std::vector<Message> &e) {
-		messages.push_back(e[0]);
+		targetFd.push_back(_client->getFd());
+		messages.push_back(Message(targetFd, RPL_YOUREOPER, _client->getNickName()));
+	} catch (Message &e) {
+		messages.push_back(e);
 	}
 	return messages;
 }
 
 void Oper::checkValidPassword() {
-	if (_name != "admin" || _password != "admin") {
+	if (_name != Server::getAdminName() || _password != Server::getAdminPassword()) {
 		std::vector<int> targetFd;
-		std::vector<Message> messages;
 
-		targetFd.push_back(_client.getFd());
-		messages.push_back(Message(targetFd, 464, _client.getNickName()));
-		throw messages;
+		targetFd.push_back(_client->getFd());
+		throw Message(targetFd, ERR_PASSWDMISMATCH, _client->getNickName());
 	}
 }

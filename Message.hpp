@@ -17,6 +17,7 @@ class Message {
 		Message(std::vector<int> targets, unsigned int code, std::string content);
 		Message(std::vector<int> targets, std::string prefix, std::string content);
 		~Message();
+
 		const std::string getMessage();
 		const std::vector<int> getTargets();
 };
