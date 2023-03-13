@@ -5,6 +5,7 @@
 #include <vector>
 #include <sstream>
 #include <map>
+#include <sys/socket.h>
 
 enum e_code {
 	RPL_WELCOME = 001,
@@ -44,6 +45,7 @@ namespace ft
 	const std::string getCodeMessage(int code);
 	const std::string codeToString(unsigned int n);
 	time_t getSecondDiff(time_t lastPingTime);
+	bool isClosed(int socketFd);
 
 }
 

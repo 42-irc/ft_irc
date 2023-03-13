@@ -85,4 +85,12 @@ namespace ft
 		return (currentTime - lastPingTime);
 	}
 
+	bool isClosed(int socketFd) {
+		char buffer[1024];
+		memset(buffer, 0, sizeof(buffer));
+		ssize_t n = recv(socketFd, buffer, sizeof(buffer), 0);
+		return (n == 0);
+	}
+
+
 }
