@@ -1,19 +1,6 @@
 # include "Server.hpp"
 
-int Server::_port;
-std::map<std::string, Channel*> Server::_channels;
-std::map<std::string, Client*> Server::_clients;
-std::map<int, Client*> Server::_clientsFd;
-std::string Server::_password;
-std::string Server::_adminName = "admin";
-std::string Server::_adminPassword = "admin";
-
-Server::Server(int port, std::string password, std::string adminName, std::string adminPassword) {
-	_port = port;
-	_password = password;
-	_adminName = adminName;
-	_adminPassword = adminPassword;
-}
+Server::Server(int port, std::string password, std::string adminName, std::string adminPassword): _port(port), _password(password),_adminName(adminName), _adminPassword(adminPassword) {}
 
 Server::~Server() {
 	std::map<std::string, Channel*>::iterator it = _channels.begin();
@@ -94,30 +81,8 @@ void Server::addClient(Client* client) {
 }
 
 void Server::removeClient(Client* client) {
-	std::set<std::string> channels = client->getJoinedChannels();
-	std::set<std::string>::iterator first = channels.begin();
-	std::set<std::string>::iterator last = channels.end();
-	
-	while (first != last) {
-		removeClientFromChannel(client, _channels[*first]);
-		first++;
-	}
 	_clients.erase(client->getNickName());
 	if (_clientsFd.find(client->getFd())->second->getNickName() == client->getNickName())
 		_clientsFd.erase(client->getFd());
 	delete client;
-}
-
-void Server::addClientToChannel(Client* client, Channel* channel) {
-	_channels[channel->getName()]->addClient(client);
-	_clients[client->getNickName()]->addChannel(channel->getName());
-}
-
-void Server::removeClientFromChannel(Client* client, Channel* channel) {
-	_channels[channel->getName()]->removeClient(client);
-	_clients[client->getNickName()]->removeChannel(channel->getName());
-	if (channel->getClients().size() == 0) {
-		Server::removeChannel(channel);
-		delete channel;
-	}
 }

@@ -11,7 +11,7 @@ std::vector<Message> format
 */
 std::vector<Message> List::execute() {
 	std::vector<int> targetFd;
-	std::map<std::string, Channel*> channels = Server::getChannels();
+	std::map<std::string, Channel*> channels = _client->getServer()->getChannels();
 	std::map<std::string, Channel*>::iterator it = channels.begin();
 	std::map<std::string, Channel*>::iterator ite = channels.end();
 	std::vector<Message> messages;

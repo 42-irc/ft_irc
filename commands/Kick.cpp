@@ -11,12 +11,12 @@ std::vector<Message> format
 std::vector<Message> Kick::execute() {
 	std::vector<Message> messages;
 	try {
-		Channel* channel = Server::findChannel(_client, _channel);
+		Channel* channel = _client->getServer()->findChannel(_client, _channel);
 		checkIsAdmin(channel);
 		Client* target = channel->findClient(_client, _target);
 		std::vector<int> targetFd = channel->getFds();
 		messages.push_back(Message(targetFd, _client->getNickName(), getMsg()));
-		Server::removeClientFromChannel(target, channel);
+		target->leaveChannel(_channel);
 	}
 	catch (Message &e) {
 		messages.push_back(e);

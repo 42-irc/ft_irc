@@ -4,10 +4,14 @@
 #include <string>
 #include <iostream>
 #include <set>
+#include "Server.hpp"
+
+class Server;
 
 class Client {
 	private:
 		int _fd;
+		Server* _server;
 		std::string _name;
 		std::string _nickName;
 		std::string _hostName;
@@ -16,10 +20,11 @@ class Client {
 
 	public:
 		Client();
-		Client(int fd);
+		Client(int fd, Server* server);
 		Client(Client const &client);
 		~Client();
 
+		Server* getServer();
 		const std::string getName() const;
 		const std::string getNickName() const;
 		const std::string getHostName() const;
@@ -32,8 +37,9 @@ class Client {
 		void setHostName(const std::string hostName);
 		void setIsAdmin(const bool isAdmin);
 
-		void addChannel(std::string channel);
-		void removeChannel(std::string channel);
+		void joinChannel(std::string target);
+		void leaveChannel(std::string target);
+		void leaveServer();
 
 		bool operator==(const Client &client) const;
 		bool operator!=(const Client &client) const;

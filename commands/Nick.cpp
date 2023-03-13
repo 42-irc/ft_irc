@@ -10,7 +10,7 @@ std::string Nick::getPrefix(std::string oldNick) const {
 
 // 첫 닉네임 설정시에는 중복되는 닉네임 없도록 처리하는 함수
 void Nick::checkFirstNick() {
-	std::map<std::string, Client*> clients = Server::getClients();
+	std::map<std::string, Client*> clients = _client->getServer()->getClients();
 	std::map<std::string, Client*>::const_iterator it = clients.find(_nick);
 	std::map<std::string, Client*>::const_iterator end = clients.end();
 
@@ -25,7 +25,7 @@ void Nick::checkFirstNick() {
 std::vector<Message> Nick::execute() {
 	std::vector<int> targetFd;
 	std::vector<Message> messages;
-	std::map<std::string, Client*> clients = Server::getClients();
+	std::map<std::string, Client*> clients = _client->getServer()->getClients();
 	std::map<std::string, Client*>::const_iterator it = clients.find(_nick);
 	std::map<std::string, Client*>::const_iterator end = clients.end();
 
@@ -42,15 +42,15 @@ std::vector<Message> Nick::execute() {
 	std::string prefix = getPrefix(_client->getNickName());
 	Client* new_nick = new Client(*_client);
 	new_nick->setNickName(_nick);
-	Server::addClient(new_nick);
+	new_nick->getServer()->addClient(new_nick);
 	while (it2 != end2) {
-		Channel* channel = Server::findChannel(new_nick, *it2);
+		Channel* channel = _client->getServer()->findChannel(new_nick, *it2);
 		targetFd = channel->getFdsExceptClient(_client);
 		messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
-		Server::addClientToChannel(new_nick, channel);
+		new_nick->joinChannel(*it2);
 		it2++;
 	}
-	Server::removeClient(_client);
+	_client->leaveServer();
 	targetFd.push_back(new_nick->getFd());
 	messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
 	return messages;

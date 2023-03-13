@@ -1,8 +1,8 @@
 #include "client_socket.hpp"
 
-void printChannels() {
+void printChannels(Server* server) {
     std::cout << "------------------exist channels------------------" << std::endl;
-    std::map<std::string, Channel*> channels = Server::getChannels();
+    std::map<std::string, Channel*> channels = server->getChannels();
     std::map<std::string, Channel*>::iterator it = channels.begin();
     std::map<std::string, Channel*>::iterator ite = channels.end();
     for (; it != ite; it++) {
@@ -19,9 +19,9 @@ void printChannels() {
     std::cout << std::endl;
 }
 
-void printClients() {
+void printClients(Server* server) {
     std::cout << "------------------exist clients------------------" << std::endl;
-    std::map<std::string, Client*> clients = Server::getClients();
+    std::map<std::string, Client*> clients = server->getClients();
     std::map<std::string, Client*>::iterator it = clients.begin();
     std::map<std::string, Client*>::iterator ite = clients.end();
     for (; it != ite; it++) {
@@ -37,7 +37,7 @@ void printClients() {
     }
 }
 
-void create_client_socket(int server_socket, int kq) {
+void create_client_socket(int server_socket, int kq, Server* server) {
 	struct sockaddr_in client_addr;
 	socklen_t client_addr_size = sizeof(client_addr);
 	int new_client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_addr_size);
@@ -53,11 +53,10 @@ void create_client_socket(int server_socket, int kq) {
 		err_exit("setting client socket flag : " + std::string(strerror(errno)));
 
     try {
-        Server::findClient(new_client_socket);
+        server->findClient(new_client_socket);
     } catch (Message& e) {
-        Client* client = new Client(new_client_socket);
+        Client* client = new Client(new_client_socket, server);
         client->setHostName(client_host);
-        Server::addClient(client);
     }
 
 	struct kevent client_socket_event[2];
@@ -68,6 +67,6 @@ void create_client_socket(int server_socket, int kq) {
 	// 임시 접속 메시지
 	char message[] = "🍀 WELCOME TO IRC SERVER 🍀\n";
 	send(new_client_socket, message, sizeof(message), 0);
-	// printChannels();// 디버깅용 프린트 함수
-	// printClients();// 디버깅용 프린트 함수
+	printChannels(server);// 디버깅용 프린트 함수
+	printClients(server);// 디버깅용 프린트 함수
 }

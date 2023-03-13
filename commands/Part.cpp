@@ -12,10 +12,10 @@ std::vector<Message> Part::execute() {
 
 	for (; it != ite; it++) {
 		try {
-			Channel* channel = Server::findChannel( _client, *it);
+			Channel* channel = _client->getServer()->findChannel(_client, *it);
 			channel->findClient(_client, _client->getNickName());
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
-			Server::removeClientFromChannel(_client, channel);
+			_client->leaveChannel(*it);
 		} catch (Message &e) {
 			messages.push_back(e);
 		}
