@@ -9,51 +9,47 @@ std::string Nick::getPrefix(std::string oldNick) const {
 }
 
 // 첫 닉네임 설정시에는 중복되는 닉네임 없도록 처리하는 함수
-void Nick::checkFirstNick() {
+void Nick::renameFirstNick() {
 	std::map<std::string, Client*> clients = _client->getServer()->getClients();
-	std::map<std::string, Client*>::const_iterator first = clients.find(_nick);
-	std::map<std::string, Client*>::const_iterator last = clients.end();
+	std::map<std::string, Client*>::const_iterator it = clients.find(_nick);
+	std::map<std::string, Client*>::const_iterator ite = clients.end();
 
-	while (first != last) {
+	for (; it != ite; it = clients.find(_nick))
 		_nick += "_";
-		first = clients.find(_nick);
-	}
 }
 
 std::vector<Message> Nick::execute() {
 	std::vector<int> targetFd;
+	std::map<std::string, Client*> clients = _client->getServer()->getClients();
 	std::vector<Message> messages;
-	std::map<std::string, Client*> clients = Server::getClients();
-	std::map<std::string, Client*>::const_iterator it = clients.find(_nick);
-	std::map<std::string, Client*>::const_iterator end = clients.end();
 
-	} else {
+	if (_client->getNickName() == "") {
 		renameFirstNick();
-	}
-	else if (first != last) {
+	} else if (clients.find(_nick) != clients.end()) {
 		targetFd.push_back(_client->getFd());
 		messages.push_back(Message(targetFd, ERR_NICKNAMEINUSE, _client->getNickName()));
 		return messages;
 	}
 
+	Client* newClient = new Client(*_client);
+
+	newClient->setNickName(_nick);
+	newClient->getServer()->addClient(newClient);
+
 	std::set<std::string> channels = _client->getJoinedChannels();
-	std::set<std::string>::iterator it2 = channels.begin();
-	std::set<std::string>::iterator end2 = channels.end();
-
+	std::set<std::string>::iterator it = channels.begin();
+	std::set<std::string>::iterator ite = channels.end();
 	std::string prefix = getPrefix(_client->getNickName());
-	Client* new_nick = new Client(*_client);
 
-	new_nick->setNickName(_nick);
-	new_nick->getServer()->addClient(new_nick);
-	while (it2 != end2) {
-		Channel* channel = _client->getServer()->findChannel(new_nick, *it2);
+	for (; it != ite; it++) {
+		Channel* channel = _client->getServer()->findChannel(newClient, *it);
+
+		newClient->joinChannel(*it);
 		targetFd = channel->getFdsExceptClient(_client);
 		messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
-		new_nick->joinChannel(*it2);
-		it2++;
 	}
 	_client->leaveServer();
-	targetFd.push_back(new_nick->getFd());
+	targetFd.push_back(newClient->getFd());
 	messages.push_back(Message(targetFd, prefix, "NICK " + _nick));
 	return messages;
 }

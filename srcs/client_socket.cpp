@@ -41,6 +41,7 @@ void create_client_socket(int server_socket, int kq, Server* server) {
 	struct sockaddr_in client_addr;
 	socklen_t client_addr_size = sizeof(client_addr);
 	int new_client_socket = accept(server_socket, (struct sockaddr *)&client_addr, &client_addr_size);
+
 	if (new_client_socket == -1)
 		err_exit("accepting client : " + std::string(strerror(errno)));
 
@@ -67,6 +68,6 @@ void create_client_socket(int server_socket, int kq, Server* server) {
 	// 임시 접속 메시지
 	char message[] = "🍀 WELCOME TO IRC SERVER 🍀\n";
 	send(new_client_socket, message, sizeof(message), 0);
-	printChannels(server);// 디버깅용 프린트 함수
-	printClients(server);// 디버깅용 프린트 함수
+	// printChannels(server);// 디버깅용 프린트 함수
+	// printClients(server);// 디버깅용 프린트 함수
 }

@@ -13,6 +13,7 @@ std::vector<Message> Part::execute() {
 	for (; it != ite; it++) {
 		try {
 			Channel* channel = _client->getServer()->findChannel(_client, *it);
+
 			channel->findClient(_client, _client->getNickName());
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
 			_client->leaveChannel(*it);

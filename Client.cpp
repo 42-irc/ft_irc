@@ -39,6 +39,7 @@ void Client::joinChannel(std::string target) {
 
 void Client::leaveChannel(std::string target) {
 	Channel *channel = _server->findChannel(this, target);
+
 	channel->removeClient(this);
 	_joinedChannels.erase(target);
 	if (channel->getClients().size() == 0) {
@@ -49,13 +50,11 @@ void Client::leaveChannel(std::string target) {
 
 void Client::leaveServer() {
 	std::set<std::string> channels = getJoinedChannels();
-	std::set<std::string>::iterator first = channels.begin();
-	std::set<std::string>::iterator last = channels.end();
+	std::set<std::string>::iterator it = channels.begin();
+	std::set<std::string>::iterator ite = channels.end();
 	
-	while(first != last){
-		leaveChannel(*first);
-		first++;
-	}
+	for (; it != ite; it++)
+		leaveChannel(*it);
 	_server->removeClient(this);
 }
 

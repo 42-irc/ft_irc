@@ -13,6 +13,7 @@ class Oper : public Command {
 	public:
 		Oper(Client* client, std::string name, std::string password);
 		~Oper();
+
 		std::vector<Message> execute();
 };
 

@@ -25,6 +25,7 @@ class Server {
 	public:
 		Server(int port, std::string password, std::string adminName, std::string adminPassword);
 		~Server();
+
 		int getPort();
 		std::map<std::string, Channel*> getChannels();
 		std::map<std::string, Client*> getClients();

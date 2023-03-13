@@ -9,6 +9,7 @@ class Ping : public Command
 	public:
 		Ping(Client* client);
 		~Ping();
+
 		std::vector<Message> execute();
 };
 

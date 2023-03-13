@@ -14,6 +14,7 @@ class Nick : public Command
 	public:
 		Nick(Client* client, std::string nick);
 		~Nick();
+
 		std::vector<Message> execute();
 };
 

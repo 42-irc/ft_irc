@@ -19,15 +19,17 @@ std::vector<Message> PrivMsg::execute() {
 
 	for (; it != ite; it++) {
 		try {
-			if ((*it)[0] == '#') { // 채널에 보내는 경우
-					Channel* target = _client->getServer()->findChannel(_client, *it); // 채널이 없으면 에러
-					target->findClient(_client, _client->getNickName()); // 유저가 채널에 없으면 에러
-					targetFd = target->getFdsExceptClient(_client);		 // 자기 자신 제외
-					messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
-			} else { // 유저에게 보내는 경우
-					Client* target = _client->getServer()->findClient(_client, *it); // 유저가 없으면 에러
-					targetFd.push_back(target->getFd());
-					messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
+			if ((*it)[0] == '#') {
+				Channel* target = _client->getServer()->findChannel(_client, *it);
+
+				target->findClient(_client, _client->getNickName());
+				targetFd = target->getFdsExceptClient(_client);
+				messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
+			} else {
+				Client* target = _client->getServer()->findClient(_client, *it);
+
+				targetFd.push_back(target->getFd());
+				messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
 			}
 		} catch (Message &e) {
 			messages.push_back(e);
@@ -35,4 +37,3 @@ std::vector<Message> PrivMsg::execute() {
 	}
 	return messages;
 }
-

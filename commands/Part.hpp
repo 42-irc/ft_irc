@@ -11,6 +11,7 @@ class Part : public Command {
 	public:
 		Part(Client* client, std::string channel);
 		~Part();
+
 		std::vector<Message> execute();
 };
 

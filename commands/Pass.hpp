@@ -11,6 +11,7 @@ class Pass : public Command {
 	public:
 		Pass(Client* client, std::string password);
 		~Pass();
+
 		std::vector<Message> execute();
 };
 
