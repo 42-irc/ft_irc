@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include "Nick.hpp"
 
 Nick::Nick(Client* client, const std::string& nick) : Command(client, "NICK"), _nick(nick) {}
@@ -25,6 +27,14 @@ void Nick::execute() {
 	std::vector<Message> messages;
 
 	if (_client->getNickName() == "") {
+		if (!_client->getIsVerified()) {
+			targetFdVector.push_back(_client->getFd());
+			messages.push_back(Message(targetFdVector, ERR_PASSWDMISMATCH, _client->getNickName()));
+			sendMessages(messages);
+			close(_client->getFd());
+			_client->leaveServer();
+			return ;
+		}
 		renameFirstNick();
 	} else if (clients.find(_nick) != clients.end()) {
 		targetFd.insert(_client->getFd());

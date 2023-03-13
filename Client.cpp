@@ -7,7 +7,7 @@ Client::Client(int fd, Server* server) : _fd(fd), _server(server), _isVerified(f
 	_lastPingTime = time(NULL);
 }
 
-Client::Client(const Client& client) : _fd(client._fd), _server(client._server), _isVerified(client._isVerified), _name(client._name), _nickName(client._nickName), _hostName(client._hostName), _joinedChannels(client._joinedChannels), _isAdmin(client._isAdmin) {}
+Client::Client(const Client& client) : _fd(client._fd), _server(client._server), _name(client._name), _nickName(client._nickName), _hostName(client._hostName), _joinedChannels(client._joinedChannels), _isVerified(client._isVerified), _isAdmin(client._isAdmin) {}
 
 Client::~Client() {}
 
@@ -22,6 +22,8 @@ const std::string Client::getHostName() const { return _hostName; }
 int Client::getFd() const { return _fd; }
 
 bool Client::getIsAdmin() const { return _isAdmin; }
+
+bool Client::getIsVerified() const { return _isVerified; }
 
 time_t Client::getLastPingTime() const { return _lastPingTime; }
 
