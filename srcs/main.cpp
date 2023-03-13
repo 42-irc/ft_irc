@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 						}
 					}
 				// WRITE 이벤트 발생
-				} else if (occurred_events[i].filter == EVFILT_WRITE) {
+				} else if (occurred_events[i].filter == EVFILT_WRITE && !ft::isClosed(event_client_socket)) {
 					time_t lastPingTime = server->findClient(event_client_socket)->getLastPingTime();
 					time_t diff = ft::getSecondDiff(lastPingTime);
 
