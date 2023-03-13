@@ -17,7 +17,7 @@ void Part::execute() {
 			channel->findClient(_client, _client->getNickName());
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
 			_client->leaveChannel(*it);
-		} catch (Message &e) {
+		} catch (Message& e) {
 			messages.push_back(e);
 		}
 	}

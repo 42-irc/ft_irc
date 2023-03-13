@@ -38,7 +38,7 @@ void Join::execute(){
 
 			_client->joinChannel(*it);
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
-		} catch (Message &e) {
+		} catch (Message& e) {
 			try {
 				checkValidName(*it);
 				checkChannelNum();
@@ -48,7 +48,7 @@ void Join::execute(){
 				_client->getServer()->addChannel(channel);
 				_client->joinChannel(*it);
 				messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
-			} catch (Message &e) {
+			} catch (Message& e) {
 				messages.push_back(e);
 			}
 		}

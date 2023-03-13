@@ -31,7 +31,7 @@ void PrivMsg::execute() {
 				targetFd.push_back(target->getFd());
 				messages.push_back(Message(targetFd, getPrefix(), "PRIVMSG " + getMsg(*it)));
 			}
-		} catch (Message &e) {
+		} catch (Message& e) {
 			messages.push_back(e);
 		}
 	}

@@ -33,7 +33,7 @@ void Kick::execute() {
 
 		messages.push_back(Message(targetFd, _client->getNickName(), getMsg()));
 		target->leaveChannel(_channel);
-	} catch (Message &e) {
+	} catch (Message& e) {
 		messages.push_back(e);
 	}
 	sendMessages(messages);

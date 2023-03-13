@@ -19,7 +19,7 @@ void Oper::execute() {
 
 		targetFd.push_back(_client->getFd());
 		messages.push_back(Message(targetFd, RPL_YOUREOPER, _client->getNickName()));
-	} catch (Message &e) {
+	} catch (Message& e) {
 		messages.push_back(e);
 	}
 	sendMessages(messages);
