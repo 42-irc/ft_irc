@@ -66,9 +66,16 @@ int main(int argc, char *argv[]) {
 						}
 					}
 				// WRITE 이벤트 발생
-				} else if (occurred_events[i].filter == EVFILT_WRITE && !ft::isClosed(event_client_socket)) {
-					time_t lastPingTime = server->findClient(event_client_socket)->getLastPingTime();
-					time_t diff = ft::getSecondDiff(lastPingTime);
+				} 
+				// else if (occurred_events[i].filter == EVFILT_WRITE && !ft::isClosed(event_client_socket)) {
+					time_t lastPingTime;
+					time_t diff;
+					try {
+						lastPingTime = server->findClient(event_client_socket)->getLastPingTime();
+						diff = ft::getSecondDiff(lastPingTime);
+					} catch (Message &e) {
+						continue;
+					}
 
 					// 마지막 PING 보낸지 180초 이상이 되면
 					if (diff >= 180) {
@@ -85,4 +92,3 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-}

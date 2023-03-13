@@ -1,6 +1,6 @@
 NAME = ircserv
 CXX = c++
-CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98 #-fsanitize=address
+CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98# -fsanitize=address
 
 SRCS =	commands/Command.cpp \
 		commands/Join.cpp \
