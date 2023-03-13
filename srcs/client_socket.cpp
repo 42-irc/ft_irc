@@ -61,10 +61,10 @@ void create_client_socket(int server_socket, int kq, Server* server) {
         client->setHostName(client_host);
     }
 
-	struct kevent client_socket_event[2];
-	EV_SET(&client_socket_event[0], new_client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
-	EV_SET(&client_socket_event[1], new_client_socket, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
-	kevent(kq, &client_socket_event[0], 2, NULL, 0, NULL);
+	struct kevent client_socket_event;
+	EV_SET(&client_socket_event, new_client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
+	// EV_SET(&client_socket_event[1], new_client_socket, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
+	kevent(kq, &client_socket_event, 2, NULL, 0, NULL);
 
 	// 임시 접속 메시지
 	char message[] = "🍀 WELCOME TO IRC SERVER 🍀\n";
