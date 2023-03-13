@@ -63,7 +63,7 @@ void create_client_socket(int server_socket, int kq, Server* server) {
 
 	struct kevent client_socket_event[2];
 	EV_SET(&client_socket_event[0], new_client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
-	EV_SET(&client_socket_event[1], new_client_socket, EVFILT_WRITE, EV_ONESHOT, 0, 0, NULL);
+	EV_SET(&client_socket_event[1], new_client_socket, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
 	kevent(kq, &client_socket_event[0], 2, NULL, 0, NULL);
 
 	// 임시 접속 메시지

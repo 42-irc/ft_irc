@@ -12,6 +12,8 @@ Message::~Message() {}
 const std::string Message::getMessage() const {
 	if (_code)
 		return (":ft_irc " + ft::codeToString(_code) + " " + _content + " " + ft::getCodeMessage(_code) + "\r\n");
+	if (_prefix.empty())
+		return (_content  + "\r\n");
 	return (_prefix + " " + _content + "\r\n");
 }
 

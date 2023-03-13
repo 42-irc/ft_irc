@@ -43,6 +43,7 @@ namespace ft
 	std::vector<std::string> split(const std::string& str, const std::string charset);
 	const std::string getCodeMessage(int code);
 	const std::string codeToString(unsigned int n);
+	time_t getSecondDiff(time_t lastPingTime);
 
 }
 
