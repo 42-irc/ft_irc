@@ -33,62 +33,38 @@ int main(int argc, char *argv[]) {
 			// 이벤트가 발생한 식별자가 클라이언트 소켓의 fd인 경우
 			else {
 				int event_client_socket = occurred_events[i].ident;
-				// READ 이벤트 발생
-				if (occurred_events[i].filter == EVFILT_READ) {
-					char buffer[1024];
-					memset(buffer, 0, sizeof(buffer));
-					ssize_t n = recv(event_client_socket, buffer, sizeof(buffer), 0);
-					if (n < 0) {
-						err_exit("receiving from client socket : " + std::string(strerror(errno)));
-					} else if (n == 0) {
-						// 클라이언트 연결 종료
-						std::cout << event_client_socket << " Client closed connection\n" << std::endl;
-						close(event_client_socket);
-					} else {
-						// 클라이언트 메시지 수신 성공
-						std::cout << "[" << event_client_socket << "] client : " << buffer << std::endl;
-						std::vector<std::string> tokens = ft::split(std::string(buffer), "\r\n");
-						std::vector<std::string>::const_iterator first = tokens.begin();
-						std::vector<std::string>::const_iterator last = tokens.end();
+				// if (occurred_events[i].filter == EVFILT_READ) {
+				char buffer[1024];
+				memset(buffer, 0, sizeof(buffer));
+				ssize_t n = recv(event_client_socket, buffer, sizeof(buffer), 0);
+				if (n < 0) {
+					err_exit("receiving from client socket : " + std::string(strerror(errno)));
+				} else if (n == 0) {
+					// 클라이언트 연결 종료
+					std::cout << event_client_socket << " Client closed connection\n" << std::endl;
+					close(event_client_socket);
+				} else {
+					// 클라이언트 메시지 수신 성공
+					std::cout << "[" << event_client_socket << "] client : " << buffer << std::endl;
+					std::vector<std::string> tokens = ft::split(std::string(buffer), "\r\n");
+					std::vector<std::string>::const_iterator first = tokens.begin();
+					std::vector<std::string>::const_iterator last = tokens.end();
 
-						while (first != last) {
-							// 클라이언트에 보낼 메시지 작성 후 전송
-							try {
-								Command* command = ft::parse(server->findClient(event_client_socket), *first);
-								command->execute();
-								delete command;
-							} catch (Message &e) {
-								send(event_client_socket, e.getMessage().c_str(), e.getMessage().size(), 0);
-							} catch (std::exception &e) {
-								send(event_client_socket, MALLOC_ERR, strlen(MALLOC_ERR),0);
-							}
-							first++;
+					while (first != last) {
+						// 클라이언트에 보낼 메시지 작성 후 전송
+						try {
+							Command* command = ft::parse(server->findClient(event_client_socket), *first);
+							command->execute();
+							delete command;
+						} catch (Message &e) {
+							send(event_client_socket, e.getMessage().c_str(), e.getMessage().size(), 0);
+						} catch (std::exception &e) {
+							send(event_client_socket, MALLOC_ERR, strlen(MALLOC_ERR),0);
 						}
-					}
-				// WRITE 이벤트 발생
-				} 
-				// else if (occurred_events[i].filter == EVFILT_WRITE && !ft::isClosed(event_client_socket)) {
-					time_t lastPingTime;
-					time_t diff;
-					try {
-						lastPingTime = server->findClient(event_client_socket)->getLastPingTime();
-						diff = ft::getSecondDiff(lastPingTime);
-					} catch (Message &e) {
-						continue;
-					}
-
-					// 마지막 PING 보낸지 180초 이상이 되면
-					if (diff >= 180) {
-						char ping[] = "PING\r\n";
-						ssize_t n = send(event_client_socket, ping, sizeof(ping), 0);
-						if (n < 0) {
-							err_exit("sending PING to client socket : " + std::string(strerror(errno)));
-						} else {
-							server->findClient(event_client_socket)->setLastPingTime(time(NULL));
-							std::cout << "[" << event_client_socket << "] send PING" << std::endl;
-						}
+						first++;
 					}
 				}
+				// }
 			}
 		}
 	}
