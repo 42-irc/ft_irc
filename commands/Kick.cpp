@@ -13,10 +13,10 @@ std::vector<Message> Kick::execute() {
 	try {
 		Channel* channel = _client->getServer()->findChannel(_client, _channel);
 		checkIsAdmin(channel);
-		channel->findClient(_client, _target);
+		Client* target = channel->findClient(_client, _target);
 		std::vector<int> targetFd = channel->getFds();
 		messages.push_back(Message(targetFd, _client->getNickName(), getMsg()));
-		_client->leaveChannel(_channel);
+		target->leaveChannel(_channel);
 	}
 	catch (Message &e) {
 		messages.push_back(e);
