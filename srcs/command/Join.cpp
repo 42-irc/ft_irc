@@ -45,12 +45,12 @@ void Join::execute(){
 			_messages.push_back(Message(channel->getFds(), getPrefix(), getMsg(*it)));
 		} catch (Message& e) {
 			try {
-				std::string bot_msg = ":당신은이방의주인일세";
 				checkValidName(*it);
 				checkChannelNum();
 
 				Channel *channel = new Channel(*it, _client);
-				
+				std::string bot_msg = ":당신은이방의주인일세";
+
 				_client->getServer()->addChannel(channel);
 				_client->joinChannel(*it);
 				_messages.push_back(Message(channel->getFds(), getPrefix(), getMsg(*it)));
