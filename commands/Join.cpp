@@ -1,4 +1,5 @@
 #include "Join.hpp"
+#include "PrivMsg.hpp"
 
 Join::Join(Client* client, const std::string& channel) : Command(client, "JOIN"), _channel(channel) {}
 
@@ -40,6 +41,7 @@ void Join::execute(){
 			messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
 		} catch (Message& e) {
 			try {
+				std::string bot_msg = ":당신은이방의주인일세";
 				checkValidName(*it);
 				checkChannelNum();
 
@@ -48,6 +50,7 @@ void Join::execute(){
 				_client->getServer()->addChannel(channel);
 				_client->joinChannel(*it);
 				messages.push_back(Message(channel->getFds(), getPrefix(), _type + " " + *it));
+				PrivMsg(_client->getServer()->getBot(), *it, bot_msg).execute();
 			} catch (Message& e) {
 				messages.push_back(e);
 			}

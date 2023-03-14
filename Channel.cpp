@@ -33,6 +33,10 @@ const std::vector<int> Channel::getFdsExceptClient(Client* client) const {
 }
 
 Client* Channel::findClient(Client* client, const std::string& name) const {
+	if (client->getServer()->getBot() == client) {
+		return client;
+	}
+
 	std::map<std::string, Client*>::const_iterator it = _clients.find(name);
 
 	if (it != _clients.end())
