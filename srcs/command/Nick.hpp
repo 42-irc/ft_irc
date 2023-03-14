@@ -3,8 +3,7 @@
 
 #include "Command.hpp"
 
-class Nick : public Command
-{
+class Nick : public Command {
 	private:
 		std::string _nick;
 		const std::string getPrefix(const std::string& oldNick) const;

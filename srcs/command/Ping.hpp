@@ -3,8 +3,7 @@
 
 #include "Command.hpp"
 
-class Ping : public Command
-{
+class Ping : public Command {
 	public:
 		Ping(Client* client);
 		~Ping();
