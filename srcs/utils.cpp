@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include "ircserv.hpp"
 
 namespace ft
 {
@@ -39,47 +40,6 @@ namespace ft
 		return ret;
 	}
 
-	const std::string getCodeMessage(int code) {
-		switch (code) {
-			case RPL_WELCOME:
-				return CODE_001;
-			case ERR_NOSUCHNICK:
-				return CODE_401;
-			case ERR_NOSUCHCHANNEL:
-				return CODE_403;
-			case ERR_UNKNOWNCOMMAND:
-				return CODE_421;
-			case ERR_NICKNAMEINUSE:
-				return CODE_433;
-			case ERR_NOTONCHANNEL:
-				return CODE_442;
-			case ERR_CHANOPRIVSNEEDED:
-				return CODE_482;
-			case RPL_LIST:
-				return CODE_322;
-			case RPL_LISTEND:
-				return CODE_323;
-			case RPL_YOUREOPER:
-				return CODE_381;
-			case ERR_NEEDMOREPARAMS:
-				return CODE_461;
-			case ERR_PASSWDMISMATCH:
-				return CODE_464;
-			default:
-				return "";
-		}
-	}
-
-	const std::string codeToString(unsigned int n) {
-		std::stringstream ss;
-		if (n < 10)
-			ss << "00";
-		else if (n < 100)
-			ss << "0";
-		ss << n;
-		return ss.str();
-	}
-
 	time_t getSecondDiff(time_t lastPingTime) {
 		time_t currentTime = time(NULL);
 		return (currentTime - lastPingTime);
@@ -92,5 +52,60 @@ namespace ft
 		return (n == 0);
 	}
 
+	unsigned long num_of_digit(int num) {
+		unsigned long cnt = 1;
+		while (num >= 10) {
+			num /= 10;
+			++cnt;
+		}
+		return cnt;
+	}
+
+	int validate_port(char* port) {
+		int port_num = atoi(port);
+
+		// 숫자만으로 구성되는지 확인
+		if ((port_num == 0 && (strlen(port) != 1 || port[0] != '0'))
+			|| (strlen(port) != num_of_digit(port_num)))
+			err_exit("invalid port");
+
+		// port 번호 범위 0 ~ 65535
+		if (port_num < 0 || port_num > 65535)
+			err_exit("invalid port");
+		return port_num;
+	}
+
+	inline std::string& ltrim(std::string& s, const char* t = " \t\n\r\f\v") {
+		s.erase(0, s.find_first_not_of(t));
+		return s;
+	}
+
+	inline std::string& rtrim(std::string& s, const char* t = " \t\n\r\f\v") {
+		s.erase(s.find_last_not_of(t) + 1);
+		return s;
+	}
+
+	inline std::string& trim(std::string& s, const char* t = " \t\n\r\f\v") {
+		return ltrim(rtrim(s, t), t);
+	}
+
+	void validate_password(std::string password) {
+		// 비어 있지 않은지
+		if (trim(password).empty())
+			err_exit("invalid password");
+	}
+
+	int validate_args(int argc, char *argv[]) {
+		if (argc != 3)
+			err_exit("invalid args\nTYPE FORM >> ./ircserv <port> <password>");
+
+		char *string_port = argv[1];
+		std::string password = argv[2];
+
+		int port = validate_port(string_port);
+		validate_password(password);
+
+		return port;
+	}
 
 }

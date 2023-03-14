@@ -30,8 +30,7 @@
 *.exe
 *.out
 *.app
-server
-client
+
 ircserv
 
 .vscode/
