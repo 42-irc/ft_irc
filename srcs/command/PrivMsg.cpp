@@ -22,18 +22,20 @@ void PrivMsg::execute() {
 		try {
 			if ((*it)[0] == '#') {
 				Channel* target = _client->getServer()->findChannel(_client, *it);
-				target->findClient(_client, _client->getNickName());
+				std::vector<int> targetFds = target->getFdsExceptClient(_client);
 
-				std::vector<int> channelFds = target->getFdsExceptClient(_client);
-				targetFds.insert(targetFds.end(), channelFds.begin(), channelFds.end());
+				target->findClient(_client, _client->getNickName());
+				_messages.push_back(Message(targetFds, getPrefix(), getMsg(*it)));
 			} else {
 				Client* target = _client->getServer()->findClient(_client, *it);
+				std::vector<int> targetFds;
+
 				targetFds.push_back(target->getFd());
+				_messages.push_back(Message(targetFds, getPrefix(), getMsg(*it)));
 			}
 		} catch (Message& e) {
 			_messages.push_back(e);
 		}
 	}
-	_messages.push_back(Message(targetFds, getPrefix(), getMsg(*it)));
 	sendMessages();
 }
