@@ -1,5 +1,4 @@
-#include "server_socket.hpp"
-#include "main.hpp"
+#include "ircserv.hpp"
 
 int create_server_socket(int port) {
 	int server_socket;

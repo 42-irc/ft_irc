@@ -1,42 +1,4 @@
-#include "client_socket.hpp"
-#include "main.hpp"
-
-void printChannels(Server* server) {
-    std::cout << "------------------exist channels------------------" << std::endl;
-    std::map<std::string, Channel*> channels = server->getChannels();
-    std::map<std::string, Channel*>::const_iterator it = channels.begin();
-    std::map<std::string, Channel*>::const_iterator ite = channels.end();
-    for (; it != ite; it++) {
-        std::cout << "Channel name: " << it->second->getName() << std::endl;
-        // std::cout << "Channel operator: " << it->second->getOperator()->getNickName() << std::endl;
-        std::cout << "Channel clients: " << std::endl;
-        std::map<std::string, Client*> clients = it->second->getClients();
-        std::map<std::string, Client*>::const_iterator it2 = clients.begin();
-        std::map<std::string, Client*>::const_iterator ite2 = clients.end();
-        for (; it2 != ite2; it2++) {
-            std::cout << "\tClient name: " << it2->second->getNickName() << std::endl;
-        }
-    }
-    std::cout << std::endl;
-}
-
-void printClients(Server* server) {
-    std::cout << "------------------exist clients------------------" << std::endl;
-    std::map<std::string, Client*> clients = server->getClients();
-    std::map<std::string, Client*>::const_iterator it = clients.begin();
-    std::map<std::string, Client*>::const_iterator ite = clients.end();
-    for (; it != ite; it++) {
-        std::cout << "Client name: " << it->second->getNickName() << std::endl;
-        std::cout << "Client fd: " << it->second->getFd() << std::endl;
-        std::cout << "Client channels: " << std::endl;
-        std::set<std::string> channels = it->second->getJoinedChannels();
-        std::set<std::string>::const_iterator it2 = channels.begin();
-        std::set<std::string>::const_iterator ite2 = channels.end();
-        for (; it2 != ite2; it2++) {
-            std::cout << "\tChannel name: " << *it2 << std::endl;
-        }
-    }
-}
+#include "ircserv.hpp"
 
 void create_client_socket(int server_socket, int kq, Server* server) {
 	struct sockaddr_in client_addr;
@@ -49,7 +11,7 @@ void create_client_socket(int server_socket, int kq, Server* server) {
 	char client_host[NI_MAXHOST];
 	getnameinfo((struct sockaddr*)&client_addr, client_addr_size, client_host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
 	
-	std::cout << client_host << ": New client connected\n" << std::endl;
+	std::cout << client_host << " : New client connected\n" << std::endl;
 
 	if (fcntl(new_client_socket, F_SETFL, O_NONBLOCK) == -1)
 		err_exit("setting client socket flag : " + std::string(strerror(errno)));
@@ -66,9 +28,6 @@ void create_client_socket(int server_socket, int kq, Server* server) {
 	// EV_SET(&client_socket_event[1], new_client_socket, EVFILT_WRITE, EV_ADD, 0, 0, NULL);
 	kevent(kq, &client_socket_event, 2, NULL, 0, NULL);
 
-	// 임시 접속 메시지
-	char message[] = "🍀 WELCOME TO IRC SERVER 🍀\n";
-	send(new_client_socket, message, sizeof(message), 0);
 	// printChannels(server);// 디버깅용 프린트 함수
 	// printClients(server);// 디버깅용 프린트 함수
 }
