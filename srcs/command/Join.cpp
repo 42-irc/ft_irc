@@ -1,4 +1,5 @@
 #include "Join.hpp"
+#include "PrivMsg.hpp"
 
 Join::Join(Client* client, const std::string& channel) : Command(client, "JOIN"), _channel(channel) {}
 
