@@ -1,6 +1,10 @@
 # include "Server.hpp"
 
-Server::Server(int port, const std::string& password, const std::string& adminName, const std::string& adminPassword): _port(port), _password(password),_adminName(adminName), _adminPassword(adminPassword) {}
+Server::Server(int port, const std::string& password, const std::string& adminName, const std::string& adminPassword): _port(port), _password(password),_adminName(adminName), _adminPassword(adminPassword) {
+	Client *bot = new Client(1, this);
+	bot->setNickName("BOT🤖");
+	_bot = bot;
+}
 
 Server::~Server() {
 	std::map<std::string, Channel*>::const_iterator it = _channels.begin();
@@ -17,6 +21,8 @@ Server::~Server() {
 		delete it2->second;
 	}
 };
+
+Client* Server::getBot() { return _bot; }
 
 int Server::getPort() { return _port; }
 

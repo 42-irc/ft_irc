@@ -21,11 +21,13 @@ class Server {
 		std::string _password;
 		std::string _adminName;
 		std::string _adminPassword;
+		Client* _bot;
 
 	public:
 		Server(int port, const std::string& password, const std::string& adminName, const std::string& adminPassword);
 		~Server();
 
+		Client* getBot();
 		int getPort();
 		std::map<std::string, Channel*> getChannels();
 		std::map<std::string, Client*> getClients();
