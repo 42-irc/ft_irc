@@ -45,10 +45,11 @@ Channel* Server::findChannel(Client* client, const std::string& name) {
 	if (it != _channels.end())
 		return it->second;
 
-	std::vector<int> fd;
+	Message msg(ERR_NOSUCHCHANNEL);
 
-	fd.push_back(client->getFd());
-	throw Message(fd, ERR_NOSUCHCHANNEL, name);
+	msg.addTarget(client->getFd());
+	msg.addParam(name);
+	throw msg;
 }
 
 
@@ -57,11 +58,12 @@ Client* Server::findClient(Client* client, const std::string& name) {
 
 	if (it != _clients.end())
 		return it->second;
+	
+	Message msg(ERR_NOSUCHNICK);
 
-	std::vector<int> fd;
-
-	fd.push_back(client->getFd());
-	throw Message(fd, ERR_NOSUCHNICK, name);
+	msg.addTarget(client->getFd());
+	msg.addParam(name);
+	throw msg;
 }
 
 Client* Server::findClient(int fd) {

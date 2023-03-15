@@ -12,11 +12,14 @@ void Pass::execute() {
 		return ;
 	}
 
-	std::vector<int> targetFds;
+	Message msg(ERR_PASSWDMISMATCH);
 
-	targetFds.push_back(_client->getFd());
-	_messages.push_back(Message(targetFds, ERR_PASSWDMISMATCH, _client->getNickName()));
+	msg.addTarget(_client->getFd());
+	msg.addParam(_client->getNickName());
+	_messages.push_back(msg);
+
 	sendMessages();
+
 	close(_client->getFd());
 	_client->leaveServer();
 };

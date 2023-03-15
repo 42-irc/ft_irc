@@ -34,32 +34,45 @@ enum e_code {
 # define CODE_482 ":You're not an channel operator"
 # define CODE_322 ""
 # define CODE_353 ""
-# define CODE_366 ":End of /NAMES list"
+# define CODE_366 ":End of /NAMES list."
 # define CODE_381 ":You are now an IRC operator"
 # define CODE_323 ":End of /LIST"
 # define CODE_461 ":Not enough parameters"
 # define CODE_464 ":Password incorrect"
+
+# define SERVER_NAME "ft_irc"
+# define SERVER_PREFIX ":ft_irc"
 
 # define MALLOC_ERR ":Malloc failed\r\n"
 
 class Message {
 	private:
 		std::vector<int> _targets;
-		unsigned int _code;
 		std::string _prefix;
-		std::string _content;
+		std::vector<std::string> _params;
+		std::string _command;
+		std::string _trailer;
+
 		const std::string codeToString(unsigned int n);
 		const std::string getCodeMessage(int code);
 		const std::string getMessage();
 
 	public:
 		Message();
-		Message(std::vector<int> targets, unsigned int code, const std::string& content);
-		Message(std::vector<int> targets, const std::string& prefix, const std::string& content);
+		Message(unsigned int code);
+		Message(std::string prefix, std::string command);
 		~Message();
 
-		std::vector<int> getTargets();
 		void sendMessage();
+
+		std::vector<int> getTargets();
+
+		void addTarget(int target);
+		void addTargets(std::vector<int> targets);
+		void addParam(std::string param);
+		void addParams(std::vector<std::string> params);
+
+		void setTrailer(std::string trailer);
 };
 
 #endif

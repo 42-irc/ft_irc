@@ -5,43 +5,60 @@ Join::Join(Client* client, const std::string& channel) : Command(client, "JOIN")
 
 Join::~Join() {}
 
-const std::string Join::getMsg(const std::string& channel) const {
-	return _type + " " + channel;
-}
+const Message Join::channelInfo(Channel* channel) const {
+	Message msg(RPL_NAMREPLY);
 
-const std::string Join::getChannelInfo(Channel *channel) const {
 	std::map<std::string, Client*> clients = channel->getClients();
 	std::map<std::string, Client*>::const_iterator it = clients.begin();
 	std::map<std::string, Client*>::const_iterator ite = clients.end();
-	std::string info = _client->getNickName() + " = " + channel->getName() + " :";
 
-	info += it->second->getNickName();
-	it++;
+	msg.addTarget(_client->getFd());
+	msg.addParam("=");
+	msg.addParam(_client->getNickName());
+	msg.addParam(channel->getName());
+
+	std::string trailer;
+
 	for (; it != ite; it++) {
-		info += " " + it->second->getNickName();
+		if (it->second == channel->getOperator())
+			trailer += "@";
+		trailer += it->second->getNickName() + " ";
 	}
+	if (trailer.size() > 0)
+		trailer = trailer.substr(0, trailer.size() - 1);
+	msg.setTrailer(trailer);
+	return msg;
+}
 
-	return info;
+const Message Join::channelInfoEnd(const std::string& channel) const {
+	Message msg(RPL_NAMEND);
+	
+	msg.addTarget(_client->getFd());
+	msg.addParam(_client->getNickName());
+	msg.addParam(channel);
+	return msg;
 }
 
 void Join::checkValidName(const std::string& name) {
 	if ((name[0] == '#' || name[0] != '&') && name.size() <=  200)
 		return ;
 
-	std::vector<int> targetFds;
-
-	targetFds.push_back(_client->getFd());
-	throw Message(targetFds, ERR_NOSUCHCHANNEL, name);
+	Message msg(ERR_NOSUCHCHANNEL);
+	msg.addTarget(_client->getFd());
+	msg.addParam(name);
+	throw msg;
 }
 
 void Join::checkChannelNum() {
 	if (_client->getJoinedChannels().size() <= 20)
 		return ;
 
-	std::vector<int> targetFds;
+	Message msg(ERR_TOOMANYCHANNELS);
+	msg.addTarget(_client->getFd());
+	msg.addParam(_client->getNickName());
+	msg.addParam(_channel);
 
-	targetFds.push_back(_client->getFd());
-	throw Message(targetFds, ERR_TOOMANYCHANNELS, _client->getNickName() + " " + _channel);
+	throw msg;
 }
 
 /*
@@ -54,11 +71,12 @@ void Join::execute(){
 	Channel *channel;
 
 	for (; it != ite; it++) {
+		Message msg(getPrefix(), _type);
 		try {
 			channel = _client->getServer()->findChannel(_client, *it);
 
 			_client->joinChannel(*it);
-			_messages.push_back(Message(channel->getFds(), getPrefix(), getMsg(*it)));
+			msg.addTargets(channel->getFds());
 		} catch (Message& e) {
 			try {
 				checkValidName(*it);
@@ -69,15 +87,18 @@ void Join::execute(){
 
 				_client->getServer()->addChannel(channel);
 				_client->joinChannel(*it);
-				_messages.push_back(Message(channel->getFds(), getPrefix(), getMsg(*it)));
+
+				msg.addTargets(channel->getFds());
 				PrivMsg(_client->getServer()->getBot(), *it, bot_msg).execute();
 			} catch (Message& e) {
 				_messages.push_back(e);
 				continue;
 			}
 		}
-		_messages.push_back(_client->getFd(), RPL_NAMREPLY, getChannelInfo(channel)));
-		_messages.push_back(_client->getFd(), RPL_NAMEND, _client->getNickName() + " " + channel->getName()));
+		msg.addParam(*it);
+		_messages.push_back(msg);
+		_messages.push_back(channelInfo(channel));
+		_messages.push_back(channelInfoEnd(*it));
 	}
 	sendMessages();
 }

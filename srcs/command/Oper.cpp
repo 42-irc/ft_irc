@@ -10,12 +10,14 @@ std::vector<Message> format
 */
 void Oper::execute() {
 	try {
-		std::vector<int> targetFds;
-
 		checkValidPassword();
+
+		Message msg(RPL_YOUREOPER);
+
 		_client->setIsAdmin(true);
-		targetFds.push_back(_client->getFd());
-		_messages.push_back(Message(targetFds, RPL_YOUREOPER, _client->getNickName()));
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		_messages.push_back(msg);
 	} catch (Message& e) {
 		_messages.push_back(e);
 	}
@@ -24,9 +26,10 @@ void Oper::execute() {
 
 void Oper::checkValidPassword() {
 	if (_name != _client->getServer()->getAdminName() || _password != _client->getServer()->getAdminPassword()) {
-		std::vector<int> targetFds;
+		Message msg(ERR_PASSWDMISMATCH);
 
-		targetFds.push_back(_client->getFd());
-		throw Message(targetFds, ERR_PASSWDMISMATCH, _client->getNickName());
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		throw msg;
 	}
 }
