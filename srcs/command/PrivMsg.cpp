@@ -19,20 +19,22 @@ void PrivMsg::execute() {
 	std::vector<std::string>::const_iterator ite = targetList.end();
 
 	for (; it != ite; it++) {
+		Message msg(getPrefix(), _type);
 		try {
 			if ((*it)[0] == '#') {
 				Channel* target = _client->getServer()->findChannel(_client, *it);
-				std::vector<int> targetFds = target->getFdsExceptClient(_client);
+
+				msg.addTargets(target->getFdsExceptClient(_client));
 
 				target->findClient(_client, _client->getNickName());
-				_messages.push_back(Message(targetFds, getPrefix(), getMsg(*it)));
 			} else {
 				Client* target = _client->getServer()->findClient(_client, *it);
-				std::vector<int> targetFds;
 
-				targetFds.push_back(target->getFd());
-				_messages.push_back(Message(targetFds, getPrefix(), getMsg(*it)));
+				msg.addTarget(target->getFd());
 			}
+			msg.addParam(*it);
+			msg.setTrailer(_msg);
+			_messages.push_back(msg);
 		} catch (Message& e) {
 			_messages.push_back(e);
 		}
