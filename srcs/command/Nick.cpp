@@ -1,8 +1,11 @@
 #include <unistd.h>
+#include <algorithm>
 
 #include "Nick.hpp"
 
-Nick::Nick(Client* client, const std::string& nick) : Command(client, "NICK"), _nick(nick) {}
+Nick::Nick(Client* client, const std::string& nick) : Command(client, "NICK"), _nick(nick) {
+	std::transform(_nick.begin(), _nick.end(), _nick.begin(), ::tolower);
+}
 
 Nick::~Nick() {}
 
@@ -10,14 +13,28 @@ const std::string Nick::getPrefix(const std::string& oldNick) const {
 	return oldNick + "!" + _client->getName() + "@" + _client->getHostName();
 }
 
-// 첫 닉네임 설정시에는 중복되는 닉네임 없도록 처리하는 함수
 void Nick::renameFirstNick() {
 	std::map<std::string, Client*> clients = _client->getServer()->getClients();
 	std::map<std::string, Client*>::const_iterator it = clients.find(_nick);
 	std::map<std::string, Client*>::const_iterator ite = clients.end();
 
-	for (; it != ite; it = clients.find(_nick))
-		_nick += "_";
+	if (it != ite)
+		return ;
+
+	const std::string randomCharactor = "abcdefghijklmnopqrstuvwxyz0123456789";
+	std::string tmp = _nick;
+	unsigned int maxLength = 8;
+
+	if (tmp.size() > maxLength)
+		tmp = tmp.substr(0, maxLength);
+
+	while (clients.find(tmp) != ite) {
+		if (tmp.size() < maxLength)
+			tmp += randomCharactor[rand() % randomCharactor.size()];
+		else
+			tmp = tmp.substr(0, tmp.size() - 1);
+	}
+	_nick = tmp;
 }
 
 void Nick::execute() {
