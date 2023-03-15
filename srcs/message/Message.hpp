@@ -32,7 +32,7 @@ enum e_code {
 # define CODE_433 ":Nickname is already in use"
 # define CODE_442 ":Not on that channel"
 # define CODE_482 ":You're not an channel operator"
-# define CODE_322 ":"
+# define CODE_322 ""
 # define CODE_353 ""
 # define CODE_366 ":End of /NAMES list."
 # define CODE_381 ":You are now an IRC operator"
@@ -43,7 +43,7 @@ enum e_code {
 # define SERVER_NAME "ft_irc"
 # define SERVER_PREFIX ":ft_irc"
 
-# define MALLOC_ERR "Malloc failed\r\n"
+# define MALLOC_ERR ":Malloc failed\r\n"
 
 class Message {
 	private:
