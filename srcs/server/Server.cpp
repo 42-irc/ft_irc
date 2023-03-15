@@ -1,7 +1,9 @@
-# include "Server.hpp"
+#include "Server.hpp"
+#include "ircserv.hpp"
 
-Server::Server(int port, const std::string& password, const std::string& adminName, const std::string& adminPassword): _port(port), _password(password),_adminName(adminName), _adminPassword(adminPassword) {
+Server::Server(int port, int kq, int serverSocket, const std::string& password, const std::string& adminName, const std::string& adminPassword): _port(port),_kq(kq), _serverSocket(serverSocket), _password(password),_adminName(adminName), _adminPassword(adminPassword) {
 	Client *bot = new Client(1, this);
+
 	bot->setNickName("BOT🤖");
 	_bot = bot;
 }
@@ -14,11 +16,10 @@ Server::~Server() {
 		delete it->second;
 
 	std::map<std::string, Client*>::const_iterator it2 = _clients.begin();
-	std::map<std::string, Client*>::const_iterator it2e = _clients.end();
+	std::map<std::string, Client*>::const_iterator ite2 = _clients.end();
 
-	for (; it2 != it2e; it2++) {
+	for (; it2 != ite2; it2++)
 		delete it2->second;
-	}
 };
 
 Client* Server::getBot() { return _bot; }
@@ -51,7 +52,6 @@ Channel* Server::findChannel(Client* client, const std::string& name) {
 	msg.addParam(name);
 	throw msg;
 }
-
 
 Client* Server::findClient(Client* client, const std::string& name) {
 	std::map<std::string, Client*>::const_iterator it = _clients.find(name);
@@ -93,4 +93,56 @@ void Server::removeClient(Client* client) {
 	if (_clientsFd.find(client->getFd())->second->getNickName() == client->getNickName())
 		_clientsFd.erase(client->getFd());
 	delete client;
+}
+
+void Server::execute() {
+	while (true) {
+		struct kevent events[100];
+		int eventCnt = kevent(_kq, NULL, 0, events, 100, NULL);
+
+		if (eventCnt == -1)
+			continue ;
+		for (int i = 0; i < eventCnt; ++i) {
+			if (events[i].ident == (uintptr_t)_serverSocket) {
+				if (events[i].filter == EVFILT_READ) {
+					if (create_client_socket(_serverSocket, _kq, this) == -1)
+						continue ;
+				}
+			} else {
+				int clientSocket = events[i].ident;
+
+				if (events[i].filter == EVFILT_READ) {
+					char buffer[1024];
+					memset(buffer, 0, sizeof(buffer));
+					ssize_t n = recv(clientSocket, buffer, sizeof(buffer), 0);
+
+					if (n < 0) {
+						continue ;
+					} else if (n == 0) {
+						// std::cout << event_client_socket << "Client[" << event_client_socket << "] closed connection" << std::endl;
+						close(clientSocket);
+					} else {
+						// std::cout << "client[" << event_client_socket << "]" << std::endl;
+						// std::cout << buffer << std::endl;
+						std::vector<std::string> tokens = split(std::string(buffer), "\r\n");
+						std::vector<std::string>::const_iterator it = tokens.begin();
+						std::vector<std::string>::const_iterator ite = tokens.end();
+
+						for (; it != ite; it++) {
+							try {
+								Command* command = parse(findClient(clientSocket), *it);
+
+								command->execute();
+								delete command;
+							} catch (Message& e) {
+								e.sendMessage();
+							} catch (std::exception& e) {
+								continue ;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

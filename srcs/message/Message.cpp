@@ -13,9 +13,8 @@ const std::string Message::getMessage() {
 	if (_prefix != "")
 		message += _prefix + " ";
 	message += _command;
-	for (std::vector<std::string>::iterator it = _params.begin(); it != _params.end(); it++) {
+	for (std::vector<std::string>::iterator it = _params.begin(); it != _params.end(); it++)
 		message += " " + *it;
-	}
 	if (_trailer != "")
 		message += " " + _trailer;
 	message += "\r\n";
@@ -24,12 +23,11 @@ const std::string Message::getMessage() {
 
 void Message::sendMessage() {
 	std::string message = getMessage();
+
 	for (std::vector<int>::iterator it = _targets.begin(); it != _targets.end(); it++) {
-		std::cout << "---------------------" << std::endl;
-		std::cout << "Sending message to " << *it << std::endl;
-		std::cout << message << std::endl;
-		std::cout << "---------------------" << std::endl;
 		send(*it, message.c_str(), message.size(), 0);
+		// std::cout << "Sending message to client[" << *it << "]" << std::endl;
+		// std::cout << message << std::endl;
 	}
 }
 
@@ -95,6 +93,7 @@ const std::string Message::getCodeMessage(int code) {
 
 const std::string Message::codeToString(unsigned int n) {
 	std::stringstream ss;
+
 	if (n < 10)
 		ss << "00";
 	else if (n < 100)

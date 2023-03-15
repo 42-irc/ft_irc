@@ -1,4 +1,4 @@
-# include "Quit.hpp"
+#include "Quit.hpp"
 
 Quit::Quit(Client* client) : Command(client, "QUIT") {}
 

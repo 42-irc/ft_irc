@@ -10,7 +10,7 @@ std::vector<Message> format
 */
 void PrivMsg::execute() {
 	std::vector<int> targetFds;
-	std::vector<std::string> targetList = ft::split(_target, ',');
+	std::vector<std::string> targetList = split(_target, ',');
 	std::vector<std::string>::const_iterator it = targetList.begin();
 	std::vector<std::string>::const_iterator ite = targetList.end();
 

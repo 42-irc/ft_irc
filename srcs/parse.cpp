@@ -22,32 +22,32 @@ Command* parse(Client* client, const std::string& str) {
 			if (command == commands[i]) {
 				switch (i) {
 					case 0:
-						params = ft::split(str, ' ', 3);
+						params = split(str, ' ', 3);
 						return new Join(client, params[1]);
 					case 1:
-						params = ft::split(str, ' ', 4);
+						params = split(str, ' ', 4);
 						return new Kick(client, params[1], params[2], params[3]);
 					case 2:
 						return new List(client);
 					case 3:
-						params = ft::split(str, ' ', 2);
+						params = split(str, ' ', 2);
 						return new Nick(client, params[1]);
 					case 4:
-						params = ft::split(str, ' ', 3);
+						params = split(str, ' ', 3);
 						return new Oper(client, params[1], params[2]);
 					case 5:
-						params = ft::split(str, ' ', 3);
+						params = split(str, ' ', 3);
 						return new Part(client, params[1], params[2]);
 					case 6:
-						params = ft::split(str, ' ', 2);
+						params = split(str, ' ', 2);
 						return new Pass(client, params[1]);
 					case 7:
-						params = ft::split(str, ' ', 3);
+						params = split(str, ' ', 3);
 						return new PrivMsg(client, params[1], params[2]);
 					case 8:
 						return new Quit(client);
 					case 9:
-						params = ft::split(str, ' ', 4);
+						params = split(str, ' ', 4);
 						return new User(client, params[1]);
 					case 10:
 						return new Ping(client);
