@@ -4,10 +4,6 @@ Part::Part(Client* client, const std::string& channel, const std::string& reason
 
 Part::~Part() {}
 
-const std::string Part::getMsg(const std::string& channel) const {
-	return _type + " " + channel + " " +  _reason;
-}
-
 void Part::execute() {
 	std::vector<std::string> targetChannels = ft::split(_channel, ',');
 	std::vector<std::string>::const_iterator it = targetChannels.begin();

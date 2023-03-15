@@ -4,10 +4,6 @@ Kick::Kick(Client* client, const std::string& channel, const std::string& target
 
 Kick::~Kick() {}
 
-// const std::string Kick::getMsg() const {
-// 	return _type + " " + _channel + " " + _target + " " + _reason;
-// }
-
 void Kick::checkIsAdmin(Channel* channel) {
 	if (_client->getIsAdmin() || channel->getOperator() == _client) 
 		return ;

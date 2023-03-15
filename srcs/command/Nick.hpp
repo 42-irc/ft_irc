@@ -7,7 +7,6 @@ class Nick : public Command {
 	private:
 		std::string _nick;
 		const std::string getPrefix(const std::string& oldNick) const;
-		const std::string getMsg() const;
 		void renameFirstNick();
 
 	public:

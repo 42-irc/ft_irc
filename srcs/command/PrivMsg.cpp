@@ -4,10 +4,6 @@ PrivMsg::PrivMsg(Client* client, const std::string& target, const std::string& m
 
 PrivMsg::~PrivMsg() {}
 
-const std::string PrivMsg::getMsg(const std::string& name) const { 
-	return _type + " " + name + " " + _msg;
-}
-
 /*
 std::vector<Message> format
 - :<clientNick>!<clientName>@<clientHost> PRIVMSG <target> :<msg>

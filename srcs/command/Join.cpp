@@ -39,21 +39,6 @@ const Message Join::channelInfoEnd(const std::string& channel) const {
 	return msg;
 }
 
-// const std::string Join::getChannelInfo(Channel *channel) const {
-// 	std::map<std::string, Client*> clients = channel->getClients();
-// 	std::map<std::string, Client*>::const_iterator it = clients.begin();
-// 	std::map<std::string, Client*>::const_iterator ite = clients.end();
-// 	std::string info = _client->getNickName() + " = " + channel->getName() + " :";
-
-// 	info += it->second->getNickName();
-// 	it++;
-// 	for (; it != ite; it++) {
-// 		info += " " + it->second->getNickName();
-// 	}
-
-// 	return info;
-// }
-
 void Join::checkValidName(const std::string& name) {
 	if ((name[0] == '#' || name[0] != '&') && name.size() <=  200)
 		return ;
