@@ -14,8 +14,11 @@ void Quit::execute() {
 
 	for (; it != ite; it++) {
 		Channel* channel = _client->getServer()->findChannel(_client, *it);
+		Message msg(getPrefix(), _type);
 
-		_messages.push_back(Message(channel->getFdsExceptClient(_client), getPrefix(), _type));
+		msg.addTargets(channel->getFdsExceptClient(_client));
+		msg.addParam(*it);
+		_messages.push_back(msg);
 	}
 	_client->leaveServer();
 	sendMessages();

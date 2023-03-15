@@ -9,7 +9,6 @@ class Kick : public Command {
 		std::string _target;
 		std::string _reason;
 		void checkIsAdmin(Channel* channel);
-		const std::string getMsg() const;
 
 	public:
 		Kick(Client* client, const std::string& channel, const std::string& target, const std::string& reason);

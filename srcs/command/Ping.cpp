@@ -1,13 +1,15 @@
 #include "Ping.hpp"
 
-Ping::Ping(Client* client) : Command(client, "PING") {}
+Ping::Ping(Client* client) : Command(client, "PONG") {}
 
 Ping::~Ping() {}
 
 void Ping::execute() {
-	std::vector<int> targetFds;
+	Message msg(SERVER_NAME, _type);
 
-	targetFds.push_back(_client->getFd());
-	_messages.push_back(Message(targetFds, 0, "PONG"));
+	msg.addTarget(_client->getFd());
+	msg.addParam(SERVER_NAME);
+	msg.setTrailer(SERVER_NAME);
+	_messages.push_back(msg);
 	sendMessages();
 }

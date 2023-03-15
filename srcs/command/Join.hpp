@@ -9,8 +9,8 @@ class Join : public Command {
 		std::string _target;
 		void checkChannelNum();
 		void checkValidName(const std::string& name);
-		const std::string getMsg(const std::string& channel) const;
-		const std::string getChannelInfo(Channel *channel) const;
+		const Message channelInfo(Channel* channel) const;
+		const Message channelInfoEnd(const std::string& channel) const;
 
 	public:
 		Join(Client* client, const std::string& channel);

@@ -55,7 +55,8 @@ Command* parse(Client* client, const std::string& str) {
 			}
 		}
 	}
-	std::vector<int> targets;
-	targets.push_back(client->getFd());
-	throw Message(targets, ERR_UNKNOWNCOMMAND, command);
+	Message msg(ERR_UNKNOWNCOMMAND);
+	msg.addParam(command);
+	msg.addTarget(client->getFd());
+	throw msg;
 };

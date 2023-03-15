@@ -1,29 +1,62 @@
 #include "Message.hpp"
 
-Message::Message() : _code(0) {}
+Message::Message() {}
 
-Message::Message(std::vector<int> targets, unsigned int code, const std::string& content) : _targets(targets), _code(code), _content(content) {}
-
-Message::Message(std::vector<int> targets, const std::string& prefix, const std::string& content) : _targets(targets), _code(0), _prefix(":" + prefix), _content(content) {}
+Message::Message(unsigned int code) : _prefix(SERVER_PREFIX), _command(codeToString(code)), _trailer(getCodeMessage(code)) {}
+Message::Message(std::string prefix, std::string command) : _prefix(":" + prefix), _command(command) {}
 
 Message::~Message() {}
 
 const std::string Message::getMessage() {
-	if (_code)
-		return (":ft_irc " + codeToString(_code) + " " + _content + " " + getCodeMessage(_code) + "\r\n");
-	if (_prefix.empty())
-		return (_content  + "\r\n");
-	return (_prefix + " " + _content + "\r\n");
-}
+	std::string message = "";
 
-std::vector<int> Message::getTargets() { return _targets; }
+	if (_prefix != "")
+		message += _prefix + " ";
+	message += _command;
+	for (std::vector<std::string>::iterator it = _params.begin(); it != _params.end(); it++) {
+		message += " " + *it;
+	}
+	if (_trailer != "")
+		message += " " + _trailer;
+	message += "\r\n";
+	return message;
+}
 
 void Message::sendMessage() {
 	std::string message = getMessage();
 	for (std::vector<int>::iterator it = _targets.begin(); it != _targets.end(); it++) {
+		std::cout << "---------------------" << std::endl;
+		std::cout << "Sending message to " << *it << std::endl;
+		std::cout << message << std::endl;
+		std::cout << "---------------------" << std::endl;
 		send(*it, message.c_str(), message.size(), 0);
 	}
 }
+
+void Message::addTarget(int target) {
+	_targets.push_back(target);
+}
+
+void Message::addTargets(std::vector<int> targets) {
+	_targets.insert(_targets.end(), targets.begin(), targets.end());
+}
+
+void Message::addParam(std::string param) {
+	_params.push_back(param);
+}
+
+void Message::addParams(std::vector<std::string> params) {
+	_params.insert(_params.end(), params.begin(), params.end());
+}
+
+void Message::setTrailer(std::string trailer) {
+	if (trailer[0] != ':')
+		_trailer = ":" + trailer;
+	else
+		_trailer = trailer;
+}
+
+std::vector<int> Message::getTargets() { return _targets; }
 
 const std::string Message::getCodeMessage(int code) {
 	switch (code) {

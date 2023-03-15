@@ -10,10 +10,6 @@ const std::string Nick::getPrefix(const std::string& oldNick) const {
 	return oldNick + "!" + _client->getName() + "@" + _client->getHostName();
 }
 
-const std::string Nick::getMsg() const { 
-	return _type + " " + _nick;
-}
-
 // 첫 닉네임 설정시에는 중복되는 닉네임 없도록 처리하는 함수
 void Nick::renameFirstNick() {
 	std::map<std::string, Client*> clients = _client->getServer()->getClients();
@@ -25,13 +21,15 @@ void Nick::renameFirstNick() {
 }
 
 void Nick::execute() {
-	std::vector<int> targetFds;
 	std::map<std::string, Client*> clients = _client->getServer()->getClients();
 
 	if (_client->getNickName() == "") {
 		if (!_client->getIsVerified()) {
-			targetFds.push_back(_client->getFd());
-			_messages.push_back(Message(targetFds, ERR_PASSWDMISMATCH, _client->getNickName()));
+			Message msg(ERR_PASSWDMISMATCH);
+
+			msg.addTarget(_client->getFd());
+			msg.addParam(_client->getNickName());
+			_messages.push_back(msg);
 			sendMessages();
 			close(_client->getFd());
 			_client->leaveServer();
@@ -39,19 +37,23 @@ void Nick::execute() {
 		}
 		renameFirstNick();
 	} else if (clients.find(_nick) != clients.end()) {
-		targetFds.push_back(_client->getFd());
-		_messages.push_back(Message(targetFds, ERR_NICKNAMEINUSE, _client->getNickName()));
+		Message msg(ERR_NICKNAMEINUSE);
+
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		_messages.push_back(msg);
 		sendMessages();
 		return ;
 	}
 
 	Client* newClient = new Client(*_client);
+	Message msg(getPrefix(_client->getNickName()), _type);
 
-    std::string oldNickName = _client->getNickName();
     newClient->setNickName(_nick);
     newClient->getServer()->addClient(newClient);
 
 	std::set<int> pureTargetFds;
+	std::vector<int> targetFds;
 	std::set<std::string> channels = _client->getJoinedChannels();
 	std::set<std::string>::const_iterator it = channels.begin();
 	std::set<std::string>::const_iterator ite = channels.end();
@@ -66,6 +68,9 @@ void Nick::execute() {
 	_client->leaveServer();
 	pureTargetFds.insert(newClient->getFd());
 	targetFds.insert(targetFds.begin(),pureTargetFds.begin(), pureTargetFds.end());
-	_messages.push_back(Message(targetFds, getPrefix(oldNickName), getMsg()));
+
+	msg.addParam(_nick);
+	msg.addTargets(targetFds);
+	_messages.push_back(msg);
 	sendMessages();
 }

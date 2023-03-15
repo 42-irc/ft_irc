@@ -4,18 +4,15 @@ Kick::Kick(Client* client, const std::string& channel, const std::string& target
 
 Kick::~Kick() {}
 
-const std::string Kick::getMsg() const {
-	return _type + " " + _channel + " " + _target + " " + _reason;
-}
-
 void Kick::checkIsAdmin(Channel* channel) {
 	if (_client->getIsAdmin() || channel->getOperator() == _client) 
 		return ;
 
-	std::vector<int> targetFds;
+	Message msg(ERR_CHANOPRIVSNEEDED);
+	msg.addTarget(_client->getFd());
+	msg.addParam(_channel);
 
-	targetFds.push_back(_client->getFd());
-	throw Message(targetFds, ERR_CHANOPRIVSNEEDED, _channel);
+	throw msg;
 }
 
 /*
@@ -28,7 +25,14 @@ void Kick::execute() {
 		checkIsAdmin(channel);
 		Client* target = channel->findClient(_client, _target);
 
-		_messages.push_back(Message(channel->getFds(), getPrefix(), getMsg()));
+		Message msg(getPrefix(), _type);
+
+		msg.addTargets(channel->getFds());
+		msg.addParam(_channel);
+		msg.addParam(_target);
+		msg.setTrailer(_reason);
+
+		_messages.push_back(msg);
 		target->leaveChannel(_channel);
 	} catch (Message& e) {
 		_messages.push_back(e);

@@ -41,10 +41,10 @@ Client* Channel::findClient(Client* client, const std::string& name) const {
 	if (it != _clients.end())
 		return it->second;
 
-	std::vector<int> fd;
-
-	fd.push_back(client->getFd());
-	throw Message(fd, ERR_NOSUCHNICK, name);
+	Message msg(ERR_NOSUCHNICK);
+	msg.addTarget(client->getFd());
+	msg.addParam(name);
+	throw msg;
 }
 
 bool Channel::checkClientExist(const std::string& name) const {
