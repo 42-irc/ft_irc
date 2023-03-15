@@ -17,6 +17,8 @@ enum e_code {
 	ERR_CHANOPRIVSNEEDED = 482,
 	RPL_LIST = 322,
 	RPL_LISTEND = 323,
+	RPL_NAMREPLY = 353,
+	RPL_NAMEND = 366,
 	RPL_YOUREOPER = 381,
 	ERR_NEEDMOREPARAMS = 461,
 	ERR_PASSWDMISMATCH = 464
@@ -31,6 +33,8 @@ enum e_code {
 # define CODE_442 ":Not on that channel"
 # define CODE_482 ":You're not an channel operator"
 # define CODE_322 ""
+# define CODE_353 ""
+# define CODE_366 ":End of /NAMES list"
 # define CODE_381 ":You are now an IRC operator"
 # define CODE_323 ":End of /LIST"
 # define CODE_461 ":Not enough parameters"

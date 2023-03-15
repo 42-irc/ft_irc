@@ -45,6 +45,10 @@ const std::string Message::getCodeMessage(int code) {
 			return CODE_322;
 		case RPL_LISTEND:
 			return CODE_323;
+		case RPL_NAMREPLY:
+			return CODE_353;
+		case RPL_NAMEND:
+			return CODE_366;
 		case RPL_YOUREOPER:
 			return CODE_381;
 		case ERR_NEEDMOREPARAMS:
