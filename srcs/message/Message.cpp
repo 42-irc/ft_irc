@@ -17,7 +17,7 @@ const std::string Message::getMessage() {
 		message += " " + *it;
 	}
 	if (_trailer != "")
-		message += " :" + _trailer;
+		message += " " + _trailer;
 	message += "\r\n";
 	return message;
 }
@@ -25,6 +25,10 @@ const std::string Message::getMessage() {
 void Message::sendMessage() {
 	std::string message = getMessage();
 	for (std::vector<int>::iterator it = _targets.begin(); it != _targets.end(); it++) {
+		std::cout << "---------------------" << std::endl;
+		std::cout << "Sending message to " << *it << std::endl;
+		std::cout << message << std::endl;
+		std::cout << "---------------------" << std::endl;
 		send(*it, message.c_str(), message.size(), 0);
 	}
 }
@@ -46,8 +50,8 @@ void Message::addParams(std::vector<std::string> params) {
 }
 
 void Message::setTrailer(std::string trailer) {
-	if (trailer[0] == ':')
-		_trailer = trailer.substr(1);
+	if (trailer[0] != ':')
+		_trailer = ":" + trailer;
 	else
 		_trailer = trailer;
 }

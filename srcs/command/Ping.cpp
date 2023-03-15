@@ -1,6 +1,6 @@
 #include "Ping.hpp"
 
-Ping::Ping(Client* client) : Command(client, "PING") {}
+Ping::Ping(Client* client) : Command(client, "PONG") {}
 
 Ping::~Ping() {}
 

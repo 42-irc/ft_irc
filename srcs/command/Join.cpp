@@ -13,16 +13,19 @@ const Message Join::channelInfo(Channel* channel) const {
 	std::map<std::string, Client*>::const_iterator ite = clients.end();
 
 	msg.addTarget(_client->getFd());
-	msg.addParam(channel->getName());
 	msg.addParam("=");
 	msg.addParam(_client->getNickName());
+	msg.addParam(channel->getName());
 
 	std::string trailer;
 
 	for (; it != ite; it++) {
+		if (it->second == channel->getOperator())
+			trailer += "@";
 		trailer += it->second->getNickName() + " ";
 	}
-	trailer = trailer.substr(0, trailer.size() - 1);
+	if (trailer.size() > 0)
+		trailer = trailer.substr(0, trailer.size() - 1);
 	msg.setTrailer(trailer);
 	return msg;
 }
