@@ -47,8 +47,9 @@ void Nick::execute() {
 
 	Client* newClient = new Client(*_client);
 
-	newClient->setNickName(_nick);
-	newClient->getServer()->addClient(newClient);
+    std::string oldNickName = _client->getNickName();
+    newClient->setNickName(_nick);
+    newClient->getServer()->addClient(newClient);
 
 	std::set<int> pureTargetFds;
 	std::set<std::string> channels = _client->getJoinedChannels();
@@ -65,6 +66,6 @@ void Nick::execute() {
 	_client->leaveServer();
 	pureTargetFds.insert(newClient->getFd());
 	targetFds.insert(targetFds.begin(),pureTargetFds.begin(), pureTargetFds.end());
-	_messages.push_back(Message(targetFds, getPrefix(_client->getNickName()), getMsg()));
+	_messages.push_back(Message(targetFds, getPrefix(oldNickName), getMsg()));
 	sendMessages();
 }
