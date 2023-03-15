@@ -1,6 +1,12 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
+#include <sys/event.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <vector>
+#include <map>
+
 #include "Channel.hpp"
 #include "Message.hpp"
 #include "utils.hpp"
@@ -11,6 +17,8 @@ class Channel;
 class Server {
 	private:
 		int _port;
+		int _kq;
+		int _serverSocket;
 		std::map<std::string, Channel*> _channels;
 		std::map<std::string, Client*> _clients;
 		std::map<int, Client*> _clientsFd;
@@ -20,7 +28,7 @@ class Server {
 		Client* _bot;
 
 	public:
-		Server(int port, const std::string& password, const std::string& adminName, const std::string& adminPassword);
+		Server(int port, int kq, int serverSocket, const std::string& password, const std::string& adminName, const std::string& adminPassword);
 		~Server();
 
 		Client* getBot();
@@ -43,6 +51,8 @@ class Server {
 
 		void removeChannel(Channel* channel);
 		void removeClient(Client* client);
+
+		void execute();
 };
 
 #endif
