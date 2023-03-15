@@ -65,7 +65,7 @@ void Join::checkChannelNum() {
 	prefix JOIN :channel
 */
 void Join::execute(){
-	std::vector<std::string> targetChannels = ft::split(_channel, ',');
+	std::vector<std::string> targetChannels = split(_channel, ',');
 	std::vector<std::string>::const_iterator it = targetChannels.begin();
 	std::vector<std::string>::const_iterator ite = targetChannels.end();
 	Channel *channel;
@@ -83,7 +83,7 @@ void Join::execute(){
 				checkChannelNum();
 
 				channel = new Channel(*it, _client);
-				std::string bot_msg = ":당신은이방의주인일세";
+				std::string bot_msg = ": 당신은이방의주인일세";
 
 				_client->getServer()->addChannel(channel);
 				_client->joinChannel(*it);

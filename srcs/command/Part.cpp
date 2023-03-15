@@ -5,7 +5,7 @@ Part::Part(Client* client, const std::string& channel, const std::string& reason
 Part::~Part() {}
 
 void Part::execute() {
-	std::vector<std::string> targetChannels = ft::split(_channel, ',');
+	std::vector<std::string> targetChannels = split(_channel, ',');
 	std::vector<std::string>::const_iterator it = targetChannels.begin();
 	std::vector<std::string>::const_iterator ite = targetChannels.end();
 
