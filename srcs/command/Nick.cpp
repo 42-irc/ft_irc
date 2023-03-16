@@ -3,7 +3,7 @@
 
 #include "Nick.hpp"
 
-Nick::Nick(Client* client, const std::string& nick) : Command(client, "NICK"), _nick(nick) {
+Nick::Nick(Client* client, const std::string& nick) : Command(client, "NICK"), _rawNick(nick), _nick(nick) {
 	std::transform(_nick.begin(), _nick.end(), _nick.begin(), ::tolower);
 }
 
@@ -37,34 +37,35 @@ void Nick::renameFirstNick() {
 	_nick = tmp;
 }
 
-void Nick::execute() {
+void Nick::checkValidNick() {
 	std::map<std::string, Client*> clients = _client->getServer()->getClients();
 
-	if (_client->getNickName() == "") {
-		if (!_client->getIsVerified()) {
-			Message msg(ERR_PASSWDMISMATCH);
+	if (clients.find(_nick) != clients.end())
+		throw Message(ERR_NICKNAMEINUSE);
+	if (_nick.size() < 1)
+		throw Message(ERR_NONICKNAMEGIVEN);
+	if (_nick.size() > 9)
+		throw Message(ERR_ERRONEUSNICKNAME);
+	for (size_t i = 0; i < _nick.size(); i++) {
+		if (isspace(_nick[i]))
+			throw Message(ERR_ERRONEUSNICKNAME);
+	}
+}
 
-			msg.addTarget(_client->getFd());
-			msg.addParam(_client->getNickName());
-			_messages.push_back(msg);
-			sendMessages();
-			close(_client->getFd());
-			_client->leaveServer();
-			return ;
-		}
-		renameFirstNick();
-	} else if (clients.find(_nick) != clients.end()) {
-		Message msg(ERR_NICKNAMEINUSE);
-
-		msg.addTarget(_client->getFd());
-		msg.addParam(_client->getNickName());
-		_messages.push_back(msg);
-		sendMessages();
+void Nick::execute() {
+	try {
+		checkValidNick();
+	} catch (Message& e) {
+		e.addTarget(_client->getFd());
+		e.addParam(_rawNick);
+		e.sendMessage();
 		return ;
 	}
 
 	Client* newClient = new Client(*_client);
-	Message msg(getPrefix(_client->getNickName()), _type);
+	Message msg = _client->getNickName() == "" 
+		? Message(getPrefix(_rawNick), _type)
+		: Message(getPrefix(_client->getNickName()), _type);
 
     newClient->setNickName(_nick);
     newClient->getServer()->addClient(newClient);
@@ -82,6 +83,7 @@ void Nick::execute() {
 		pureTargetFds.insert(channelFds.begin(), channelFds.end());
 		newClient->joinChannel(*it);
 	}
+
 	_client->leaveServer();
 	pureTargetFds.insert(newClient->getFd());
 	targetFds.insert(targetFds.begin(),pureTargetFds.begin(), pureTargetFds.end());
