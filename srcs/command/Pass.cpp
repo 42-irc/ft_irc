@@ -6,7 +6,20 @@ Pass::Pass(Client* client, const std::string& password) : Command(client, "PASS"
 
 Pass::~Pass() {};
 
+void Pass::validate() {
+	if (_password.empty()) {
+		Message msg(ERR_NEEDMOREPARAMS);
+
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		msg.addParam("PASS");
+
+		throw msg;
+	}	
+}
+
 void Pass::execute() {
+	validate();
 	if (_client->getServer()->getPassword() == _password) {
 		_client->setIsVerified(true);
 		return ;

@@ -4,11 +4,24 @@ PrivMsg::PrivMsg(Client* client, const std::string& target, const std::string& m
 
 PrivMsg::~PrivMsg() {}
 
+void PrivMsg::validate() {
+	checkAuthClient();
+	if (_target.empty() || _msg.empty()) {
+		Message msg(ERR_NEEDMOREPARAMS);
+
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		msg.addParam(_type);
+		throw msg;
+	}
+}
+
 /*
 std::vector<Message> format
 - :<clientNick>!<clientName>@<clientHost> PRIVMSG <target> :<msg>
 */
 void PrivMsg::execute() {
+	validate();
 	std::vector<int> targetFds;
 	std::vector<std::string> targetList = split(_target, ',');
 	std::vector<std::string>::const_iterator it = targetList.begin();

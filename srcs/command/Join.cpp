@@ -61,10 +61,34 @@ void Join::checkChannelNum() {
 	throw msg;
 }
 
+void Join::checkJoinedChannel(const std::string &channel) {
+	if (_client->getJoinedChannels().find(channel) == _client->getJoinedChannels().end())
+		return ;
+	Message msg(ERR_USERONCHANNEL);
+
+	msg.addTarget(_client->getFd());
+	msg.addParam(_client->getNickName());
+	msg.addParam(channel);
+	msg.addParam(_client->getNickName());
+	throw msg;
+}
+
+void Join::validate() {
+	checkAuthClient();
+	if (_channel.empty()) {
+		Message msg(ERR_NEEDMOREPARAMS);
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		msg.addParam(_type);
+		throw msg;
+	}
+}
+
 /*
 	prefix JOIN :channel
 */
 void Join::execute(){
+	validate();
 	std::vector<std::string> targetChannels = split(_channel, ',');
 	std::vector<std::string>::const_iterator it = targetChannels.begin();
 	std::vector<std::string>::const_iterator ite = targetChannels.end();
@@ -75,6 +99,7 @@ void Join::execute(){
 		try {
 			channel = _client->getServer()->findChannel(_client, *it);
 
+			checkJoinedChannel(*it);
 			_client->joinChannel(*it);
 			msg.addTargets(channel->getFds());
 		} catch (Message& e) {

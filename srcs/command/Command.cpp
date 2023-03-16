@@ -8,7 +8,9 @@ const std::string Command::getPrefix() const {
 	return _client->getNickName() + "!" + _client->getName() + "@" + _client->getHostName();
 }
 
-bool Command::checkAuthClient() {
+void Command::checkAuthClient() {
+	if (_client->getServer()->getBot() == _client)
+		return ;
 	if (!_client->getIsVerified() || _client->getNickName() == "*") {
 		Message msg(ERR_NOTREGISTERED);
 

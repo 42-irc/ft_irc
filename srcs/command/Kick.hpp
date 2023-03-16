@@ -14,6 +14,7 @@ class Kick : public Command {
 		Kick(Client* client, const std::string& channel, const std::string& target, const std::string& reason);
 		~Kick();
 
+		void validate();
 		void execute();
 };
 

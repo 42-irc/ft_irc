@@ -82,6 +82,8 @@ const std::string Message::getCodeMessage(int code) {
 			return CODE_433;
 		case ERR_NOTONCHANNEL:
 			return CODE_442;
+		case ERR_USERONCHANNEL:
+			return CODE_443;
 		case ERR_NOTREGISTERED:
 			return CODE_451;
 		case ERR_CHANOPRIVSNEEDED:

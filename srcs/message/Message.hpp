@@ -16,6 +16,7 @@ enum e_code {
     ERR_ERRONEUSNICKNAME = 432,
     ERR_NICKNAMEINUSE = 433,
     ERR_NOTONCHANNEL = 442,
+	ERR_USERONCHANNEL = 443,
 	ERR_NOTREGISTERED = 451, 
     ERR_CHANOPRIVSNEEDED = 482,
     RPL_LIST = 322,
@@ -35,6 +36,7 @@ enum e_code {
 # define CODE_432 ":Erroneus nickname"
 # define CODE_433 ":Nickname is already in use"
 # define CODE_442 ":Not on that channel"
+# define CODE_443 ":User is already on that channel"
 # define CODE_451 ":You have not registered"
 # define CODE_482 ":You're not an channel operator"
 # define CODE_322 ""

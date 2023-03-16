@@ -15,11 +15,23 @@ void Kick::checkIsAdmin(Channel* channel) {
 	throw msg;
 }
 
+void Kick::validate() {
+	checkAuthClient();
+	if (_channel.empty() || _target.empty()) {
+		Message msg(ERR_NEEDMOREPARAMS);
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		msg.addParam(_type);
+		throw msg;
+	}
+}
+
 /*
 std::vector<Message> format
 <clientNick>!<clientName>@<clientHost> KICK <channel> <target> :<reason>
 */
 void Kick::execute() {
+	validate();
 	try {
 		Channel* channel = _client->getServer()->findChannel(_client, _channel);
 		checkIsAdmin(channel);

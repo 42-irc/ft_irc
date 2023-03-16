@@ -4,23 +4,31 @@ Oper::Oper(Client* client, const std::string& name, const std::string& password)
 
 Oper::~Oper() {}
 
+void Oper::validate() {
+	checkAuthClient();
+	if (_name.empty() || _password.empty()) {
+		Message msg(ERR_NEEDMOREPARAMS);
+
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		msg.addParam(_type);
+		throw msg;
+	}
+	checkValidPassword();
+}
+
 /*
 std::vector<Message> format
 - :<server> 381 <nickname> :You are now an IRC operator
 */
 void Oper::execute() {
-	try {
-		checkValidPassword();
+	validate();
+	Message msg(RPL_YOUREOPER);
 
-		Message msg(RPL_YOUREOPER);
-
-		_client->setIsAdmin(true);
-		msg.addTarget(_client->getFd());
-		msg.addParam(_client->getNickName());
-		_messages.push_back(msg);
-	} catch (Message& e) {
-		_messages.push_back(e);
-	}
+	_client->setIsAdmin(true);
+	msg.addTarget(_client->getFd());
+	msg.addParam(_client->getNickName());
+	_messages.push_back(msg);
 	sendMessages();
 }
 

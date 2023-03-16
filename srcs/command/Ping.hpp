@@ -8,6 +8,7 @@ class Ping : public Command {
 		Ping(Client* client);
 		~Ping();
 
+		void validate();
 		void execute();
 };
 

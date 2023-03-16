@@ -4,10 +4,13 @@ Quit::Quit(Client* client) : Command(client, "QUIT") {}
 
 Quit::~Quit() {}
 
+void Quit::validate() {}
+
 /*
 :<nick>!<user>@<host> QUIT [<Quit message>]
 */
 void Quit::execute() {
+	validate();
 	std::set<std::string> channels = _client->getJoinedChannels();
 	std::set<std::string>::const_iterator it = channels.begin();
 	std::set<std::string>::const_iterator ite = channels.end();

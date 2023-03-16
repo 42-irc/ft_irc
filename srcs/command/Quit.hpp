@@ -4,6 +4,8 @@
 #include "Command.hpp"
 
 class Quit : public Command {
+	private:
+		void validate();
 	public:
 		Quit(Client* client);
 		~Quit();

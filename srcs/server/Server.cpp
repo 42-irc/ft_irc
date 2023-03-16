@@ -115,7 +115,7 @@ void Server::execute() {
 					char receiver[1024];
 					memset(receiver, 0, sizeof(buffer));
 					ssize_t n = recv(clientSocket, receiver, sizeof(receiver), 0);
-					if (n <= 0)
+					if (n <= 0 && (std::find(buffer.begin(), buffer.end(), '\r') != buffer.end() || std::find(buffer.begin(), buffer.end(), '\n') != buffer.end()))
 						break;
 					for (int i = 0; receiver[i] != '\0'; ++i)
 						buffer.push_back(receiver[i]);
