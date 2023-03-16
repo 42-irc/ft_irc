@@ -3,7 +3,7 @@
 
 #include "Nick.hpp"
 
-Nick::Nick(Client* client, const std::string& nick) : Command(client, "NICK"), _nick(nick) {
+Nick::Nick(Client* client, const std::string& nick) : Command(client, "NICK"), _rawNick(nick), _nick(nick) {
 	std::transform(_nick.begin(), _nick.end(), _nick.begin(), ::tolower);
 }
 
@@ -13,58 +13,35 @@ const std::string Nick::getPrefix(const std::string& oldNick) const {
 	return oldNick + "!" + _client->getName() + "@" + _client->getHostName();
 }
 
-void Nick::renameFirstNick() {
+void Nick::checkValidNick() {
 	std::map<std::string, Client*> clients = _client->getServer()->getClients();
-	std::map<std::string, Client*>::const_iterator it = clients.find(_nick);
-	std::map<std::string, Client*>::const_iterator ite = clients.end();
 
-	if (it == ite)
-		return ;
-
-	const std::string randomCharactor = "abcdefghijklmnopqrstuvwxyz0123456789";
-	std::string tmp = _nick;
-	unsigned int maxLength = 8;
-
-	if (tmp.size() > maxLength)
-		tmp = tmp.substr(0, maxLength);
-
-	while (clients.find(tmp) != ite) {
-		if (tmp.size() < maxLength)
-			tmp += randomCharactor[rand() % randomCharactor.size()];
-		else
-			tmp = tmp.substr(0, tmp.size() - 1);
+	if (clients.find(_nick) != clients.end())
+		throw Message(ERR_NICKNAMEINUSE);
+	if (_nick.size() < 1)
+		throw Message(ERR_NONICKNAMEGIVEN);
+	if (_nick.size() > 9)
+		throw Message(ERR_ERRONEUSNICKNAME);
+	for (size_t i = 0; i < _nick.size(); i++) {
+		if (!isalnum(_nick[i]) && _nick[i] != '_')
+			throw Message(ERR_ERRONEUSNICKNAME);
 	}
-	_nick = tmp;
 }
 
 void Nick::execute() {
-	std::map<std::string, Client*> clients = _client->getServer()->getClients();
-
-	if (_client->getNickName() == "") {
-		if (!_client->getIsVerified()) {
-			Message msg(ERR_PASSWDMISMATCH);
-
-			msg.addTarget(_client->getFd());
-			msg.addParam(_client->getNickName());
-			_messages.push_back(msg);
-			sendMessages();
-			close(_client->getFd());
-			_client->leaveServer();
-			return ;
-		}
-		renameFirstNick();
-	} else if (clients.find(_nick) != clients.end()) {
-		Message msg(ERR_NICKNAMEINUSE);
-
-		msg.addTarget(_client->getFd());
-		msg.addParam(_client->getNickName());
-		_messages.push_back(msg);
-		sendMessages();
+	try {
+		checkValidNick();
+	} catch (Message& e) {
+		e.addTarget(_client->getFd());
+		e.addParam(_client->getNickName());
+		e.addParam(_rawNick);
+		e.sendMessage();
 		return ;
 	}
 
+	std::string prefix = _client->getNickName() == "" ? _rawNick : getPrefix(_client->getNickName());
 	Client* newClient = new Client(*_client);
-	Message msg(getPrefix(_client->getNickName()), _type);
+	Message msg(prefix, _type);
 
     newClient->setNickName(_nick);
     newClient->getServer()->addClient(newClient);
@@ -82,6 +59,7 @@ void Nick::execute() {
 		pureTargetFds.insert(channelFds.begin(), channelFds.end());
 		newClient->joinChannel(*it);
 	}
+
 	_client->leaveServer();
 	pureTargetFds.insert(newClient->getFd());
 	targetFds.insert(targetFds.begin(),pureTargetFds.begin(), pureTargetFds.end());
