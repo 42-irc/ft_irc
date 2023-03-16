@@ -18,7 +18,7 @@ void Nick::renameFirstNick() {
 	std::map<std::string, Client*>::const_iterator it = clients.find(_nick);
 	std::map<std::string, Client*>::const_iterator ite = clients.end();
 
-	if (it != ite)
+	if (it == ite)
 		return ;
 
 	const std::string randomCharactor = "abcdefghijklmnopqrstuvwxyz0123456789";
