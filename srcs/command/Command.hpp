@@ -22,7 +22,6 @@ class Command {
 
 		void sendMessages();
 		virtual void execute() = 0;
-		// virtual void sendMessages(std::vector<Message> messages);
 };
 
 #endif
