@@ -17,7 +17,7 @@ void PrivMsg::execute() {
 	for (; it != ite; it++) {
 		Message msg(getPrefix(), _type);
 		try {
-			if ((*it)[0] == '#') {
+			if ((*it)[0] == '#' || (*it)[0] == '&') {
 				Channel* target = _client->getServer()->findChannel(_client, *it);
 
 				msg.addTargets(target->getFdsExceptClient(_client));

@@ -47,7 +47,7 @@ Command* parse(Client* client, const std::string& str) {
 					case 8:
 						return new Quit(client);
 					case 9:
-						params = split(str, ' ', 4);
+						params = split(str, ' ', 3);
 						return new User(client, params[1]);
 					case 10:
 						return new Ping(client);

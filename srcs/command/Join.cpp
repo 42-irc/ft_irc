@@ -40,7 +40,7 @@ const Message Join::channelInfoEnd(const std::string& channel) const {
 }
 
 void Join::checkValidName(const std::string& name) {
-	if ((name[0] == '#' || name[0] != '&') && name.size() <=  200)
+	if ((name[0] == '#' || name[0] == '&') && name.size() <=  200)
 		return ;
 
 	Message msg(ERR_NOSUCHCHANNEL);
