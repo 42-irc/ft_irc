@@ -17,14 +17,14 @@ int create_client_socket(int server_socket, int kq, Server* server) {
 		return FAIL;
 	}
 
+	Client* client;
     try {
-        server->findClient(new_client_socket);
+        client = server->findClient(new_client_socket);
     } catch (Message& e) {
-        Client* client;
-
 		try {
 			client = new Client(new_client_socket, server);
 		} catch (std::exception& e) {
+			close(new_client_socket);
 			return FAIL;
 		}
         client->setHostName(client_host);
@@ -32,5 +32,10 @@ int create_client_socket(int server_socket, int kq, Server* server) {
 
 	struct kevent client_socket_event;
 	EV_SET(&client_socket_event, new_client_socket, EVFILT_READ, EV_ADD, 0, 0, NULL);
-	return kevent(kq, &client_socket_event, 2, NULL, 0, NULL);
+	if (kevent(kq, &client_socket_event, 1, NULL, 0, NULL) == -1) {
+		client->leaveServer();
+		close(new_client_socket);
+		return FAIL;
+	};
+	return SUCCESS;
 }
