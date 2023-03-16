@@ -10,6 +10,7 @@
 #include "Channel.hpp"
 #include "Message.hpp"
 #include "utils.hpp"
+#include "Quit.hpp"
 
 class Client;
 class Channel;
