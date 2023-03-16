@@ -13,7 +13,6 @@ void Pass::validate() {
 		msg.addTarget(_client->getFd());
 		msg.addParam(_client->getNickName());
 		msg.addParam("PASS");
-
 		throw msg;
 	}	
 }

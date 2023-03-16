@@ -115,7 +115,7 @@ void Server::execute() {
 					char receiver[1024];
 					memset(receiver, 0, sizeof(buffer));
 					ssize_t n = recv(clientSocket, receiver, sizeof(receiver), 0);
-					if (n <= 0 && (std::find(buffer.begin(), buffer.end(), '\r') != buffer.end() || std::find(buffer.begin(), buffer.end(), '\n') != buffer.end()))
+					if (n <= 0 && (std::find(buffer.begin(), buffer.end(), '\r') != buffer.end() && std::find(buffer.begin(), buffer.end(), '\n') != buffer.end()))
 						break;
 					for (int i = 0; receiver[i] != '\0'; ++i)
 						buffer.push_back(receiver[i]);
@@ -125,7 +125,7 @@ void Server::execute() {
 					std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
 					try {
 						Quit(findClient(clientSocket)).execute();
-					} catch (Message e) {}
+					} catch (Message& e) {}
 					close(clientSocket);
 				} else {
 					// std::cout << "client[" << clientSocket << "]" << std::endl;
@@ -143,7 +143,7 @@ void Server::execute() {
 							command = parse(findClient(clientSocket), *it);
 							command->execute();
 							delete command;
-						} catch (Message &e) {
+						} catch (Message& e) {
 							e.sendMessage();
 							delete command;
 						} catch (std::exception& e) {
