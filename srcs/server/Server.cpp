@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "ircserv.hpp"
+#include "Quit.hpp"
 
 Server::Server(int port, int kq, int serverSocket, const std::string& password, const std::string& adminName, const std::string& adminPassword): _port(port),_kq(kq), _serverSocket(serverSocket), _password(password),_adminName(adminName), _adminPassword(adminPassword) {
 	Client *bot = new Client(1, this);
@@ -121,7 +122,10 @@ void Server::execute() {
 				}
 
 				if (buffer.empty()) {
-					// std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
+					std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
+					try {
+						Quit(findClient(clientSocket)).execute();
+					} catch (Message e) {}
 					close(clientSocket);
 				} else {
 					// std::cout << "client[" << clientSocket << "]" << std::endl;
