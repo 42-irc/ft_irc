@@ -1,6 +1,6 @@
 NAME = ircserv
 CXX = c++
-CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98 -Isrcs -Isrcs/command -Isrcs/channel -Isrcs/message -Isrcs/client -Isrcs/server# -fsanitize=address
+CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98 -Isrcs -Isrcs/command -Isrcs/channel -Isrcs/message -Isrcs/client -Isrcs/server #-fsanitize=address
 
 SRCDIR=srcs
 CMDDIR=srcs/command
@@ -39,7 +39,7 @@ OBJS=$(SRCS:.cpp=.o)
 all: $(NAME)
 
 $(NAME): $(MAIN_OBJS) $(CMD_OBJS) $(UTIL_OBJS)
-	$(CXX) -o $(NAME) $(MAIN_OBJS) $(CMD_OBJS) $(UTIL_OBJS)
+	$(CXX) $(CXXFLAGS) -o $(NAME) $(MAIN_OBJS) $(CMD_OBJS) $(UTIL_OBJS)
 
 clean:
 	rm -f $(OBJS)
