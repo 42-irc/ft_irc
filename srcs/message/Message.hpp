@@ -7,30 +7,35 @@
 #include "utils.hpp"
 
 enum e_code {
-	RPL_WELCOME = 001,
-	ERR_NOSUCHNICK = 401,
-	ERR_NOSUCHCHANNEL = 403,
-	ERR_TOOMANYCHANNELS = 405,
-	ERR_UNKNOWNCOMMAND = 421,
-	ERR_NICKNAMEINUSE = 433,
-	ERR_NOTONCHANNEL = 442,
-	ERR_CHANOPRIVSNEEDED = 482,
-	RPL_LIST = 322,
-	RPL_LISTEND = 323,
-	RPL_NAMREPLY = 353,
-	RPL_NAMEND = 366,
-	RPL_YOUREOPER = 381,
-	ERR_NEEDMOREPARAMS = 461,
-	ERR_PASSWDMISMATCH = 464
+    RPL_WELCOME = 001,
+    ERR_NOSUCHNICK = 401,
+    ERR_NOSUCHCHANNEL = 403,
+    ERR_TOOMANYCHANNELS = 405,
+    ERR_UNKNOWNCOMMAND = 421,
+    ERR_NONICKNAMEGIVEN = 431,
+    ERR_ERRONEUSNICKNAME = 432,
+    ERR_NICKNAMEINUSE = 433,
+    ERR_NOTONCHANNEL = 442,
+	ERR_NOTREGISTERED = 451, 
+    ERR_CHANOPRIVSNEEDED = 482,
+    RPL_LIST = 322,
+    RPL_LISTEND = 323,
+    RPL_NAMREPLY = 353,
+    RPL_NAMEND = 366,
+    RPL_YOUREOPER = 381,
+    ERR_NEEDMOREPARAMS = 461,
+    ERR_PASSWDMISMATCH = 464,
 };
-
 # define CODE_001 ":Welcome to the ft_IRC server"
 # define CODE_401 ":No such nick"
 # define CODE_403 ":No such channel"
 # define CODE_405 ":You have joined too many channels"
 # define CODE_421 ":Unknown command"
+# define CODE_431 ":No nickname given"
+# define CODE_432 ":Erroneus nickname"
 # define CODE_433 ":Nickname is already in use"
 # define CODE_442 ":Not on that channel"
+# define CODE_451 ":You have not registered"
 # define CODE_482 ":You're not an channel operator"
 # define CODE_322 ""
 # define CODE_353 ""
@@ -49,8 +54,8 @@ class Message {
 	private:
 		std::vector<int> _targets;
 		std::string _prefix;
-		std::vector<std::string> _params;
 		std::string _command;
+		std::vector<std::string> _params;
 		std::string _trailer;
 
 		const std::string codeToString(unsigned int n);

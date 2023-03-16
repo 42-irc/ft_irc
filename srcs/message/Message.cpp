@@ -70,12 +70,20 @@ const std::string Message::getCodeMessage(int code) {
 			return CODE_401;
 		case ERR_NOSUCHCHANNEL:
 			return CODE_403;
+		case ERR_TOOMANYCHANNELS:
+			return CODE_405;
 		case ERR_UNKNOWNCOMMAND:
 			return CODE_421;
+		case ERR_NONICKNAMEGIVEN:
+			return CODE_431;
+		case ERR_ERRONEUSNICKNAME:
+			return CODE_432;
 		case ERR_NICKNAMEINUSE:
 			return CODE_433;
 		case ERR_NOTONCHANNEL:
 			return CODE_442;
+		case ERR_NOTREGISTERED:
+			return CODE_451;
 		case ERR_CHANOPRIVSNEEDED:
 			return CODE_482;
 		case RPL_LIST:
