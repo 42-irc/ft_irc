@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "ircserv.hpp"
+#include "Quit.hpp"
 
 Server::Server(int port, int kq, int serverSocket, const std::string& password, const std::string& adminName, const std::string& adminPassword): _port(port),_kq(kq), _serverSocket(serverSocket), _password(password),_adminName(adminName), _adminPassword(adminPassword) {
 	Client *bot = new Client(1, this);
