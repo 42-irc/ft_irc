@@ -2,7 +2,7 @@
 
 Client::Client() :  _fd(-1), _isVerified(false), _isAdmin(false) {}
 
-Client::Client(int fd, Server* server) : _fd(fd), _server(server), _isVerified(false), _isAdmin(false) {
+Client::Client(int fd, Server* server) : _fd(fd), _server(server), _nickName("*"), _isVerified(false), _isAdmin(false) {
 	_server->addClient(this);
 }
 

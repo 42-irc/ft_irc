@@ -8,7 +8,6 @@ class Nick : public Command {
 		std::string _rawNick;
 		std::string _nick;
 		const std::string getPrefix(const std::string& oldNick) const;
-		void renameFirstNick();
 		void checkValidNick();
 
 	public:
