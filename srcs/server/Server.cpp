@@ -108,20 +108,28 @@ void Server::execute() {
 					continue ;
 			} else {
 				int clientSocket = events[i].ident;
+				std::vector<char> buffer;
 
-				char buffer[1024];
-				memset(buffer, 0, sizeof(buffer));
-				ssize_t n = recv(clientSocket, buffer, sizeof(buffer), 0);
+				while (true) {
+					char receiver[1024];
+					memset(receiver, 0, sizeof(buffer));
+					ssize_t n = recv(clientSocket, receiver, sizeof(receiver), 0);
+					if (n <= 0)
+						break;
+					for (int i = 0; receiver[i] != '\0'; ++i)
+						buffer.push_back(receiver[i]);
+				}
 
-				if (n < 0) {
-					continue ;
-				} else if (n == 0) {
+				if (buffer.empty()) {
 					// std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
 					close(clientSocket);
 				} else {
 					// std::cout << "client[" << clientSocket << "]" << std::endl;
-					// std::cout << buffer << std::endl;
-					std::vector<std::string> tokens = split(std::string(buffer), "\r\n");
+					// std::vector<char>::iterator itr = buffer.begin();
+					// while (itr != buffer.end())
+						// std::cout << *itr++;
+					// std::cout << std::endl;
+					std::vector<std::string> tokens = split(std::string(buffer.begin(), buffer.end()), "\r\n");
 					std::vector<std::string>::const_iterator it = tokens.begin();
 					std::vector<std::string>::const_iterator ite = tokens.end();
 
