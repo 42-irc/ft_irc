@@ -136,12 +136,10 @@ void Server::execute() {
 					for (; it != ite; it++) {
 						try {
 							Command* command = parse(findClient(clientSocket), *it);
-
 							command->execute();
 							delete command;
-						} catch (Message& e) {
-							e.sendMessage();
 						} catch (std::exception& e) {
+							// delete command 처리해야 함
 							continue ;
 						}
 					}
