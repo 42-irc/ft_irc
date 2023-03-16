@@ -20,8 +20,9 @@ class Command {
 		Command(Client* client, std::string type);
 		virtual ~Command();
 
-		void checkClient();
+		bool Command::checkAuthClient();
 		void sendMessages();
+		virtual void validate() = 0;
 		virtual void execute() = 0;
 };
 

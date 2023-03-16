@@ -121,7 +121,7 @@ void Server::execute() {
 				}
 
 				if (buffer.empty()) {
-					// std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
+					std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
 					close(clientSocket);
 				} else {
 					// std::cout << "client[" << clientSocket << "]" << std::endl;
@@ -134,12 +134,17 @@ void Server::execute() {
 					std::vector<std::string>::const_iterator ite = tokens.end();
 
 					for (; it != ite; it++) {
+						Command* command = NULL;
 						try {
-							Command* command = parse(findClient(clientSocket), *it);
+							command = parse(findClient(clientSocket), *it);
 							command->execute();
 							delete command;
+						} catch (Message &e) {
+							e.sendMessage();
+							delete command;
 						} catch (std::exception& e) {
-							// delete command 처리해야 함
+							if (command)
+								delete command;
 							continue ;
 						}
 					}
