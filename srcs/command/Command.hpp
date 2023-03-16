@@ -20,6 +20,7 @@ class Command {
 		Command(Client* client, std::string type);
 		virtual ~Command();
 
+		void checkClient();
 		void sendMessages();
 		virtual void execute() = 0;
 };
