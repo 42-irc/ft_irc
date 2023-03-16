@@ -7,6 +7,7 @@ User::~User() {}
 void User::execute() {
 	Message msg(RPL_WELCOME);
 
+    _client->setName(_userName);
 	msg.addTarget(_client->getFd());
 	msg.addParam(_client->getNickName());
 	_messages.push_back(msg);
