@@ -125,9 +125,7 @@ void Server::execute() {
 					std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
 					try {
 						Quit(findClient(clientSocket)).execute();
-					} catch (Message e) {
-						e.sendMessage();
-					}
+					} catch (Message e) {}
 					close(clientSocket);
 				} else {
 					// std::cout << "client[" << clientSocket << "]" << std::endl;
