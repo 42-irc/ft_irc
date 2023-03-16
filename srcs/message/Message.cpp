@@ -25,7 +25,13 @@ void Message::sendMessage() {
 	std::string message = getMessage();
 
 	for (std::vector<int>::iterator it = _targets.begin(); it != _targets.end(); it++) {
-		send(*it, message.c_str(), message.size(), 0);
+		std::string message_copy = message;
+		while (true) {
+			ssize_t n = send(*it, message_copy.c_str(), message_copy.size(), 0);
+			if (n == (ssize_t)message_copy.size())
+				break;
+			message_copy = message_copy.substr(n);
+		}
 		// std::cout << "Sending message to client[" << *it << "]" << std::endl;
 		// std::cout << message << std::endl;
 	}
