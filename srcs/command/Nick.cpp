@@ -28,15 +28,25 @@ void Nick::checkValidNick() {
 	}
 }
 
+void Nick::validate() {
+	if (!_client->getIsVerified()) {
+		Message msg(ERR_NOTREGISTERED);
+
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		throw msg;
+	}
+}
+
 void Nick::execute() {
+	validate();
 	try {
 		checkValidNick();
 	} catch (Message& e) {
 		e.addTarget(_client->getFd());
 		e.addParam(_client->getNickName());
 		e.addParam(_rawNick);
-		e.sendMessage();
-		return ;
+		throw e;
 	}
 
 	std::string prefix = _client->getNickName() == "" ? _rawNick : getPrefix(_client->getNickName());

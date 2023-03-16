@@ -8,6 +8,7 @@ class List : public Command {
 		List(Client* client);
 		~List();
 
+		void validate();
 		void execute();
 };
 

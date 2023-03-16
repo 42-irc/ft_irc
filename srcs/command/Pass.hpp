@@ -11,6 +11,7 @@ class Pass : public Command {
 		Pass(Client* client, const std::string& password);
 		~Pass();
 
+		void validate();
 		void execute();
 };
 

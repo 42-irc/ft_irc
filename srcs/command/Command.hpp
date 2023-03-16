@@ -15,13 +15,14 @@ class Command {
 		std::string _type;
 		std::vector<Message> _messages;
 		const std::string getPrefix() const;
+		void checkAuthClient();
 
 	public:
 		Command(Client* client, std::string type);
 		virtual ~Command();
 
-		void checkClient();
 		void sendMessages();
+		virtual void validate() = 0;
 		virtual void execute() = 0;
 };
 

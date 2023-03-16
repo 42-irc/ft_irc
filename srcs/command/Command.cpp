@@ -8,17 +8,15 @@ const std::string Command::getPrefix() const {
 	return _client->getNickName() + "!" + _client->getName() + "@" + _client->getHostName();
 }
 
-void Command::checkClient() {
-	if (!_client->getIsVerified()) {
+void Command::checkAuthClient() {
+	if (_client->getServer()->getBot() == _client)
+		return ;
+	if (!_client->getIsVerified() || _client->getNickName() == "*") {
 		Message msg(ERR_NOTREGISTERED);
 
 		msg.addTarget(_client->getFd());
 		msg.addParam(_client->getNickName());
-		_messages.push_back(msg);
-		sendMessages();
-		close(_client->getFd());
-		_client->leaveServer();
-		throw std::exception();
+		throw msg;
 	}
 }
 

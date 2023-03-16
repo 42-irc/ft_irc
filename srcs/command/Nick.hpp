@@ -14,6 +14,7 @@ class Nick : public Command {
 		Nick(Client* client, const std::string& nick);
 		~Nick();
 
+		void validate();
 		void execute();
 };
 

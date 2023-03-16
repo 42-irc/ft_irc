@@ -11,6 +11,7 @@ class User : public Command {
 		User(Client* client, const std::string& userName);
 		~User();
 
+		void validate();
 		void execute();
 };
 

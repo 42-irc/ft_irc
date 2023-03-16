@@ -4,7 +4,20 @@ Part::Part(Client* client, const std::string& channel, const std::string& reason
 
 Part::~Part() {}
 
+void Part::validate() {
+	checkAuthClient();
+	if (_channel.empty()) {
+		Message msg(ERR_NEEDMOREPARAMS);
+
+		msg.addTarget(_client->getFd());
+		msg.addParam(_client->getNickName());
+		msg.addParam(_type);
+		throw msg;
+	}
+}
+
 void Part::execute() {
+	validate();
 	std::vector<std::string> targetChannels = split(_channel, ',');
 	std::vector<std::string>::const_iterator it = targetChannels.begin();
 	std::vector<std::string>::const_iterator ite = targetChannels.end();
