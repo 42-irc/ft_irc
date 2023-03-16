@@ -116,7 +116,7 @@ void Server::execute() {
 				if (n < 0) {
 					continue ;
 				} else if (n == 0) {
-					// std::cout << clientSocket << "Client[" << clientSocket << "] closed connection" << std::endl;
+					// std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
 					close(clientSocket);
 				} else {
 					// std::cout << "client[" << clientSocket << "]" << std::endl;
