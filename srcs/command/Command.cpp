@@ -1,6 +1,8 @@
 #include "Command.hpp"
 
-Command::Command(Client* client, std::string type): _client(client), _type(type), _messages(std::vector<Message>()) {}
+Command::Command(Client* client, std::string type): _client(client), _type(type), _messages(std::vector<Message>()) {
+	_client->clearBuffer();
+}
 
 Command::~Command() {}
 

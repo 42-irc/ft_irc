@@ -55,6 +55,7 @@ Command* parse(Client* client, const std::string& str) {
 			}
 		}
 	}
+	client->clearBuffer();
 	Message msg(ERR_UNKNOWNCOMMAND);
 	msg.addParam(command);
 	msg.addTarget(client->getFd());
