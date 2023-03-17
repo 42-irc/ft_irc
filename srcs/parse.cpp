@@ -10,15 +10,16 @@
 #include "command/Quit.hpp"
 #include "command/User.hpp"
 #include "command/Ping.hpp"
+#include "command/Notice.hpp"
 
 Command* parse(Client* client, const std::string& str) {
-	std::string commands[11] = { "JOIN", "KICK", "LIST", "NICK", "OPER", "PART", "PASS" , "PRIVMSG", "QUIT", "USER", "PING"};
+	std::string commands[12] = { "JOIN", "KICK", "LIST", "NICK", "OPER", "PART", "PASS" , "PRIVMSG", "QUIT", "USER", "PING", "NOTICE"};
 	std::vector<std::string> params;
 
 	std::size_t idx =  str.find_first_of(" ");
 	std::string command = idx == std::string::npos ? str : str.substr(0, idx);
 	if (str.length()) {
-		for (unsigned int i = 0; i < 11; i++) {
+		for (unsigned int i = 0; i < 12; i++) {
 			if (command == commands[i]) {
 				switch (i) {
 					case 0:
@@ -51,6 +52,9 @@ Command* parse(Client* client, const std::string& str) {
 						return new User(client, params[1]);
 					case 10:
 						return new Ping(client);
+					case 11:
+						params = split(str, ' ', 3);
+						return new Notice(client, params[1], params[2]);
 				}
 			}
 		}
