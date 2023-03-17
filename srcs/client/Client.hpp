@@ -18,6 +18,7 @@ class Client {
 		std::set<std::string> _joinedChannels;
 		bool _isVerified;
 		bool _isAdmin;
+		std::string buffer;
 
 	public:
 		Client();
@@ -33,6 +34,10 @@ class Client {
 		int getFd() const;
 		bool getIsAdmin() const;
 		bool getIsVerified() const;
+
+		std::string getBuffer() const;
+		void clearBuffer();
+		void addToBuffer(const std::string& str);
 
 		void setName(const std::string& name);
 		void setNickName(const std::string& nickName);
