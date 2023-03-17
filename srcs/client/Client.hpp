@@ -18,7 +18,7 @@ class Client {
 		std::set<std::string> _joinedChannels;
 		bool _isVerified;
 		bool _isAdmin;
-		std::string buffer;
+		std::string _buffer;
 
 	public:
 		Client();

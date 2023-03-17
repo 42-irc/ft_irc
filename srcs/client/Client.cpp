@@ -26,11 +26,11 @@ bool Client::getIsVerified() const { return _isVerified; }
 
 const std::set<std::string> Client::getJoinedChannels() const { return _joinedChannels; }
 
-std::string Client::getBuffer() const { return buffer; }
+std::string Client::getBuffer() const { return _buffer; }
 
-void Client::clearBuffer() { buffer.clear(); }
+void Client::clearBuffer() { _buffer.clear(); }
 
-void Client::addToBuffer(const std::string& str) { buffer += str; }
+void Client::addToBuffer(const std::string& str) { _buffer.append(str); }
 
 void Client::setName(const std::string& name) { _name = name; }
 
