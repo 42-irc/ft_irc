@@ -1,6 +1,8 @@
 #include "Server.hpp"
 #include "ircserv.hpp"
 #include "Quit.hpp"
+#include <sstream>
+#include <string>
 
 Server::Server(int port, int kq, int serverSocket, const std::string& password, const std::string& adminName, const std::string& adminPassword): _port(port),_kq(kq), _serverSocket(serverSocket), _password(password),_adminName(adminName), _adminPassword(adminPassword) {
 	Client *bot = new Client(1, this);
@@ -109,38 +111,39 @@ void Server::execute() {
 					continue ;
 			} else {
 				int clientSocket = events[i].ident;
-				std::vector<char> buffer;
+				Client *client = findClient(clientSocket);
 
+				char receiver[1025];
 				while (true) {
-					char receiver[1024];
-					memset(receiver, 0, sizeof(buffer));
-					ssize_t n = recv(clientSocket, receiver, sizeof(receiver), 0);
-					if (n <= 0 && (std::find(buffer.begin(), buffer.end(), '\r') != buffer.end() && std::find(buffer.begin(), buffer.end(), '\n') != buffer.end()))
+					memset(receiver, 0, sizeof(receiver));
+					ssize_t n = recv(clientSocket, receiver, sizeof(receiver) - 1, 0);
+					if (n <= 0)
 						break;
-					for (int i = 0; receiver[i] != '\0'; ++i)
-						buffer.push_back(receiver[i]);
+					client->addToBuffer(receiver);
 				}
 
-				if (buffer.empty()) {
-					std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
+				if (events->flags & EV_EOF) {
+					// std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
 					try {
-						Quit(findClient(clientSocket)).execute();
+						Quit(client).execute();
 					} catch (Message& e) {}
 					close(clientSocket);
 				} else {
+					if (client->getBuffer().find("\r") == std::string::npos && client->getBuffer().find("\n") == std::string::npos)
+						continue ;
 					// std::cout << "client[" << clientSocket << "]" << std::endl;
 					// std::vector<char>::iterator itr = buffer.begin();
 					// while (itr != buffer.end())
 						// std::cout << *itr++;
 					// std::cout << std::endl;
-					std::vector<std::string> tokens = split(std::string(buffer.begin(), buffer.end()), "\r\n");
+					std::vector<std::string> tokens = split(client->getBuffer(), "\r\n");
 					std::vector<std::string>::const_iterator it = tokens.begin();
 					std::vector<std::string>::const_iterator ite = tokens.end();
 
 					for (; it != ite; it++) {
 						Command* command = NULL;
 						try {
-							command = parse(findClient(clientSocket), *it);
+							command = parse(client, *it);
 							command->execute();
 							delete command;
 						} catch (Message& e) {
