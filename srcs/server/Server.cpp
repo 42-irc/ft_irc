@@ -150,6 +150,7 @@ void Server::execute() {
 							e.sendMessage();
 							delete command;
 						} catch (std::exception& e) {
+							_clients->clearBuffer();
 							if (command)
 								delete command;
 							continue ;
