@@ -1,6 +1,6 @@
 NAME = ircserv
 CXX = c++
-CXXFLAGS = -g -Wall -Wextra -Werror -std=c++98 -Isrcs -Isrcs/command -Isrcs/channel -Isrcs/message -Isrcs/client -Isrcs/server #-fsanitize=address
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -Isrcs -Isrcs/command -Isrcs/channel -Isrcs/message -Isrcs/client -Isrcs/server #-g #-fsanitize=address
 
 SRCDIR=srcs
 CMDDIR=srcs/command
