@@ -118,7 +118,6 @@ void Server::execute() {
 					close(clientSocket);
 					continue ;
 				}
-				std::cout << "client[" << clientSocket << "]" << std::endl;
 
 				char receiver[1025];
 				while (true) {
@@ -130,7 +129,6 @@ void Server::execute() {
 				}
 
 				if (events->flags & EV_EOF) {
-					std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
 					try {
 						Quit(client).execute();
 					} catch (Message& e) {}
@@ -138,12 +136,6 @@ void Server::execute() {
 				} else {
 					if (client->getBuffer().find("\r") == std::string::npos && client->getBuffer().find("\n") == std::string::npos)
 						continue ;
-					std::cout << "client[" << clientSocket << "]" << std::endl;
-					std::cout << client->getBuffer() << std::endl;
-					// std::vector<char>::iterator itr = buffer.begin();
-					// while (itr != buffer.end())
-						// std::cout << *itr++;
-					// std::cout << std::endl;
 					std::vector<std::string> tokens = split(client->getBuffer(), "\r\n");
 					std::vector<std::string>::const_iterator it = tokens.begin();
 					std::vector<std::string>::const_iterator ite = tokens.end();
