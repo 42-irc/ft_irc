@@ -9,7 +9,7 @@ class Join : public Command {
 		std::string _target;
 		void checkChannelNum();
 		void checkValidName(const std::string& name);
-		void checkJoinedChannel(const std::string &channel);
+		bool checkJoinedChannel(const std::string &channel);
 		const Message channelInfo(Channel* channel) const;
 		const Message channelInfoEnd(const std::string& channel) const;
 

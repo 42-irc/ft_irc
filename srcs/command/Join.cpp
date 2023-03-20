@@ -61,16 +61,12 @@ void Join::checkChannelNum() {
 	throw msg;
 }
 
-void Join::checkJoinedChannel(const std::string &channel) {
-	if (_client->getJoinedChannels().find(channel) == _client->getJoinedChannels().end())
-		return ;
-	Message msg(ERR_USERONCHANNEL);
+bool Join::checkJoinedChannel(const std::string &channel) {
+	std::set<std::string> channels = _client->getJoinedChannels();
+	if (channels.find(channel) == channels.end())
+		return false;
 
-	msg.addTarget(_client->getFd());
-	msg.addParam(_client->getNickName());
-	msg.addParam(channel);
-	msg.addParam(_client->getNickName());
-	throw msg;
+	return true;
 }
 
 void Join::validate() {
@@ -99,7 +95,8 @@ void Join::execute(){
 		try {
 			channel = _client->getServer()->findChannel(_client, *it);
 
-			checkJoinedChannel(*it);
+			if (checkJoinedChannel(*it))
+				continue;
 			_client->joinChannel(*it);
 			msg.addTargets(channel->getFds());
 		} catch (Message& e) {

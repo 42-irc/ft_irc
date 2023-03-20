@@ -111,7 +111,14 @@ void Server::execute() {
 					continue ;
 			} else {
 				int clientSocket = events[i].ident;
-				Client *client = findClient(clientSocket);
+				Client *client;
+				try {
+					client = findClient(clientSocket);
+				} catch (Message& e) {
+					close(clientSocket);
+					continue ;
+				}
+				std::cout << "client[" << clientSocket << "]" << std::endl;
 
 				char receiver[1025];
 				while (true) {
@@ -123,7 +130,7 @@ void Server::execute() {
 				}
 
 				if (events->flags & EV_EOF) {
-					// std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
+					std::cout << "Client[" << clientSocket << "] closed connection" << std::endl;
 					try {
 						Quit(client).execute();
 					} catch (Message& e) {}
@@ -131,7 +138,8 @@ void Server::execute() {
 				} else {
 					if (client->getBuffer().find("\r") == std::string::npos && client->getBuffer().find("\n") == std::string::npos)
 						continue ;
-					// std::cout << "client[" << clientSocket << "]" << std::endl;
+					std::cout << "client[" << clientSocket << "]" << std::endl;
+					std::cout << client->getBuffer() << std::endl;
 					// std::vector<char>::iterator itr = buffer.begin();
 					// while (itr != buffer.end())
 						// std::cout << *itr++;
@@ -143,14 +151,14 @@ void Server::execute() {
 					for (; it != ite; it++) {
 						Command* command = NULL;
 						try {
-							command = parse(client, *it);
+							command = parse(findClient(clientSocket), *it);
 							command->execute();
 							delete command;
 						} catch (Message& e) {
 							e.sendMessage();
 							delete command;
 						} catch (std::exception& e) {
-							client->clearBuffer();
+							findClient(clientSocket)->clearBuffer();
 							if (command)
 								delete command;
 							continue ;

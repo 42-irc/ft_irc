@@ -25,5 +25,4 @@ void Quit::execute() {
 	}
 	_client->leaveServer();
 	sendMessages();
-	close(_client->getFd());
 }
