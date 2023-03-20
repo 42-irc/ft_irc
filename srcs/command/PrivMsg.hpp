@@ -7,12 +7,12 @@ class PrivMsg : public Command {
 	private:
 		std::string _target;
 		std::string _msg;
-		void validate();
 
 	public:
 		PrivMsg(Client* client, const std::string& target, const std::string& msg);
 		~PrivMsg();
 
+		void validate();
 		void execute();
 };
 
