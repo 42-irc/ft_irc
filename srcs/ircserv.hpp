@@ -3,8 +3,8 @@
 
 #include "netdb.h"
 
-#include "command/Command.hpp"
-#include "server/Server.hpp"
+#include "Command.hpp"
+#include "Server.hpp"
 
 enum e_status {
 	FAIL = -1,

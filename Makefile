@@ -16,6 +16,7 @@ CMD_SRCS = $(CMDDIR)/Command.cpp \
 		$(CMDDIR)/User.cpp \
 		$(CMDDIR)/Quit.cpp \
 		$(CMDDIR)/Nick.cpp \
+		$(CMDDIR)/Notice.cpp \
 		$(CMDDIR)/Ping.cpp
 
 UTIL_SRCS = $(SRCDIR)/utils.cpp \
